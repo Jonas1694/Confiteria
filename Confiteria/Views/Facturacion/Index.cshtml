@@ -1,0 +1,84 @@
+﻿@model IEnumerable<ArquitecturaModel.Model.Facturacion>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<!--begin::Portlet-->
+<div class="kt-portlet">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">
+                Listas de Facturas
+            </h3>
+        </div>
+        <div class="kt-portlet__head-toolbar">
+            <div class="kt-portlet__head-wrapper">
+                <div class="kt-portlet__head-actions">
+                    <a asp-action="Create" class="btn btn-brand btn-elevate btn-icon-sm">
+                        <i class="la la-plus"></i>Nueva Factura
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <table class="table table-striped- table-bordered table-hover table-checkable" id="list">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Clientes)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NFactura)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Total)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FechaRegistro)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Clientes.RazonSocial)
+                        </td>
+                        <td>
+                            N° @Html.DisplayFor(modelItem => item.NFactura)
+                        </td>
+                        <td>
+                            @item.Total.ToString("C")
+                        </td>
+                        <td>
+                            @item.FechaRegistro.ToShortDateString()
+                        </td>
+                        <td>
+                            @*<a asp-action="Edit" asp-route-id="@item.FacturacionId">Edit</a>*@
+                            <a asp-action="Details" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Detalles</a>
+                            @*<a asp-action="Delete" asp-route-id="@item.FacturacionId">Delete</a>*@
+                            <a asp-action="Create" asp-controller="Devoluciones" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Devolución</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--end::Portlet-->
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#list').DataTable({
+                "language": {
+                    "url": "/js/Spanish.json"
+                }
+            });
+        });
+    </script>
+}

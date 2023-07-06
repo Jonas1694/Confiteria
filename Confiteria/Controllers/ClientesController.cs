@@ -49,6 +49,7 @@ namespace Confiteria.Controllers
         // GET: Clientes/Create
         public IActionResult Create()
         {
+            ViewData["TipoDocumentoId"] = new SelectList(_context.TipoDocumentos, "Documento", "Documento");
             return View();
         }
 
@@ -59,6 +60,7 @@ namespace Confiteria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create( Cliente cliente)
         {
+            ViewData["TipoDocumentoId"] = new SelectList(_context.TipoDocumentos, "Documento", "Documento", cliente.TipoDocumento);
             if (ModelState.IsValid)
             {
                 _context.Add(cliente);
@@ -81,6 +83,7 @@ namespace Confiteria.Controllers
             {
                 return NotFound();
             }
+            ViewData["TipoDocumentoId"] = new SelectList(_context.TipoDocumentos, "Documento", "Documento");
             return View(cliente);
         }
 
@@ -91,6 +94,7 @@ namespace Confiteria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Cliente cliente)
         {
+            ViewData["TipoDocumentoId"] = new SelectList(_context.TipoDocumentos, "Documento", "Documento", cliente.TipoDocumento);
             if (id != cliente.id)
             {
                 return NotFound();

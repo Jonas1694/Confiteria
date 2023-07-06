@@ -11,6 +11,9 @@ namespace ArquitecturaModel
         public DbSet<Cliente>  Clientes { get; set; }
         public DbSet<Productos> Productos { get; set; }
         public DbSet<Proveedor> Proveedors { get; set; }
+        public DbSet<Facturacion> Facturacion { get; set; }
+        //public DbSet<DetalleFacturas> DetalleFacturas { get; set; }
+        public DbSet<TipoDocumento> TipoDocumentos { get; set; }
         public AplicationDbContext(DbContextOptions<AplicationDbContext> options)
           : base(options)
         {

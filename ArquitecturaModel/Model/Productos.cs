@@ -15,6 +15,6 @@ namespace ArquitecturaModel.Model
         public string Imagen { get; set; }
         public decimal Precio { get; set; }
         public DateTime Fecha { get; set; }
-        public int idProveedor { get; set; }
+        
     }
 }

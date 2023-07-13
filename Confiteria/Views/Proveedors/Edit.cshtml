@@ -1,62 +1,62 @@
 ﻿@model ArquitecturaModel.Model.Proveedor
 
 @{
-    ViewData["Title"] = "Edit";
+	ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Editar</h1>
 
 <h4>Proveedores</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="id" />
-            <div class="form-group">
-                <label asp-for="Codigo" class="control-label"></label>
-                <input asp-for="Codigo" class="form-control" />
-                <span asp-validation-for="Codigo" class="text-danger"></span>
-            </div>
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="id" />
+			<div class="form-group">
+				<label asp-for="Codigo" class="control-label"></label>
+				<input asp-for="Codigo" class="form-control" />
+				<span asp-validation-for="Codigo" class="text-danger"></span>
+			</div>
 
-            <div class="form-group">
-                <label asp-for="Rif" class="control-label"></label>
-                <input asp-for="Rif" class="form-control" />
-                <span asp-validation-for="Rif" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RazonSocial" class="control-label"></label>
-                <input asp-for="RazonSocial" class="form-control" />
-                <span asp-validation-for="RazonSocial" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DireccionFiscal" class="control-label"></label>
-                <input asp-for="DireccionFiscal" class="form-control" />
-                <span asp-validation-for="DireccionFiscal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
-            </div>
-                        <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+			<div class="form-group">
+				<label asp-for="Rif" class="control-label"></label>
+				<input asp-for="Rif" class="form-control" />
+				<span asp-validation-for="Rif" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="RazonSocial" class="control-label"></label>
+				<input asp-for="RazonSocial" class="form-control" />
+				<span asp-validation-for="RazonSocial" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="DireccionFiscal" class="control-label"></label>
+				<input asp-for="DireccionFiscal" class="form-control" />
+				<span asp-validation-for="DireccionFiscal" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Telefono" class="control-label"></label>
+				<input asp-for="Telefono" class="form-control" />
+				<span asp-validation-for="Telefono" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Correo" class="control-label"></label>
+				<input asp-for="Correo" class="form-control" />
+				<span asp-validation-for="Correo" class="text-danger"></span>
+			</div>
+			<br />
+			<div class="form-group">
+				<input type="submit" value="Guardar" class="btn btn-outline-warning" />
+				<a asp-action="Index" class="btn btn-outline-success">Regresar</a>
+			</div>
+		</form>
+	</div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }

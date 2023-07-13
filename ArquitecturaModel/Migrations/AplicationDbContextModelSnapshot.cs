@@ -201,7 +201,7 @@ namespace ArquitecturaModel.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Clientes");
+                    b.ToTable("Clientes", (string)null);
                 });
 
             modelBuilder.Entity("ArquitecturaModel.Model.Facturacion", b =>
@@ -246,7 +246,7 @@ namespace ArquitecturaModel.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Facturacion");
+                    b.ToTable("Facturacion", (string)null);
                 });
 
             modelBuilder.Entity("ArquitecturaModel.Model.Productos", b =>
@@ -280,7 +280,7 @@ namespace ArquitecturaModel.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Productos");
+                    b.ToTable("Productos", (string)null);
                 });
 
             modelBuilder.Entity("ArquitecturaModel.Model.Proveedor", b =>
@@ -317,7 +317,7 @@ namespace ArquitecturaModel.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Proveedors");
+                    b.ToTable("Proveedors", (string)null);
                 });
 
             modelBuilder.Entity("ArquitecturaModel.Model.TipoDocumento", b =>
@@ -334,7 +334,7 @@ namespace ArquitecturaModel.Migrations
 
                     b.HasKey("TipoDocumentoId");
 
-                    b.ToTable("TipoDocumentos");
+                    b.ToTable("TipoDocumentos", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

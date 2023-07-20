@@ -40,20 +40,16 @@ namespace Confiteria.Controllers
             {
                 return NotFound();
             }
-            //var detalle = await _context.DetalleFacturas.Include(i => i.Productos).Include(i => i.Productos.Marca).Include(i => i.Productos.Modelo).Where(w => w.FacturacionId == facturacion.FacturacionId).ToListAsync();
-            //var view = new FacturacionViewModel();
-            return View(/*view.ReturnViewModel(facturacion, detalle*/);
+            var detalle = await _context.DetalleFacturas.Include(i => i.Productos).Where(w => w.FacturacionId == facturacion.FacturacionId).ToListAsync();
+            var view = new FacturacionViewModel();
+            return View(view.ReturnViewModel(facturacion, detalle));
         }
 
         // GET: Facturacion/Create
         public async Task<IActionResult> Create(int? id)
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "GetRif");
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "ProductoId", "GetDescripcion");
-            if (id != null)
-            {
-                return View(/*await GetPedidoViewAsync(id.Value)*/);
-            }
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif");
+            ViewData["ProductoId"] = new SelectList(_context.Productos, "id", "GetDescripcion");
             return View(new FacturacionViewModel());
         }
 
@@ -64,8 +60,8 @@ namespace Confiteria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(FacturacionViewModel model, string action)
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "GetRif", model.ClienteId);
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "ProductoId", "GetDescripcion");
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif", model.ClienteId);
+            ViewData["ProductoId"] = new SelectList(_context.Productos, "id", "GetDescripcion");
             switch (action)
             {
                 case "addproducto":
@@ -104,7 +100,7 @@ namespace Confiteria.Controllers
                     {
                         return View(model);
                     }
-                    //string UsuarioId = _context.Usuarios.FirstOrDefault(u => u.Email == User.Identity.Name).Id;
+                    //string UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name).Id;
                     using (var trans = _context.Database.BeginTransaction())
                     {
                         try
@@ -115,7 +111,6 @@ namespace Confiteria.Controllers
                                 FechaRegistro = DateTime.Now,
                                 Iva = model.Iva,
                                 NFactura = model.NFactura,
-                                //StatusDocumentoId = 2,
                                 SubTotal = model.SubTotal,
                                 Total = model.Total,
                                 TotalIva = model.TotalIva,
@@ -124,30 +119,30 @@ namespace Confiteria.Controllers
                             _context.Add(facturacion);
                             await _context.SaveChangesAsync();
 
-                            //foreach (var item in model.DetalleFacturacionViews)
-                            //{
-                            //    var detalle = new DetalleFacturas
-                            //    {
-                            //        Cantidad = item.Cantidad,
-                            //        UsuarioId = UsuarioId,
-                            //        FechaRegistro = DateTime.Now,
-                            //        FacturacionId = facturacion.FacturacionId,
-                            //        ProductoId = item.ProductoId,
-                            //        PrecioUnitario = item.PrecioUnitario,
-                            //        SubTotal = item.SubTotal,
-                            //        Iva = 16,
-                            //        IvaUnitario = item.IvaUnitario,
-                            //        TotalIva = item.TotalIva,
-                            //        Total = item.Total,
-                            //    };
-                            //    _context.Add(detalle);
-                            //    await _context.SaveChangesAsync();
+                            foreach (var item in model.DetalleFacturacionViews)
+                            {
+                                var detalle = new DetalleFacturas
+                                {
+                                    Cantidad = item.Cantidad,
+                                    //UsuarioId = UsuarioId,
+                                    FechaRegistro = DateTime.Now,
+                                    FacturacionId = facturacion.FacturacionId,
+                                    ProductoId = item.ProductoId,
+                                    PrecioUnitario = item.PrecioUnitario,
+                                    SubTotal = item.SubTotal,
+                                    Iva = 16,
+                                    IvaUnitario = item.IvaUnitario,
+                                    TotalIva = item.TotalIva,
+                                    Total = item.Total,
+                                };
+                                _context.Add(detalle);
+                                await _context.SaveChangesAsync();
 
-                            //    var producto = _context.Productos.FirstOrDefault(p => p.id == item.ProductoId);
-                            //    producto.Stock -= item.Cantidad;
-                            //    _context.Update(producto);
-                            //    await _context.SaveChangesAsync();
-                            //}
+                                var producto = _context.Productos.FirstOrDefault(p => p.id == item.ProductoId);
+                                producto.Stock -= item.Cantidad;
+                                _context.Update(producto);
+                                await _context.SaveChangesAsync();
+                            }
                             //_context.Auditorias.Add(Funciones.AddAuditoria($"Registrar Factura {facturacion.FacturacionId}", facturacion.UsuarioId));
                             await _context.SaveChangesAsync();
 
@@ -172,13 +167,13 @@ namespace Confiteria.Controllers
 
             return View(model);
         }
-        //public async Task<IActionResult> GetPrecio(int id)
-        //{
-        //    var p = await _context.Productos.SingleOrDefaultAsync(t => t.id == id);
-        //    var data = new ProductoViewModel { Descripcion = p.GetDescripcion, Precio = p.Precio, Stock = p.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
-        //    var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
-        //    return Json(new { data = data }, settings);
-        //}
+        public async Task<IActionResult> GetPrecio(int id)
+        {
+            var p = await _context.Productos.SingleOrDefaultAsync(t => t.id == id);
+            var data = new ProductoViewModel { Descripcion = p.Descripcion, Precio = p.Precio, Stock = p.Stock};
+            var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
+            return Json(new { data = data }, settings);
+        }
         // GET: Facturacion/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

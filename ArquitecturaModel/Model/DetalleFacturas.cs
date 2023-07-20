@@ -9,8 +9,7 @@ namespace ArquitecturaModel.Model
 {
     public class DetalleFacturas
     {
-        [Key]
-        public int DetalleFacturaId { get; set; }
+        public int DetalleFacturasId { get; set; }
         public int FacturacionId { get; set; }
         public Facturacion Facturacion { get; set; }
         public int ProductoId { get; set; }

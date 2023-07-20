@@ -20,7 +20,7 @@ namespace ArquitecturaModel.Model
         public decimal Total { get; set; }
         public string UsuarioId { get; set; }
         public ApplicationUser User { get; set; }
-      
+
         [Display(Name = "Fecha")]
         public DateTime FechaRegistro { get; set; }
     }

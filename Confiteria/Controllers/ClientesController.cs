@@ -60,13 +60,26 @@ namespace Confiteria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create( Cliente cliente)
         {
+            cliente.Fecha = DateTime.Now;
             ViewData["TipoDocumentoId"] = new SelectList(_context.TipoDocumentos, "Documento", "Documento", cliente.TipoDocumento);
-            if (ModelState.IsValid)
+			if (_context.Clientes.Any(a => a.TipoDocumento == cliente.TipoDocumento && a.Rif == cliente.Rif))
+			{
+				ModelState.AddModelError(nameof(cliente.Rif), $"El Rif {cliente.Rif} ya existe.!");
+				return View(cliente);
+			}
+			if (ModelState.IsValid)
             {
-                _context.Add(cliente);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+                try
+                {
+                    _context.Add(cliente);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+				catch (Exception exception)
+				{
+					ModelState.AddModelError(string.Empty, exception.Message);
+				}
+			}
             return View(cliente);
         }
 

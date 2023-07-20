@@ -74,40 +74,40 @@ namespace ArquitecturaModel.ViewModels
         {
             return valor.ToString("P2").Replace("%", "");
         }
-        //public FacturacionViewModel ReturnViewModel(Facturacion facturacion, List<DetalleFacturas> detalle)
-        //{
-        //    List<DetalleFacturacionViewModel> listFac = new List<DetalleFacturacionViewModel>();
-        //    foreach (var item in detalle)
-        //    {
-        //        DetalleFacturacionViewModel d = new DetalleFacturacionViewModel()
-        //        {
-        //            DetalleFacturaId = item.DetalleFacturaId,
-        //            TotalIva = item.TotalIva,
-        //            Cantidad = item.Cantidad,
-        //            Iva = item.Iva,
-        //            IvaUnitario = item.IvaUnitario,
-        //            PrecioUnitario = item.PrecioUnitario,
-        //            Producto = item.Productos.GetDescripcion,
-        //            ProductoId = item.ProductoId,
-        //            SubTotal = item.SubTotal,
-        //            Total = item.Total
-        //        };
-        //        listFac.Add(d);
-        //    }
+        public FacturacionViewModel ReturnViewModel(Facturacion facturacion, List<DetalleFacturas> detalle)
+        {
+            List<DetalleFacturacionViewModel> listFac = new List<DetalleFacturacionViewModel>();
+            foreach (var item in detalle)
+            {
+                DetalleFacturacionViewModel d = new DetalleFacturacionViewModel()
+                {
+                    DetalleFacturaId = item.DetalleFacturasId,
+                    TotalIva = item.TotalIva,
+                    Cantidad = item.Cantidad,
+                    Iva = item.Iva,
+                    IvaUnitario = item.IvaUnitario,
+                    PrecioUnitario = item.PrecioUnitario,
+                    Producto = item.Productos.Descripcion,
+                    ProductoId = item.ProductoId,
+                    SubTotal = item.SubTotal,
+                    Total = item.Total
+                };
+                listFac.Add(d);
+            }
 
-        //    var view = new FacturacionViewModel
-        //    {
-        //        ClienteId = facturacion.ClienteId,
-        //        Cliente = facturacion.Clientes,
-        //        FacturacionId = facturacion.FacturacionId,
-        //        NFactura = facturacion.NFactura,
-        //        SubTotal = facturacion.SubTotal,
-        //        Total = facturacion.Total,
-        //        TotalIva = facturacion.TotalIva,
-        //        DetalleFacturacionViews = listFac
-        //    };
-        //    return view;
-        //}
+            var view = new FacturacionViewModel
+            {
+                ClienteId = facturacion.ClienteId,
+                Cliente = facturacion.Clientes,
+                FacturacionId = facturacion.FacturacionId,
+                NFactura = facturacion.NFactura,
+                SubTotal = facturacion.SubTotal,
+                Total = facturacion.Total,
+                TotalIva = facturacion.TotalIva,
+                DetalleFacturacionViews = listFac
+            };
+            return view;
+        }
         public FacturacionViewModel ToModel(FacturacionViewModel model)
         {
             List<DetalleFacturacionViewModel> Detalle = DetalleFacturacionViews;

@@ -1,5 +1,8 @@
 using ArquitecturaModel;
+using ArquitecturaModel.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +13,11 @@ builder.Services.AddDbContext<AplicationDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     
 });
- builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddIdentity<ApplicationUser, AplicationRole>()
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<AplicationDbContext>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +34,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",

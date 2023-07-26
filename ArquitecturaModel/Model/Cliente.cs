@@ -20,6 +20,7 @@ namespace ArquitecturaModel.Model
         public string Telefono { get; set; }
         public string Correo { get; set; }
         public DateTime Fecha { get; set; }
-        
+        public string GetRif { get => $"{TipoDocumento}-{Rif} {RazonSocial}"; }
+
     }
 }

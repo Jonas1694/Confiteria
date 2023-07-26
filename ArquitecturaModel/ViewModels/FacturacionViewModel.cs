@@ -13,7 +13,7 @@ namespace ArquitecturaModel.ViewModels
         public int FacturacionId { get; set; }
         [Display(Name = "Cliente")]
         public int ClienteId { get; set; }
-        public Cliente Cliente { get; set; }
+        public Cliente? Cliente { get; set; }
         [Display(Name = "N° Factura")]
         public double NFactura { get; set; }
         [Display(Name = "Sub-Total")]

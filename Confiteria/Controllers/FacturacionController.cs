@@ -61,7 +61,7 @@ namespace Confiteria.Controllers
         public async Task<IActionResult> Create(FacturacionViewModel model, string action)
         {
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif", model.ClienteId);
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "id", "GetDescripcion");
+            ViewData["ProductoId"] = new SelectList(_context.Productos, "id", "GetDescripcion",model.ProductoId);
             switch (action)
             {
                 case "addproducto":
@@ -100,7 +100,7 @@ namespace Confiteria.Controllers
                     {
                         return View(model);
                     }
-                    //string UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name).Id;
+                    string UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name).Id.ToString();
                     using (var trans = _context.Database.BeginTransaction())
                     {
                         try
@@ -124,7 +124,7 @@ namespace Confiteria.Controllers
                                 var detalle = new DetalleFacturas
                                 {
                                     Cantidad = item.Cantidad,
-                                    //UsuarioId = UsuarioId,
+                                    UsuarioId = UsuarioId,
                                     FechaRegistro = DateTime.Now,
                                     FacturacionId = facturacion.FacturacionId,
                                     ProductoId = item.ProductoId,
@@ -167,12 +167,14 @@ namespace Confiteria.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
         public async Task<IActionResult> GetPrecio(int id)
         {
             var p = await _context.Productos.SingleOrDefaultAsync(t => t.id == id);
-            var data = new ProductoViewModel { Descripcion = p.Descripcion, Precio = p.Precio, Stock = p.Stock};
+            var data = new ProductoViewModel { Descripcion = p.GetDescripcion, Precio = p.Precio, Stock = p.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
             var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
-            return Json(new { data = data }, settings);
+            return Json(data);
         }
         // GET: Facturacion/Edit/5
         public async Task<IActionResult> Edit(int? id)

@@ -114,7 +114,7 @@ namespace Confiteria.Controllers
                                 SubTotal = model.SubTotal,
                                 Total = model.Total,
                                 TotalIva = model.TotalIva,
-                                //UsuarioId = UsuarioId
+                                UsuarioId = UsuarioId
                             };
                             _context.Add(facturacion);
                             await _context.SaveChangesAsync();

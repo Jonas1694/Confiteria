@@ -13,11 +13,13 @@ builder.Services.AddDbContext<AplicationDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     
 });
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<AplicationDbContext>();
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-builder.Services.AddIdentity<ApplicationUser, AplicationRole>()
-                .AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<AplicationDbContext>();
+//////builder.Services.AddIdentity<ApplicationUser, AplicationRole>()
+////                .AddDefaultTokenProviders()
+//                .AddEntityFrameworkStores<AplicationDbContext>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,5 +41,5 @@ app.UseAuthentication();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.MapRazorPages();
 app.Run();

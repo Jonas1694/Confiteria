@@ -15,8 +15,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using ArquitecturaModel.Model;
-using Newtonsoft.Json;
-using System.Security.Claims;
 
 namespace Confiteria.Areas.Identity.Pages.Account
 {
@@ -24,28 +22,22 @@ namespace Confiteria.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
-            _userManager = userManager;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-        public string ReturnUrl { get; set; }
 
+        public string ReturnUrl { get; set; }
+        
         [TempData]
         public string ErrorMessage { get; set; }
-
         public class InputModel
         {
             [Display(Name = "Usuario")]
@@ -94,7 +86,6 @@ namespace Confiteria.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
-                    
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -105,29 +96,15 @@ namespace Confiteria.Areas.Identity.Pages.Account
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
-                if (!result.Succeeded)
+                else
                 {
-                    ApplicationUser usuario = _signInManager.UserManager.Users.ToList().FirstOrDefault(u => u.Email == Input.Email);
-                    if (usuario == null)
-                    {
-                        ModelState.AddModelError("Input.Email", "No se ha podido encontrar la cuenta en GOP, debe Registrarse para poder iniciar sesión.");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Input.Password", "La contraseña es incorrecta, intente de nuevo por favor!");
-                    }
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
-                //else
-                //{
-                //    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                //    return Page();
-                //}
             }
 
             // If we got this far, something failed, redisplay form
             return Page();
         }
-        
     }
 }

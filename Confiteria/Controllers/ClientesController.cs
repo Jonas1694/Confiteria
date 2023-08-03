@@ -7,10 +7,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Confiteria.Controllers
 {
+    [Authorize]
     public class ClientesController : Controller
     {
         private readonly AplicationDbContext _context;

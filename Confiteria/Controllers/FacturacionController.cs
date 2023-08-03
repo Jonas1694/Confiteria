@@ -6,9 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using ArquitecturaModel.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Confiteria.Controllers
 {
+    [Authorize]
     public class FacturacionController : Controller
     {
         private readonly AplicationDbContext _context;
@@ -83,24 +85,24 @@ namespace Confiteria.Controllers
                         ModelState.AddModelError("", "No se puede procesar, porque no hay producto en la lista");
                         return View(model);
                     }
-                    model = model.ToModel(model);
-                    var data = _context.Facturacion;
-                    double ncorrelativo = 0;
-                    if (data.Count() != 0)
-                    {
-                        ncorrelativo = data.Max(m => m.NFactura) + 1;
-                    }
-                    else
-                    {
-                        ncorrelativo = 1;
-                    }
-                    model.NFactura = ncorrelativo;
-                    model.ProductoId = 0;
-                    if (!ModelState.IsValid)
-                    {
-                        return View(model);
-                    }
-                    string UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name).Id.ToString();
+					model = model.ToModel(model);
+					var data = _context.Facturacion;
+					double ncorrelativo = 0;
+					if (data.Count() != 0)
+					{
+						ncorrelativo = data.Max(m => m.NFactura) + 1;
+					}
+					else
+					{
+						ncorrelativo = 1;
+					}
+					model.NFactura = ncorrelativo;
+					model.ProductoId = 0;
+					if (!ModelState.IsValid)
+					{
+						return View(model);
+					}
+					string UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name).Id.ToString();
                     using (var trans = _context.Database.BeginTransaction())
                     {
                         try
@@ -143,7 +145,6 @@ namespace Confiteria.Controllers
                                 _context.Update(producto);
                                 await _context.SaveChangesAsync();
                             }
-                            //_context.Auditorias.Add(Funciones.AddAuditoria($"Registrar Factura {facturacion.FacturacionId}", facturacion.UsuarioId));
                             await _context.SaveChangesAsync();
 
                             //if (model.PedidoId > 0)

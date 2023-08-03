@@ -2,9 +2,11 @@
 using ArquitecturaModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Confiteria.Controllers
 {
+    [Authorize]
     public class ProductosController : Controller
     {
         private readonly AplicationDbContext _context;

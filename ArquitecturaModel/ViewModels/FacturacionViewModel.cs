@@ -25,7 +25,7 @@ namespace ArquitecturaModel.ViewModels
         public decimal Total { get; set; }
 
         [Display(Name = "Producto")]
-        public int? ProductoId { get; set; }
+        public int? ProductosId { get; set; }
 
         [Display(Name = "Producto")]
         public string Producto { get; set; }
@@ -53,7 +53,7 @@ namespace ArquitecturaModel.ViewModels
             decimal Total = SubTotal + TotalIva;
             listDetalleCotizacion.Add(new DetalleFacturacionViewModel
             {
-                ProductoId = model.ProductoId.Value,
+                ProductoId = model.ProductosId.Value,
                 Producto = model.Producto,
                 Cantidad = model.Cantidad,
                 PrecioUnitario = model.PrecioUnitario,
@@ -88,7 +88,7 @@ namespace ArquitecturaModel.ViewModels
                     IvaUnitario = item.IvaUnitario,
                     PrecioUnitario = item.PrecioUnitario,
                     Producto = item.Productos.Descripcion,
-                    ProductoId = item.ProductoId,
+                    ProductoId = item.ProductosId,
                     SubTotal = item.SubTotal,
                     Total = item.Total
                 };

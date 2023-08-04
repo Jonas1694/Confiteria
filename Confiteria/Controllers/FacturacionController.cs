@@ -51,7 +51,7 @@ namespace Confiteria.Controllers
         public async Task<IActionResult> Create(int? id)
         {
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif");
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "id", "GetDescripcion");
+            ViewData["ProductosId"] = new SelectList(_context.Productos, "id", "GetDescripcion");
             return View(new FacturacionViewModel());
         }
 
@@ -63,7 +63,7 @@ namespace Confiteria.Controllers
         public async Task<IActionResult> Create(FacturacionViewModel model, string action)
         {
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif", model.ClienteId);
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "id", "GetDescripcion",model.ProductoId);
+            ViewData["ProductosId"] = new SelectList(_context.Productos, "id", "GetDescripcion",model.ProductosId);
             switch (action)
             {
                 case "addproducto":
@@ -97,12 +97,12 @@ namespace Confiteria.Controllers
 						ncorrelativo = 1;
 					}
 					model.NFactura = ncorrelativo;
-					model.ProductoId = 0;
+					model.ProductosId = 0;
 					if (!ModelState.IsValid)
 					{
 						return View(model);
 					}
-					string UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name).Id.ToString();
+					var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
                     using (var trans = _context.Database.BeginTransaction())
                     {
                         try
@@ -116,7 +116,8 @@ namespace Confiteria.Controllers
                                 SubTotal = model.SubTotal,
                                 Total = model.Total,
                                 TotalIva = model.TotalIva,
-                                UsuarioId = UsuarioId
+                                UsuarioId = UsuarioId.Id.ToString(),
+                                User= UsuarioId,
                             };
                             _context.Add(facturacion);
                             await _context.SaveChangesAsync();
@@ -126,16 +127,18 @@ namespace Confiteria.Controllers
                                 var detalle = new DetalleFacturas
                                 {
                                     Cantidad = item.Cantidad,
-                                    UsuarioId = UsuarioId,
-                                    FechaRegistro = DateTime.Now,
+									UsuarioId = UsuarioId.Id.ToString(),
+									User = UsuarioId,
+									FechaRegistro = DateTime.Now,
                                     FacturacionId = facturacion.FacturacionId,
-                                    ProductoId = item.ProductoId,
+                                    ProductosId = item.ProductoId,
                                     PrecioUnitario = item.PrecioUnitario,
                                     SubTotal = item.SubTotal,
                                     Iva = 16,
                                     IvaUnitario = item.IvaUnitario,
                                     TotalIva = item.TotalIva,
                                     Total = item.Total,
+                                    Facturacion = facturacion,
                                 };
                                 _context.Add(detalle);
                                 await _context.SaveChangesAsync();

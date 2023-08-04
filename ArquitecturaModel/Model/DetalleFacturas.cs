@@ -12,7 +12,7 @@ namespace ArquitecturaModel.Model
         public int DetalleFacturasId { get; set; }
         public int FacturacionId { get; set; }
         public Facturacion Facturacion { get; set; }
-        public int ProductoId { get; set; }
+        public int ProductosId { get; set; }
         public Productos Productos { get; set; }
         public int Cantidad { get; set; }
         public decimal PrecioUnitario { get; set; }

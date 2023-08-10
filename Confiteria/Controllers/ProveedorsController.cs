@@ -2,6 +2,7 @@
 using ArquitecturaModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Confiteria.Controllers
 {
@@ -31,7 +32,7 @@ namespace Confiteria.Controllers
             }
 
             var cliente = await _context.Proveedors
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.ProveedorId == id);
             if (cliente == null)
             {
                 return NotFound();
@@ -43,7 +44,8 @@ namespace Confiteria.Controllers
         // GET: Clientes/Create
         public IActionResult Create()
         {
-            return View();
+			ViewData["TipoDocumentoId"] = new SelectList(_context.TipoDocumentos, "Documento", "Documento");
+			return View();
         }
 
         // POST: Clientes/Create
@@ -53,7 +55,13 @@ namespace Confiteria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Proveedor proveedor)
         {
-            if (ModelState.IsValid)
+			ViewData["TipoDocumentoId"] = new SelectList(_context.TipoDocumentos, "Documento", "Documento");
+			if (_context.Proveedors.Any(a => a.TipoDocumento == proveedor.TipoDocumento && a.Rif == proveedor.Rif))
+			{
+				ModelState.AddModelError(nameof(proveedor.Rif), $"El Rif {proveedor.Rif} ya existe.!");
+				return View(proveedor);
+			}
+			if (ModelState.IsValid)
             {
                 _context.Add(proveedor);
                 await _context.SaveChangesAsync();
@@ -75,7 +83,8 @@ namespace Confiteria.Controllers
             {
                 return NotFound();
             }
-            return View(cliente);
+			ViewData["TipoDocumentoId"] = new SelectList(_context.TipoDocumentos, "Documento", "Documento", cliente.TipoDocumento);
+			return View(cliente);
         }
 
         // POST: Clientes/Edit/5
@@ -85,7 +94,8 @@ namespace Confiteria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Proveedor proveedor)
         {
-            if (id != proveedor.id)
+			ViewData["TipoDocumentoId"] = new SelectList(_context.TipoDocumentos, "Documento", "Documento", proveedor.TipoDocumento);
+			if (id != proveedor.ProveedorId)
             {
                 return NotFound();
             }
@@ -99,7 +109,7 @@ namespace Confiteria.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProveedorsExists(proveedor.id))
+                    if (!ProveedorsExists(proveedor.ProveedorId))
                     {
                         return NotFound();
                     }
@@ -122,7 +132,7 @@ namespace Confiteria.Controllers
             }
 
             var proveedor = await _context.Proveedors
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.ProveedorId == id);
             if (proveedor == null)
             {
                 return NotFound();
@@ -152,7 +162,7 @@ namespace Confiteria.Controllers
 
         private bool ProveedorsExists(int id)
         {
-            return (_context.Proveedors?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Proveedors?.Any(e => e.ProveedorId == id)).GetValueOrDefault();
         }
     }
 }

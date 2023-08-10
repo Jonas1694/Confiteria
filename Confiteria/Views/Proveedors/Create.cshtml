@@ -5,56 +5,86 @@
 }
 
 <h1>Crear</h1>
+<form asp-action="Create">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title">Proveedor</h3>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-2">
+					<div class="form-group">
+						<label asp-for="TipoDocumento" class="control-label">Tipo de Documento</label>
+						<select asp-for="TipoDocumento" class="form-control" asp-items="ViewBag.TipoDocumentoId">
+							<option value="">Seleccionar</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-10">
+					<div class="form-group">
+						<label asp-for="Rif" class="control-label"></label>
+						<input asp-for="Rif" class="form-control txtn" />
+						<span asp-validation-for="Rif" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label asp-for="Codigo" class="control-label"></label>
+						<input asp-for="Codigo" class="form-control txtn" />
+						<span asp-validation-for="Codigo" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label asp-for="RazonSocial" class="control-label"></label>
+						<input asp-for="RazonSocial" class="form-control" />
+						<span asp-validation-for="RazonSocial" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label asp-for="DireccionFiscal" class="control-label"></label>
+						<input asp-for="DireccionFiscal" class="form-control" />
+						<span asp-validation-for="DireccionFiscal" class="text-danger"></span>
+					</div>
+				</div>
 
-<h4>Proveedores</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Codigo" class="control-label"></label>
-                <input asp-for="Codigo" class="form-control" />
-                <span asp-validation-for="Codigo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rif" class="control-label"></label>
-                <input asp-for="Rif" class="form-control" />
-                <span asp-validation-for="Rif" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RazonSocial" class="control-label"></label>
-                <input asp-for="RazonSocial" class="form-control" />
-                <span asp-validation-for="RazonSocial" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DireccionFiscal" class="control-label"></label>
-                <input asp-for="DireccionFiscal" class="form-control" />
-                <span asp-validation-for="DireccionFiscal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-outline-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index" class="btn btn-outline-success">Regresar</a>
-</div>
-
+				<div class="col-md-12">
+					<div class="form-group">
+						<label asp-for="Telefono" class="control-label"></label>
+						<input asp-for="Telefono" class="form-control txtn" />
+						<span asp-validation-for="Telefono" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label asp-for="Correo" class="control-label"></label>
+						<input asp-for="Correo" class="form-control" />
+						<span asp-validation-for="Correo" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-footer">
+			<input type="submit" value="Crear" class="btn btn-primary" />
+			<a asp-action="Index" class="btn btn-outline-success">Regresar</a>
+		</div>
+	</div>
+</form>
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<script type="text/javascript">
+		jQuery(document).ready(function () {
+			jQuery('.txtn').keypress(function (tecla) {
+				if (tecla.charCode < 48 || tecla.charCode > 57) return false;
+			});
+			jQuery('.txt').keypress(function (tecla) {
+				if ((tecla.charCode < 97 || tecla.charCode > 122) && (tecla.charCode < 65 || tecla.charCode > 90) && (tecla.charCode != 45) && (tecla.charCode != 32)) return false;
+			});
+		});
+
+	</script>
 }

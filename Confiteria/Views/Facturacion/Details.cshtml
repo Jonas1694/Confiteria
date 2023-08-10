@@ -1,0 +1,108 @@
+﻿@model ArquitecturaModel.ViewModels.FacturacionViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <!--begin::Portlet-->
+        <div class="kt-portlet">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        Detalle Factura N° @Html.DisplayFor(model => model.NFactura)
+                    </h3>
+                </div>
+            </div>
+            <div class="kt-portlet__body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>
+                            <label asp-for="ClienteId" class="control-label"></label>
+                            <p class="form-control-static">@Html.DisplayFor(model => model.Cliente.RazonSocial)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-offset-3 col-md-3">
+                        <div class="kt-mycart">
+                            <div class="kt-mycart__footer">
+                                <div class="kt-mycart__section">
+                                    <div class="kt-mycart__subtitel">
+                                        <span>Sub Total</span>
+                                        <span>Total Iva</span>
+                                        <span>Total</span>
+                                    </div>
+                                    <div class="kt-mycart__prices">
+                                        <span>@Html.DisplayFor(model => model.SubTotal)</span>
+                                        <span>@Html.DisplayFor(model => model.TotalIva)</span>
+                                        <span class="kt-font-brand">@Html.DisplayFor(model => model.Total)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Portlet-->
+    </div>
+    <div class="col-md-12">
+        <!--begin::Portlet-->
+        <div class="kt-portlet">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        Factura
+                    </h3>
+                </div>
+            </div>
+            <div class="kt-portlet__body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Producto
+                            </th>
+                            <th>
+                                Cantidad
+                            </th>
+                            <th>
+                                Precio Unitario
+                            </th>
+                            <th>
+                                SubTotal
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.DetalleFacturacionViews != null)
+                        {
+                            for (var j = 0; j < Model.DetalleFacturacionViews.Count; ++j)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => Model.DetalleFacturacionViews[j].Producto)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => Model.DetalleFacturacionViews[j].Cantidad)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => Model.DetalleFacturacionViews[j].PrecioUnitario)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => Model.DetalleFacturacionViews[j].SubTotal)
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="kt-portlet__foot">
+                <div class="kt-form__actions">
+                    <a asp-action="Index" class="btn btn-secondary">Regresar a la Lista</a>
+                </div>
+            </div>
+        </div>
+        <!--end::Portlet-->
+    </div>
+</div>

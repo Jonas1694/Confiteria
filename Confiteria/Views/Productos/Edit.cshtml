@@ -6,9 +6,60 @@
 
 <h1>Editar</h1>
 
-<h4>Productos</h4>
-<hr />
-<div class="row">
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Productos</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <input type="hidden" asp-for="id" />
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Codigo" class="control-label"></label>
+                        <input asp-for="Codigo" class="form-control txtn" />
+                        <span asp-validation-for="Codigo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Descripcion" class="control-label"></label>
+                        <input asp-for="Descripcion" class="form-control" />
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Imagen" class="control-label"></label>
+                        <input asp-for="Imagen" class="form-control" />
+                        <span asp-validation-for="Imagen" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Stock" class="control-label"></label>
+                        <input asp-for="Stock" class="form-control txtn" />
+                        <span asp-validation-for="Stock" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Precio" class="control-label"></label>
+                        <input asp-for="Precio" class="form-control" />
+                        <span asp-validation-for="Precio" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-outline-success">Regresar</a>
+        </div>
+    </div>
+</form>
+@*<div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -52,7 +103,7 @@
         </form>
     </div>
 </div>
-
+*@
 
 
 @section Scripts {

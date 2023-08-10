@@ -55,6 +55,8 @@ namespace Confiteria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Productos productos)
         {
+            productos.Fecha = DateTime.Now;
+            productos.Imagen = "Watson Watson";
             if (ModelState.IsValid)
             {
                 _context.Add(productos);

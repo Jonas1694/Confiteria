@@ -23,5 +23,6 @@ namespace ArquitecturaModel.Model
 
         [Display(Name = "Fecha")]
         public DateTime FechaRegistro { get; set; }
+        public List<DetalleFacturas> DetalleFacturas { get; set; }
     }
 }

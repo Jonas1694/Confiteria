@@ -61,6 +61,7 @@
                         <td>
                             @*<a asp-action="Edit" asp-route-id="@item.FacturacionId">Edit</a>*@
                             <a asp-action="Details" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Detalles</a>
+                            <a asp-action="Index" asp-controller="Reportes" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Imprimir</a>
                             @*<a asp-action="Delete" asp-route-id="@item.FacturacionId">Delete</a>*@
                             <a asp-action="Create" asp-controller="Devoluciones" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Devolución</a>
                         </td>

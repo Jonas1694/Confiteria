@@ -36,6 +36,7 @@ namespace ArquitecturaModel.ViewModels
         public int StockMax { get; set; }
         public int Stock { get; set; }
         public int PedidoId { get; set; }
+        public string Codigo { get; set; }
 
         public List<DetalleFacturacionViewModel> DetalleFacturacionViews { get; set; }
 

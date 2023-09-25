@@ -20,7 +20,11 @@ namespace Confiteria.Controllers
         {
             _context = context;
         }
-
+        [HttpPost]
+        public async Task<ActionResult> BuscarProductos( string codigo)
+        {
+            return Ok();
+        }
         // GET: Facturacion
         public async Task<IActionResult> Index()
         {
@@ -65,12 +69,19 @@ namespace Confiteria.Controllers
         public async Task<IActionResult> Create(FacturacionViewModel model, string action)
         {
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif", model.ClienteId);
-            ViewData["ProductosId"] = new SelectList(_context.Productos, "id", "GetDescripcion",model.ProductosId);
+            ViewData["ProductosId"] = new SelectList(_context.Productos, "id", "GetDescripcion", model.ProductosId);
             switch (action)
             {
                 case "addproducto":
-
-                    if (model.Cantidad == 0)
+                    if (!string.IsNullOrEmpty(model.Codigo))
+                    {
+                        var cod = await _context.Productos.FirstOrDefaultAsync(c => c.Codigo == model.Codigo);
+                        model.ProductosId = cod.id;
+                        model.PrecioUnitario = cod.Precio;
+                        ViewData["ProductosId"] = new SelectList(_context.Productos, "id", "GetDescripcion", model.ProductosId);
+                        return View(model);
+                    }
+                    else if (model.Cantidad == 0)
                     {
                         ModelState.AddModelError("", "Debe introducir una cantidad");
                         return View(model);

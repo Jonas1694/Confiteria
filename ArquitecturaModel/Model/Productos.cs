@@ -11,7 +11,7 @@ namespace ArquitecturaModel.Model
     {
         public int id { get; set; }
         [Required(ErrorMessage = "El campo {0} es obligatorio!")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "* Solo se permiten números.")]
+        //[RegularExpression("^[0-9]*$", ErrorMessage = "* Solo se permiten números.")]
         public string Codigo { get; set; }
         [Required(ErrorMessage = "El campo {0} es obligatorio!")]
         public string Descripcion { get; set; }

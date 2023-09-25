@@ -74,6 +74,10 @@
                 <!--begin::Form-->
                 <div class="kt-portlet__body">
                     <div class="form-group">
+                        <div class="col-md-4">
+                            <label asp-for="Codigo" class="control-label"></label>
+                            <input asp-for="Codigo" class="form-control" id="txtCodigo" type="text" onchange="return Barras();" />
+                        </div>
                         <div class="col-md-6">
                             <label asp-for="ProductosId" class="control-label"></label>
                             <select asp-for="ProductosId" id="btoProducto" class="form-control" asp-items="ViewBag.ProductosId">
@@ -187,6 +191,7 @@
 
         </div>
     </div>
+    </div>
 </form>
 <div>
     <a asp-action="Index">Back to List</a>
@@ -199,7 +204,6 @@
         var stockMin = 0;
         var stockMax = 0;
         var stock = 0;
-        debugger
         $(document).ready(function () {
             $('#btoProducto').val('');
             $('#txtCantidad').val('0');
@@ -227,8 +231,16 @@
                     }
                 });
             });
-
+            $('#txtCodigo').change(function () {
+                // BuscarProductos($('#txtCodigo').val());
+                // // $('#txtCodigo').val('');
+                // return false;
+            });
         });
+        function Barras() 
+        {
+            return false;
+        }
         function validarStock() {
             if ($('#txtCantidad').val() != '') {
                 cantidad = parseInt($('#txtCantidad').val());
@@ -261,6 +273,29 @@
                 return true;
             }
             return false;
+        }
+        function BuscarProductos() {
+            $.ajax({
+                url: '/Facturacion/BuscarProductos',
+                type: "post",
+                dataType: "json",
+                data: {
+                    codigo: $('#txtCodigo').val()
+                },
+                success: function (data) {
+                    // $('#txtCantidad').val('0');
+                    // $('#PrecioUnitario').val('0,00');
+                    // $('#PrecioUnitario').val(data.precio).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: 'Bs' });
+                    // $('#Precioprod').val(data.precio);
+                    // $('#prod').val(data.descripcion);
+                    // $('#stockMin').val(data.stockMin);
+                    // $('#stockMax').val(data.stockMax);
+                    // $('#stock').val(data.stock);
+                    $.each(data, function () {
+
+                    });
+                }
+            });
         }
     </script>
 }

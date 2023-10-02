@@ -23,7 +23,9 @@ namespace Confiteria.Controllers
         [HttpPost]
         public async Task<ActionResult> BuscarProductos( string codigo)
         {
-            return Ok();
+            //var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
+            var data = await _context.Productos.FirstOrDefaultAsync(f => f.Codigo == codigo);
+            return Json(data);
         }
         // GET: Facturacion
         public async Task<IActionResult> Index()
@@ -73,15 +75,7 @@ namespace Confiteria.Controllers
             switch (action)
             {
                 case "addproducto":
-                    if (!string.IsNullOrEmpty(model.Codigo))
-                    {
-                        var cod = await _context.Productos.FirstOrDefaultAsync(c => c.Codigo == model.Codigo);
-                        model.ProductosId = cod.id;
-                        model.PrecioUnitario = cod.Precio;
-                        ViewData["ProductosId"] = new SelectList(_context.Productos, "id", "GetDescripcion", model.ProductosId);
-                        return View(model);
-                    }
-                    else if (model.Cantidad == 0)
+                    if (model.Cantidad == 0)
                     {
                         ModelState.AddModelError("", "Debe introducir una cantidad");
                         return View(model);
@@ -189,7 +183,7 @@ namespace Confiteria.Controllers
         public async Task<IActionResult> GetPrecio(int id)
         {
             var p = await _context.Productos.SingleOrDefaultAsync(t => t.id == id);
-            var data = new ProductoViewModel { Descripcion = p.GetDescripcion, Precio = p.Precio, Stock = p.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
+            var data = new ProductoViewModel { Codigo = p.Codigo, Descripcion = p.GetDescripcion, Precio = p.Precio, Stock = p.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
             var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
             return Json(data);
         }

@@ -1,301 +1,346 @@
 ﻿@model ArquitecturaModel.ViewModels.FacturacionViewModel
 
 @{
-    ViewData["Title"] = "Facturación";
+	ViewData["Title"] = "Facturación";
 }
 
 <form asp-action="Create">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Producto" id="prod" />
-    <input type="hidden" asp-for="StockMin" id="stockMin" />
-    <input type="hidden" asp-for="StockMax" id="stockMax" />
-    <input type="hidden" asp-for="Stock" id="stock" />
-    <input type="hidden" asp-for="PrecioUnitario" id="Precioprod" />
-    <input type="hidden" asp-for="PedidoId" />
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<input type="hidden" asp-for="Producto" id="prod" />
+	<input type="hidden" asp-for="StockMin" id="stockMin" />
+	<input type="hidden" asp-for="StockMax" id="stockMax" />
+	<input type="hidden" asp-for="Stock" id="stock" />
+	<input type="hidden" asp-for="PrecioUnitario" id="Precioprod" />
+	<input type="hidden" asp-for="PedidoId" />
 
-    <div class="row">
-        <div class="col-md-12">
-            <!--begin::Portlet-->
-            <div class="kt-portlet">
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
-                            Facturación
-                        </h3>
-                    </div>
-                </div>
-                <!--begin::Form-->
-                <div class="kt-portlet__body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="ClienteId" class="control-label"></label>
-                                <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId">
-                                    <option value="">Seleccionar Cliente</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="kt-mycart">
-                                <div class="kt-mycart__footer">
-                                    <div class="kt-mycart__section">
-                                        <div class="kt-mycart__subtitel">
-                                            <span>Sub Total</span>
-                                            <span>Total Iva</span>
-                                            <span>Total</span>
-                                        </div>
+	<div class="row">
+		<div class="col-md-12">
+			<!--begin::Portlet-->
+			<div class="kt-portlet">
+				<div class="kt-portlet__head">
+					<div class="kt-portlet__head-label">
+						<h3 class="kt-portlet__head-title">
+							Facturación
+						</h3>
+					</div>
+				</div>
+				<!--begin::Form-->
+				<div class="kt-portlet__body">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label asp-for="ClienteId" class="control-label"></label>
+								<select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId">
+									<option value="">Seleccionar Cliente</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-6"><span>Sub Total</span></div>
+								<div class="col-md-6"><span>@Html.DisplayFor(model => model.SubTotal)</span></div>
+							</div>
+							<div class="row">
+								<div class="col-md-6"><span>Total Iva</span></div>
+								<div class="col-md-6"><span>@Html.DisplayFor(model => model.TotalIva)</span></div>
+							</div>
+							<div class="row">
+								<div class="col-md-6"><span>Total</span></div>
+								<div class="col-md-6"><span class="kt-font-brand">@Html.DisplayFor(model => model.Total)</span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--end::Form-->
+			</div>
+			<!--end::Portlet-->
+		</div>
 
-                                        <div class="kt-mycart__prices">
-                                            <span>@Html.DisplayFor(model => model.SubTotal)</span>
-                                            <span>@Html.DisplayFor(model => model.TotalIva)</span>
-                                            <span class="kt-font-brand">@Html.DisplayFor(model => model.Total)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--end::Form-->
-            </div>
-            <!--end::Portlet-->
-        </div>
+		<div class="col-md-12">
+			<!--begin::Portlet-->
+			<div class="kt-portlet">
+				<div class="kt-portlet__head">
+					<div class="kt-portlet__head-label">
+						<h3 class="kt-portlet__head-title">
+							Seleccionar Producto
+						</h3>
+					</div>
+				</div>
+				<!--begin::Form-->
+				<div class="kt-portlet__body">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">Codigo</label>
+								<input class="form-control" id="txtCodigo" type="text" />
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label" style="color:white;">k</label>
+								<div>
+									<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+										<i class=""></i> Escanear
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<label asp-for="ProductosId" class="control-label"></label>
+							<select asp-for="ProductosId" id="btoProducto" class="form-control" asp-items="ViewBag.ProductosId">
+								<option value="">Seleccionar Producto</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 form-group">
+							<label asp-for="Cantidad" class="control-label"></label>
+							<input asp-for="Cantidad" class="form-control txtn" id="txtCantidad" />
+							<span asp-validation-for="Cantidad" class="text-danger"></span>
+						</div>
+						<div class="col-md-2 form-group">
+							<label asp-for="PrecioUnitario" class="control-label"></label>
+							<input asp-for="PrecioUnitario" class="form-control" disabled />
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label style="color:white">k</label>
+								<div>
+									<button class="btn btn-primary" type="submit" value="addproducto" name="action" onclick="return validarStock();">
+										<i class="glyphicon glyphicon-plus"></i> Add
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--end::Form-->
+				</div>
+				<!--end::Portlet-->
+			</div>
+			<br />
+			<div class="col-md-12">
+				<!--begin::Portlet-->
+				<div class="kt-portlet">
+					<div class="kt-portlet__head">
+						<div class="kt-portlet__head-label">
+							<h3 class="kt-portlet__head-title">
+								Detalle de la Facturación
+							</h3>
+						</div>
+					</div>
+					<!--begin::Form-->
+					<div class="kt-portlet__body">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>
+										Producto
+									</th>
+									<th>
+										Cantidad
+									</th>
+									<th>
+										Precio Unitario
+									</th>
+									<th>
+										SubTotal
+									</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								@if (Model.DetalleFacturacionViews != null)
+								{
+									for (var j = 0; j < Model.DetalleFacturacionViews.Count; ++j)
+									{
+										<input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].DetalleFacturaId" />
+										<input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].ProductoId" />
+										<input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].Producto" />
+										<input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].Cantidad" />
+										<input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].PrecioUnitario" />
+										<input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].SubTotal" />
+										<input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].IvaUnitario" />
+										<input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].Iva" />
+										<input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].TotalIva" />
+										<input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].Total" />
+										<input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].Eliminado" id="delete_@j" />
+										@if (!Model.DetalleFacturacionViews[j].Eliminado)
+										{
+											<tr>
+												<td>
+													@Html.DisplayFor(modelItem => Model.DetalleFacturacionViews[j].Producto)
+												</td>
+												<td>
+													@Html.DisplayFor(modelItem => Model.DetalleFacturacionViews[j].Cantidad)
+												</td>
+												<td>
+													@Model.DetalleFacturacionViews[j].PrecioUnitario.ToString("C")
+												</td>
+												<td>
+													@Model.DetalleFacturacionViews[j].SubTotal.ToString("C")
+												</td>
+												<td>
+													<button name="action" type="submit" value="Eliminar" class="btn btn-danger btn-sm" id="" onclick="confirmar(@j)">Eliminar</button>
+												</td>
+											</tr>
+										}
+									}
+								}
+							</tbody>
+						</table>
+					</div>
+					<div class="kt-portlet__foot">
+						<div class="kt-form__actions">
+							<button class="btn btn-primary" type="submit" value="Registrar Factura" name="action">
+								Registrar Factura
+							</button>
+							<a asp-action="Create" asp-controller="Facturacion" class="btn btn-secondary">Cancelar</a>
+							<a asp-action="Index" class="btn btn-info">Ir a la Lista</a>
+						</div>
+					</div>
+					<!--end::Form-->
+				</div>
+				<!--end::Portlet-->
 
-        <div class="col-md-12">
-            <!--begin::Portlet-->
-            <div class="kt-portlet">
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
-                            Seleccionar Producto
-                        </h3>
-                    </div>
-                </div>
-                <!--begin::Form-->
-                <div class="kt-portlet__body">
-                    <div class="form-group">
-                        <div class="col-md-4">
-                            <label asp-for="Codigo" class="control-label"></label>
-                            <input asp-for="Codigo" class="form-control" id="txtCodigo" type="text" onchange="return Barras();" />
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="ProductosId" class="control-label"></label>
-                            <select asp-for="ProductosId" id="btoProducto" class="form-control" asp-items="ViewBag.ProductosId">
-                                <option value="">Seleccionar Producto</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label asp-for="Cantidad" class="control-label"></label>
-                            <input asp-for="Cantidad" class="form-control txtn" id="txtCantidad" />
-                            <span asp-validation-for="Cantidad" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-2">
-                            <label asp-for="PrecioUnitario" class="control-label"></label>
-                            <input asp-for="PrecioUnitario" class="form-control" disabled />
-                        </div>
-                        <div>
-                        <div class="col-md-2">
-                            <button class="btn btn-primary" type="submit" value="addproducto" name="action" onclick="return validarStock();">
-                                <i class="glyphicon glyphicon-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!--end::Form-->
-            </div>
-            <!--end::Portlet-->
-        </div>
-        <div class="col-md-12">
-            <!--begin::Portlet-->
-            <div class="kt-portlet">
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
-                            Detalle de la Facturación
-                        </h3>
-                    </div>
-                </div>
-                <!--begin::Form-->
-                <div class="kt-portlet__body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Producto
-                                </th>
-                                <th>
-                                    Cantidad
-                                </th>
-                                <th>
-                                    Precio Unitario
-                                </th>
-                                <th>
-                                    SubTotal
-                                </th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.DetalleFacturacionViews != null)
-                            {
-                                for (var j = 0; j < Model.DetalleFacturacionViews.Count; ++j)
-                                {
-                                    <input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].DetalleFacturaId" />
-                                    <input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].ProductoId" />
-                                    <input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].Producto" />
-                                    <input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].Cantidad" />
-                                    <input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].PrecioUnitario" />
-                                    <input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].SubTotal" />
-                                    <input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].IvaUnitario" />
-                                    <input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].Iva" />
-                                    <input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].TotalIva" />
-                                    <input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].Total" />
-                                    <input type="hidden" asp-for="@Model.DetalleFacturacionViews[j].Eliminado" id="delete_@j" />
-                                    @if (!Model.DetalleFacturacionViews[j].Eliminado)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.DetalleFacturacionViews[j].Producto)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.DetalleFacturacionViews[j].Cantidad)
-                                            </td>
-                                            <td>
-                                                @Model.DetalleFacturacionViews[j].PrecioUnitario.ToString("C")
-                                            </td>
-                                            <td>
-                                                @Model.DetalleFacturacionViews[j].SubTotal.ToString("C")
-                                            </td>
-                                            <td>
-                                                <button name="action" type="submit" value="Eliminar" class="btn btn-danger btn-sm" id="" onclick="confirmar(@j)">Eliminar</button>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <div class="kt-portlet__foot">
-                    <div class="kt-form__actions">
-                        <button class="btn btn-primary" type="submit" value="Registrar Factura" name="action">
-                            Registrar Factura
-                        </button>
-                        <a asp-action="Create" asp-controller="Facturacion" class="btn btn-secondary">Cancelar</a>
-                        <a asp-action="Index" class="btn btn-info">Ir a la Lista</a>
-                    </div>
-                </div>
-                <!--end::Form-->
-            </div>
-            <!--end::Portlet-->
-
-        </div>
-    </div>
-    </div>
+			</div>
+		</div>
+	</div>
 </form>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">Escanerar Codigo</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						 <div class="form-group">
+							 <input id="txtCodigoBarra" class="form-control" onchange="BuscarProductos();" />
+						 </div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary">Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
 <div>
-    <a asp-action="Index">Back to List</a>
+	<a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
-    <script>
-        var cantidad = 0;
-        var stockMin = 0;
-        var stockMax = 0;
-        var stock = 0;
-        $(document).ready(function () {
-            $('#btoProducto').val('');
-            $('#txtCantidad').val('0');
-            $('#PrecioUnitario').val('0,00');
-            $('#btoProducto').change(function () {
-                $.ajax({
-                    url: '/Facturacion/GetPrecio',
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        id: $(this).val()
-                    },
-                    success: function (data) {
-                        $('#txtCantidad').val('0');
-                        $('#PrecioUnitario').val('0,00');
-                        $('#PrecioUnitario').val(data.precio).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: 'Bs' });
-                            $('#Precioprod').val(data.precio);
-                            $('#prod').val(data.descripcion);
-                            $('#stockMin').val(data.stockMin);
-                            $('#stockMax').val(data.stockMax);
-                            $('#stock').val(data.stock);
-                        $.each(data, function () {
-                           
-                        });
-                    }
-                });
-            });
-            $('#txtCodigo').change(function () {
-                // BuscarProductos($('#txtCodigo').val());
-                // // $('#txtCodigo').val('');
-                // return false;
-            });
-        });
-        function Barras() 
-        {
-            return false;
-        }
-        function validarStock() {
-            if ($('#txtCantidad').val() != '') {
-                cantidad = parseInt($('#txtCantidad').val());
-                stockMin = parseInt($('#stockMin').val());
-                stockMax = parseInt($('#stockMax').val());
-                stock = parseInt($('#stock').val());
-                if (cantidad > stock) {
-                    alert("La cantidad del Stock disponible del Producto " + $('#prod').val() + ", es de " + stock + ".");
-                    return false;
-                }
-                //else if (cantidad >= stockMax)
-                //{
-                //    alert("La cantidad no puede ser mayor, ni igual al Stock Maximo del producto: " + $('#prod').val() + ", es de " + stock + ".");
-                //    return false;
-                //}
-                else {
-                    return true;
-                }
-            }
-            return false;
-        }
-        jQuery(document).ready(function () {
-            jQuery('.txtn').keypress(function (tecla) {
-                if (tecla.charCode < 48 || tecla.charCode > 57) return false;
-            });
-        });
-        function confirmar(control) {
-            if (confirm('¿Está seguro de retirar el item seleccionado?')) {
-                $("#delete_" + control).val(true);
-                return true;
-            }
-            return false;
-        }
-        function BuscarProductos() {
-            $.ajax({
-                url: '/Facturacion/BuscarProductos',
-                type: "post",
-                dataType: "json",
-                data: {
-                    codigo: $('#txtCodigo').val()
-                },
-                success: function (data) {
-                    // $('#txtCantidad').val('0');
-                    // $('#PrecioUnitario').val('0,00');
-                    // $('#PrecioUnitario').val(data.precio).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: 'Bs' });
-                    // $('#Precioprod').val(data.precio);
-                    // $('#prod').val(data.descripcion);
-                    // $('#stockMin').val(data.stockMin);
-                    // $('#stockMax').val(data.stockMax);
-                    // $('#stock').val(data.stock);
-                    $.each(data, function () {
+	@*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+	<script>
+		var cantidad = 0;
+		var stockMin = 0;
+		var stockMax = 0;
+		var stock = 0;
+		$(document).ready(function () {
+			$('#btoProducto').val('');
+			$('#txtCantidad').val('0');
+			$('#PrecioUnitario').val('0,00');
+			$('#btoProducto').change(function () {
+				$.ajax({
+					url: '/Facturacion/GetPrecio',
+					type: "post",
+					dataType: "json",
+					data: {
+						id: $(this).val()
+					},
+					success: function (data) {
+						$('#txtCantidad').val('0');
+						$('#PrecioUnitario').val('0,00');
+						$('#txtCodigo').val(data.codigo);
+						$('#PrecioUnitario').val(data.precio).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: 'Bs' });
+						$('#Precioprod').val(data.precio);
+						$('#prod').val(data.descripcion);
+						$('#stockMin').val(data.stockMin);
+						$('#stockMax').val(data.stockMax);
+						$('#stock').val(data.stock);
+						$.each(data, function () {
 
-                    });
-                }
-            });
-        }
-    </script>
+						});
+					}
+				});
+			});
+			// $('#CodigoBarra').change(function (e) {
+			//     BuscarProductos($('#CodigoBarra').val());
+			// // $('#txtCodigo').val('');
+			//     // return false;
+			// });
+		});
+		function Barras() {
+			return false;
+		}
+		function validarStock() {
+			if ($('#txtCantidad').val() != '') {
+				cantidad = parseInt($('#txtCantidad').val());
+				stockMin = parseInt($('#stockMin').val());
+				stockMax = parseInt($('#stockMax').val());
+				stock = parseInt($('#stock').val());
+				if (cantidad > stock) {
+					alert("La cantidad del Stock disponible del Producto " + $('#prod').val() + ", es de " + stock + ".");
+					return false;
+				}
+				//else if (cantidad >= stockMax)
+				//{
+				//    alert("La cantidad no puede ser mayor, ni igual al Stock Maximo del producto: " + $('#prod').val() + ", es de " + stock + ".");
+				//    return false;
+				//}
+				else {
+					return true;
+				}
+			}
+			return false;
+		}
+		jQuery(document).ready(function () {
+			jQuery('.txtn').keypress(function (tecla) {
+				if (tecla.charCode < 48 || tecla.charCode > 57) return false;
+			});
+		});
+		function confirmar(control) {
+			if (confirm('¿Está seguro de retirar el item seleccionado?')) {
+				$("#delete_" + control).val(true);
+				return true;
+			}
+			return false;
+		}
+		function BuscarProductos() {
+			$.ajax({
+				url: '/Facturacion/BuscarProductos',
+				type: "post",
+				dataType: "json",
+				data: {
+					codigo: $('#txtCodigoBarra').val()
+				},
+				success: function (data) {
+					var d = data;
+					$('#txtCantidad').val('0');
+					$('#PrecioUnitario').val('0,00');
+					$('#PrecioUnitario').val(data.precio);
+					$('#Precioprod').val(data.precio);
+					$('#btoProducto').val(data.id);
+					$('#prod').val(data.descripcion);
+					$('#txtCodigo').val($('#txtCodigoBarra').val());
+					$('#stockMin').val(data.stockMin);
+					$('#stockMax').val(data.stockMax);
+					$('#stock').val(data.stock);
+					$('#txtCodigoBarra').val('');
+					$('#exampleModal').modal('hide');
+					// $.each(data, function () {
+
+					// });
+				}
+			});
+		}
+	</script>
 }

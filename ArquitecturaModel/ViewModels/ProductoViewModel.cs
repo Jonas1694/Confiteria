@@ -43,6 +43,7 @@ namespace ArquitecturaModel.ViewModels
         public int StockMax { get; set; }
 
         public decimal Precio { get; set; }
+        public string Codigo { get; set; }
 
     }
 }

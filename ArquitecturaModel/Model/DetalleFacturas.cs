@@ -13,7 +13,7 @@ namespace ArquitecturaModel.Model
         public int FacturacionId { get; set; }
         public Facturacion Facturacion { get; set; }
         public int ProductosId { get; set; }
-        public Productos Productos { get; set; }
+        public virtual Productos Productos { get; set; }
         public int Cantidad { get; set; }
         public decimal PrecioUnitario { get; set; }
         public decimal IvaUnitario { get; set; }

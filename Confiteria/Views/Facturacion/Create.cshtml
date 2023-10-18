@@ -257,7 +257,7 @@
 						id: $(this).val()
 					},
 					success: function (data) {
-						$('#txtCantidad').val('0');
+						$('#txtCantidad').val('1');
 						$('#PrecioUnitario').val('0,00');
 						$('#txtCodigo').val(data.codigo);
 						$('#PrecioUnitario').val(data.precio).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: 'Bs' });
@@ -324,7 +324,7 @@
 				},
 				success: function (data) {
 					var d = data;
-					$('#txtCantidad').val('0');
+					$('#txtCantidad').val(1);
 					$('#PrecioUnitario').val('0,00');
 					$('#PrecioUnitario').val(data.precio);
 					$('#Precioprod').val(data.precio);

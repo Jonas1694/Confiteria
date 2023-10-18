@@ -1,0 +1,94 @@
+﻿@model ArquitecturaModel.Model.Facturacion
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<head>
+	<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+	<link href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" rel="stylesheet" />
+	<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="row">
+		<div class="col-12">
+			LOS REYES DE LA CONFITERIA DE GLEYDER REYES F.P
+		</div>
+		<div class="col-12">
+			V: 19609734-8
+			CALLE MONSEÑOR CAMARGO, PAMPAN EDO TRUJILLO
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="offset-9 col-3">
+			<label>Nfactura: </label>
+			@Model.NFactura
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-12">
+			<label>Cliente: </label>
+			@Model.Clientes.GetRif
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-6">
+			<label>Direccion: </label>
+			@Model.Clientes.DireccionFiscal
+		</div>
+	</div>
+	<br />
+
+	<div class="row">
+		<div class="col-12">
+			<table style="width:100%;">
+				<thead>
+					<tr>
+						<th>Cantidad</th>
+						<th class="text-center">Producto</th>
+						<th class="text-center">Precio Und</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var i in Model.DetalleFacturas)
+					{
+						<tr>
+							<td class="text-center">@i.Cantidad</td>
+							<td class="text-center">@i.Productos.Descripcion</td>
+							<td class="text-center">@i.PrecioUnitario</td>
+							
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<br />
+
+	<div class="row">
+		<div class="offset-6 col-6">
+			<label>Sub-Total: </label>
+			@Model.SubTotal
+			
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="offset-6 col-6">
+			<label>Iva: </label>
+			@Model.TotalIva
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="offset-6 col-6">
+			<label>Total a Pagar: </label>
+			@Model.Total
+		</div>
+	</div>
+
+	<br />
+</body>

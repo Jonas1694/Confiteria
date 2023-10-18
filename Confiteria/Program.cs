@@ -3,6 +3,7 @@ using ArquitecturaModel.Model;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,5 +43,6 @@ app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
-
+string wwwroot = app.Environment.WebRootPath;
+RotativaConfiguration.Setup(wwwroot,"rotativa");
 app.Run();

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ArquitecturaModel.Model.Facturacion>
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<head>
+	<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+	<link href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" rel="stylesheet" />
+	<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12 text-center">
+				REYES DE LA CONFITERIA DE CLEYDER REYES F.P
+			</div>
+			<div class="col-12 text-center">
+				V: 19609734-8
+				CALLE MONSEÑOR CAMARGO, PAMPAN EDO TRUJILLO
+			</div>
+			<div class="col-12 text-center">
+				Fecha de Cierrre: @Model.FirstOrDefault().FechaRegistro.ToShortDateString()
+			</div>
+		</div>
+
+		<br />
+		<div class="row">
+			<div class="col-12">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>N Factura</th>
+							<th>Cliente</th>
+							<th>Fecha</th>
+							<th>Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var i in Model)
+						{
+							<tr>
+								<td>@i.NFactura</td>
+								<td>@i.Clientes.RazonSocial</td>
+								<td>@i.FechaRegistro</td>
+								<td class="text-end">@i.Total</td>
+							</tr>
+						}
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="4" class="text-end">
+								<label>Monto Total Diario: </label>
+								@Model.Sum(s=> s.Total)
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>

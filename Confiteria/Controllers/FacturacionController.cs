@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using ArquitecturaModel.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Rotativa.AspNetCore;
+using Stimulsoft.Data.Extensions;
 
 namespace Confiteria.Controllers
 {
@@ -335,9 +336,17 @@ namespace Confiteria.Controllers
 				PageMargins = new Rotativa.AspNetCore.Options.Margins(1, 1, 1, 1)
 			};
 		}
-		//public IActionResult CierreDiario(int id)
-		//{
-			
-		//}
+		public IActionResult CierreDiario()
+		{
+			DateTime f = DateTime.Now;
+			var d = new DateTime(f.Year,f.Month,f.Day,23,59,59);
+			var h = new DateTime(f.Year, f.Month, f.Day, 0, 0, 0);
+			var consulta = _context.Facturacion.Include(i=> i.Clientes).Where(f => f.FechaRegistro >= h && f.FechaRegistro <= d).ToList();
+			//return View(consulta);
+			return new ViewAsPdf(nameof(CierreDiario), consulta)
+			{
+				PageMargins = new Rotativa.AspNetCore.Options.Margins(10, 5, 10, 5)
+			};
+		}
 	}
 }

@@ -30,7 +30,8 @@ namespace Confiteria.Controllers
 		// GET: Facturacion
 		public async Task<IActionResult> Index()
 		{
-			var applicationDbContext = _context.Facturacion.Include(f => f.Clientes);
+			var applicationDbContext = _context.Facturacion.Include(f => f.Clientes)
+				.OrderByDescending(n => n.NFactura);
 			return View(await applicationDbContext.ToListAsync());
 		}
 
@@ -334,5 +335,9 @@ namespace Confiteria.Controllers
 				PageMargins = new Rotativa.AspNetCore.Options.Margins(1, 1, 1, 1)
 			};
 		}
+		//public IActionResult CierreDiario(int id)
+		//{
+			
+		//}
 	}
 }

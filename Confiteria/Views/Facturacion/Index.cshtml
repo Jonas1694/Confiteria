@@ -16,7 +16,7 @@
         <div class="kt-portlet__head-toolbar">
             <div class="kt-portlet__head-wrapper">
                 <div class="kt-portlet__head-actions">
-                    <a asp-action="Create" class="btn btn-brand btn-elevate btn-icon-sm">
+                    <a asp-action="Create" class="btn btn-outline-info">
                         <i class="la la-plus"></i>Nueva Factura
                     </a>
                 </div>
@@ -61,9 +61,9 @@
                         <td>
                             @*<a asp-action="Edit" asp-route-id="@item.FacturacionId">Edit</a>*@
                             <a asp-action="Details" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Detalles</a>
-                            <a asp-action="rptFactura" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Imprimir</a>
+                            <a asp-action="rptFactura" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Imprimir</a>
                             @*<a asp-action="Delete" asp-route-id="@item.FacturacionId">Delete</a>*@
-                            <a asp-action="Create" asp-controller="Devoluciones" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Devolución</a>
+                            @* <a asp-action="Create" asp-controller="Devoluciones" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Devolución</a> *@
                         </td>
                     </tr>
                 }

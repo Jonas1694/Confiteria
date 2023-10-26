@@ -15,24 +15,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using ArquitecturaModel.Model;
+using Microsoft.AspNetCore.WebUtilities;
+using Stimulsoft.Blockly.Model;
+using System.Text.Encodings.Web;
+using System.Text;
 
 namespace Confiteria.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ILogger<LoginModel> _logger;
+		private readonly ILogger<LoginModel> _logger;
 
         public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
-            _logger = logger;
-        }
+			_logger = logger;
+		}
 
         [BindProperty]
         public InputModel Input { get; set; }
-
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
+		
+		public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public string ReturnUrl { get; set; }
         
@@ -60,8 +64,7 @@ namespace Confiteria.Areas.Identity.Pages.Account
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
-
-            returnUrl ??= Url.Content("~/");
+			returnUrl ??= Url.Content("~/");
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
@@ -106,5 +109,105 @@ namespace Confiteria.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
-    }
+
+		//private async Task CreateRoles()
+		//{
+		//	Task<IdentityResult> roleResult;
+		//	string email = "veroviera1302@gmail.com";
+
+		//	//Check that there is an Administrator role and create if not
+		//	//Task<bool> hasAdminRole = RoleManager.RoleExistsAsync("Admin");
+		//	//IdentityResult roleResult;
+		//	string[] roleNames = { "Admin", "Facturador" };
+		//	foreach (var roleName in roleNames)
+		//	{
+		//		var roleExist = await RoleManager.RoleExistsAsync(roleName);
+		//		if (!roleExist)
+		//		{
+		//			//create the roles and seed them to the database: Question 1
+		//			roleResult = RoleManager.CreateAsync(new AplicationRole() { Name = roleName });
+		//		}
+		//	}
+
+		//	//Check if the admin user exists and create it if not
+		//	//Add to the Administrator role
+
+		//	var testUser = await _userManager.FindByEmailAsync(email);
+		//	if (testUser == null)
+		//	{
+		//		ApplicationUser administrator = new ApplicationUser();
+		//		administrator.Email = email;
+		//		administrator.UserName = email;
+		//		administrator.Nombre = "Administrador";
+		//		administrator.Apellido = "del Sistema";
+		//		administrator.PhoneNumber = "000000000";
+		//		administrator.Direccion = "N/A";
+		//		administrator.Telefono = "N/A";
+		//		var newUser = await _userManager.CreateAsync(administrator, "Admin2023.");
+
+		//		if (newUser.Succeeded)
+		//		{
+		//			var newUserRole = await _userManager.AddToRoleAsync(administrator, "Admin");
+
+		//			if (newUserRole.Succeeded)
+		//			{
+		//				var code = await _userManager.GenerateEmailConfirmationTokenAsync(administrator);
+		//				code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+		//				var callbackUrl = Url.Page(
+		//					"/Account/ConfirmEmail",
+		//					pageHandler: null,
+		//					values: new { area = "Identity", userId = administrator.Id.ToString(), code = code },
+		//					protocol: Request.Scheme);
+
+		//				//mailHelper.SendMail(administrator.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+		//			}
+		//		}
+		//	}
+		//	email = "tzskill01@gmail.com";
+		//	testUser = await _userManager.FindByEmailAsync(email);
+		//	if (testUser == null)
+		//	{
+		//		ApplicationUser administrator = new ApplicationUser();
+		//		administrator.Email = email;
+		//		administrator.UserName = email;
+		//		administrator.Nombre = "Facturador";
+		//		administrator.Apellido = "del Sistema";
+		//		administrator.PhoneNumber = "000000000";
+		//		administrator.Direccion = "N/A";
+		//		administrator.Telefono = "N/A";
+		//		Task<IdentityResult> newUser = _userManager.CreateAsync(administrator, "Facturador2023.");
+		//		newUser.Wait();
+
+		//		if (newUser.Result.Succeeded)
+		//		{
+		//			Task<IdentityResult> newUserRole = _userManager.AddToRoleAsync(administrator, "Facturador");
+		//			newUserRole.Wait();
+		//			var code = await _userManager.GenerateEmailConfirmationTokenAsync(administrator);
+		//			code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+		//			var callbackUrl = Url.Page(
+		//				"/Account/ConfirmEmail",
+		//				pageHandler: null,
+		//				values: new { area = "Identity", userId = administrator.Id.ToString(), code = code },
+		//				protocol: Request.Scheme);
+
+		//			//mailHelper.SendMail(administrator.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+		//		}
+		//	}
+
+		//	//email = "veroviera1302@gmail.com";
+			
+
+		//	//string[] TipoDocumento = { "V", "E", "J", "G" };
+		//	//foreach (var item in TipoDocumento)
+		//	//{
+		//	//	if (!Context.TipoDocumento.Any(a => a.Documento == item))
+		//	//	{
+		//	//		var tipoDocumento = new TipoDocumento { TipoDocumentoId = Guid.NewGuid().ToString(), Documento = item };
+		//	//		Context.TipoDocumento.Add(tipoDocumento);
+		//	//		await Context.SaveChangesAsync();
+		//	//	}
+		//	//}
+
+		//}
+	}
 }

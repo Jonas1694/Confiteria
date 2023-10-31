@@ -33,7 +33,7 @@ namespace Confiteria.Controllers
             }
 
             var productos = await _context.Productos
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (productos == null)
             {
                 return NotFound();
@@ -89,7 +89,7 @@ namespace Confiteria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Productos productos)
         {
-            if (id != productos.id)
+            if (id != productos.Id)
             {
                 return NotFound();
             }
@@ -103,7 +103,7 @@ namespace Confiteria.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductosExists(productos.id))
+                    if (!ProductosExists(productos.Id))
                     {
                         return NotFound();
                     }
@@ -126,7 +126,7 @@ namespace Confiteria.Controllers
             }
 
             var productos = await _context.Productos
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (productos == null)
             {
                 return NotFound();
@@ -156,7 +156,7 @@ namespace Confiteria.Controllers
 
         private bool ProductosExists(int id)
         {
-            return (_context.Productos?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Productos?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -61,7 +61,7 @@ namespace Confiteria.Controllers
 		public async Task<IActionResult> Create(int? id)
 		{
 			ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif");
-			ViewData["ProductosId"] = new SelectList(_context.Productos, "id", "GetDescripcion");
+			ViewData["ProductosId"] = new SelectList(_context.Productos, "Id", "GetDescripcion");
 			return View(new FacturacionViewModel());
 		}
 
@@ -73,7 +73,7 @@ namespace Confiteria.Controllers
 		public async Task<IActionResult> Create(FacturacionViewModel model, string action)
 		{
 			ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif", model.ClienteId);
-			ViewData["ProductosId"] = new SelectList(_context.Productos, "id", "GetDescripcion", model.ProductosId);
+			ViewData["ProductosId"] = new SelectList(_context.Productos, "Id", "GetDescripcion", model.ProductosId);
 			switch (action)
 			{
 				case "addproducto":
@@ -152,7 +152,7 @@ namespace Confiteria.Controllers
 								_context.Add(detalle);
 								await _context.SaveChangesAsync();
 
-								var producto = _context.Productos.FirstOrDefault(p => p.id == item.ProductoId);
+								var producto = _context.Productos.FirstOrDefault(p => p.Id == item.ProductoId);
 								producto.Stock -= item.Cantidad;
 								_context.Update(producto);
 								await _context.SaveChangesAsync();
@@ -184,7 +184,7 @@ namespace Confiteria.Controllers
 		[HttpPost]
 		public async Task<IActionResult> GetPrecio(int id)
 		{
-			var p = await _context.Productos.SingleOrDefaultAsync(t => t.id == id);
+			var p = await _context.Productos.SingleOrDefaultAsync(t => t.Id == id);
 			var data = new ProductoViewModel { Codigo = p.Codigo, Descripcion = p.GetDescripcion, Precio = p.Precio, Stock = p.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
 			var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
 			return Json(data);
@@ -341,7 +341,16 @@ namespace Confiteria.Controllers
 			DateTime f = DateTime.Now;
 			var d = new DateTime(f.Year,f.Month,f.Day,23,59,59);
 			var h = new DateTime(f.Year, f.Month, f.Day, 0, 0, 0);
-			var consulta = _context.Facturacion.Include(i=> i.Clientes).Where(f => f.FechaRegistro >= h && f.FechaRegistro <= d).ToList();
+			var consulta = _context.Facturacion.Include(d=> d.DetalleFacturas)
+				.Include("DetalleFacturas.Productos")
+				.Include(i=> i.Clientes).Where(f => f.FechaRegistro >= h && f.FechaRegistro <= d).ToList();
+			//foreach (var i in consulta)
+			//{
+			//	foreach (var p in i.DetalleFacturas)
+			//	{
+			//		p.Productos = _context.Productos.Find
+			//	}
+			//}
 			//return View(consulta);
 			return new ViewAsPdf(nameof(CierreDiario), consulta)
 			{

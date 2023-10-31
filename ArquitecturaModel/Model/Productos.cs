@@ -9,7 +9,7 @@ namespace ArquitecturaModel.Model
 {
     public class Productos
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         [Required(ErrorMessage = "El campo {0} es obligatorio!")]
         //[RegularExpression("^[0-9]*$", ErrorMessage = "* Solo se permiten números.")]
         public string Codigo { get; set; }

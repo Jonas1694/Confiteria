@@ -40,10 +40,31 @@
 						@foreach (var i in Model)
 						{
 							<tr>
-								<td>@i.NFactura</td>
-								<td>@i.Clientes.RazonSocial</td>
-								<td>@i.FechaRegistro</td>
+								<td class="text-center">@i.NFactura</td>
+								<td class="text-center">@i.Clientes.RazonSocial</td>
+								<td class="text-center">@i.FechaRegistro</td>
 								<td class="text-end">@i.Total</td>
+							</tr>
+							<tr>
+								<td colspan="4">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Descripcion Producto</th>
+												<th>Cantidad Producto</th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach(var p in i.DetalleFacturas)
+											{
+												<tr>
+													<td class="text-center">@p.Productos.Descripcion</td>
+													<td class="text-center">@p.Cantidad</td>
+												</tr>
+											}
+										</tbody>
+									</table>
+								</td>
 							</tr>
 						}
 					</tbody>

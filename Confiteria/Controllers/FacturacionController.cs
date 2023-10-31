@@ -116,6 +116,8 @@ namespace Confiteria.Controllers
 					{
 						try
 						{
+							var t = _context.TasaDolars.FirstOrDefault() ?? null;
+							model.Tasa = (double.Parse(model.Total.ToString()) / (t == null? 0 : t.Tasa));
 							var facturacion = new Facturacion
 							{
 								ClienteId = model.ClienteId,
@@ -127,6 +129,7 @@ namespace Confiteria.Controllers
 								//TotalIva = model.TotalIva,
 								UsuarioId = UsuarioId.Id.ToString(),
 								User = UsuarioId,
+								Tasa= model.Tasa,
 							};
 							_context.Add(facturacion);
 							await _context.SaveChangesAsync();
@@ -344,14 +347,7 @@ namespace Confiteria.Controllers
 			var consulta = _context.Facturacion.Include(d=> d.DetalleFacturas)
 				.Include("DetalleFacturas.Productos")
 				.Include(i=> i.Clientes).Where(f => f.FechaRegistro >= h && f.FechaRegistro <= d).ToList();
-			//foreach (var i in consulta)
-			//{
-			//	foreach (var p in i.DetalleFacturas)
-			//	{
-			//		p.Productos = _context.Productos.Find
-			//	}
-			//}
-			//return View(consulta);
+			
 			return new ViewAsPdf(nameof(CierreDiario), consulta)
 			{
 				PageMargins = new Rotativa.AspNetCore.Options.Margins(10, 5, 10, 5)

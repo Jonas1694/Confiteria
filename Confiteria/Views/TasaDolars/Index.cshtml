@@ -1,0 +1,20 @@
+﻿@model ArquitecturaModel.Model.TasaDolar
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<form asp-action="Index">
+    <input type="hidden" asp-for="Id" />
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="Tasa" class="control-label"></label>
+            <input asp-for="Tasa" class="form-control" />
+            <span asp-validation-for="Tasa" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="card-footer">
+        <input type="submit" value="Guardar" class="btn btn-primary" />
+    </div>
+</form>

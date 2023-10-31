@@ -14,6 +14,7 @@ namespace ArquitecturaModel
         public DbSet<Facturacion> Facturacion { get; set; }
         public DbSet<DetalleFacturas> DetalleFacturas { get; set; }
         public DbSet<TipoDocumento> TipoDocumentos { get; set; }
+        public DbSet<TasaDolar> TasaDolars { get; set; }
         public AplicationDbContext(DbContextOptions<AplicationDbContext> options)
           : base(options)
         {

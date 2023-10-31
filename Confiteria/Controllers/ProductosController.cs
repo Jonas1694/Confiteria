@@ -3,6 +3,7 @@ using ArquitecturaModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using ArquitecturaModel.ViewModels;
 
 namespace Confiteria.Controllers
 {
@@ -42,6 +43,11 @@ namespace Confiteria.Controllers
             return View(productos);
         }
 
+        [HttpGet]
+        public IActionResult GetTaza()
+        {
+            return Json(_context.TasaDolars.FirstOrDefault());
+        }
         // GET: Clientes/Create
         public IActionResult Create()
         {
@@ -53,13 +59,22 @@ namespace Confiteria.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Productos productos)
+        public async Task<IActionResult> Create(ProductoViewModel productos)
         {
-            productos.Fecha = DateTime.Now;
-            productos.Imagen = "Watson Watson";
+            //productos.Fecha = DateTime.Now;
+            //productos.Imagen = "Watson Watson";
+
+            var p = new Productos() {
+                Precio = Convert.ToDouble(productos.Precio.Replace(',', '.')),
+                PrecioDolar = Convert.ToDouble(productos.PrecioDolar.Replace(',', '.')),
+                Stock = Convert.ToInt32(productos.Stock.ToString()),
+                Codigo=productos.Codigo,
+                Descripcion= productos.Descripcion,
+                
+            };
             if (ModelState.IsValid)
             {
-                _context.Add(productos);
+                _context.Add(p);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -87,23 +102,31 @@ namespace Confiteria.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Productos productos)
+        public async Task<IActionResult> Edit(int id, ProductoViewModel productos)
         {
-            if (id != productos.Id)
+            if (id != productos.ProductoId)
             {
                 return NotFound();
             }
+            var p = new Productos()
+            {
+                Precio = Convert.ToDouble(productos.Precio.Replace(',', '.')),
+                PrecioDolar = Convert.ToDouble(productos.PrecioDolar.Replace(',', '.')),
+                Stock = Convert.ToInt32(productos.Stock.ToString()),
+                Codigo = productos.Codigo,
+                Descripcion = productos.Descripcion,
 
+            };
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(productos);
+                    _context.Update(p);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductosExists(productos.Id))
+                    if (!ProductosExists(productos.ProductoId))
                     {
                         return NotFound();
                     }

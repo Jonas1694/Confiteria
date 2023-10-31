@@ -1,7 +1,7 @@
-﻿@model ArquitecturaModel.Model.Productos
+﻿@model ArquitecturaModel.ViewModels.ProductoViewModel
 
 @{
-    ViewData["Title"] = "Create";
+	ViewData["Title"] = "Create";
 }
 
 <h1>Crear</h1>
@@ -40,14 +40,22 @@
 				<div class="col-md-12">
 					<div class="form-group">
 						<label asp-for="Precio" class="control-label"></label>
-						<input asp-for="Precio" class="form-control " />
+						<input asp-for="Precio" class="form-control" />
 						<span asp-validation-for="Precio" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label asp-for="PrecioDolar" class="control-label"></label>
+						<input asp-for="PrecioDolar" type="hidden"/>
+						<label class="form-control" id="lblDolar"></label>
+						<span asp-validation-for="PrecioDolar" class="text-danger"></span>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="card-footer">
-            <input type="submit" value="Crear" class="btn btn-outline-primary" />
+			<input type="submit" value="Crear" class="btn btn-outline-primary" />
 			<a asp-action="Index" class="btn btn-outline-success">Regresar</a>
 		</div>
 	</div>
@@ -55,21 +63,37 @@
 
 @section Scripts {
 	@{
-	
-	await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        <script type="text/javascript">
-
-            jQuery(document).ready(function () {
-                jQuery('.txtn').keypress(function (tecla) {
-                    if (tecla.charCode < 48 || tecla.charCode > 57) return false;
-                });
-            });
-            jQuery('.txt').keypress(function (tecla) {
-                if ((tecla.charCode < 97 || tecla.charCode > 122) && (tecla.charCode < 65 || tecla.charCode > 90) && (tecla.charCode != 45) && (tecla.charCode != 32)) return false;
-            });
-
-			
-        </script>
-
-    }
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script>
+		let taza = 0;
+		jQuery(document).ready(function () {
+			GetTaza();
+			$('#Precio').mask('#.##0,00', {reverse:true});
+			jQuery('.txtn').keypress(function (tecla) {
+				if (tecla.charCode < 48 || tecla.charCode > 57) return false;
+			});
+			$('#Precio').keyup(function (e) {
+				var value = $(this).val().replace('.','').replace(',','.');
+				var t = value / taza;
+				$('#lblDolar').text(t).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: '$' });
+				$('#PrecioDolar').val(t);
+			});
+		});
+		jQuery('.txt').keypress(function (tecla) {
+			if ((tecla.charCode < 97 || tecla.charCode > 122) && (tecla.charCode < 65 || tecla.charCode > 90) && (tecla.charCode != 45) && (tecla.charCode != 32)) return false;
+		});
+		function GetTaza() {
+			$.ajax({
+				url: '/Productos/GetTaza',
+				type: "get",
+				dataType: "json",
+				success: function (data) {
+					taza = parseFloat(data.tasa);
+				}
+			});
+		}
+	</script>
 }
+

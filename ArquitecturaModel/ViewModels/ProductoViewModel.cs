@@ -42,7 +42,9 @@ namespace ArquitecturaModel.ViewModels
         [RegularExpression("^[0-9]*$", ErrorMessage = "* Solo se permiten números.")]
         public int StockMax { get; set; }
 
-        public double Precio { get; set; }
+        public string Precio { get; set; }
+        public string PrecioDolar { get; set; }
+
         public string Codigo { get; set; }
 
     }

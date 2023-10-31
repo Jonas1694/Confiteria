@@ -188,7 +188,7 @@ namespace Confiteria.Controllers
 		public async Task<IActionResult> GetPrecio(int id)
 		{
 			var p = await _context.Productos.SingleOrDefaultAsync(t => t.Id == id);
-			var data = new ProductoViewModel { Codigo = p.Codigo, Descripcion = p.GetDescripcion, Precio = p.Precio, Stock = p.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
+			var data = new ProductoViewModel { Codigo = p.Codigo, Descripcion = p.GetDescripcion, Precio = Convert.ToString(p.Precio), Stock = p.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
 			var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
 			return Json(data);
 		}

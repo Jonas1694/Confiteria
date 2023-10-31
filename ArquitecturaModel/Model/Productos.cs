@@ -17,7 +17,7 @@ namespace ArquitecturaModel.Model
         public string Descripcion { get; set; }
         public string? Imagen { get; set; }
         [Required(ErrorMessage = "El campo {0} es obligatorio!")]
-        public int Precio { get; set; }
+        public double Precio { get; set; }
         public DateTime Fecha { get; set; }
         [Required(ErrorMessage = "El campo {0} es obligatorio!")]
         [Display(Name = "Cantidad del producto")]

@@ -49,17 +49,17 @@ namespace ArquitecturaModel.ViewModels
 				listDetalleCotizacion = model.DetalleFacturacionViews;
 
 			decimal SubTotal = model.PrecioUnitario * model.Cantidad;
-			decimal IvaUnitario = model.PrecioUnitario * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
-			decimal TotalIva = IvaUnitario * model.Cantidad;
-			decimal Total = SubTotal + TotalIva;
+			//decimal IvaUnitario = model.PrecioUnitario * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
+			//decimal TotalIva = IvaUnitario * model.Cantidad;
+			decimal Total = SubTotal /*+ TotalIva*/;
 			if (listDetalleCotizacion.Any(a => a.ProductoId == model.ProductosId))
 			{
 				var i = listDetalleCotizacion.FirstOrDefault(f => f.ProductoId == model.ProductosId);
 				i.Cantidad = model.Cantidad + i.Cantidad;
 				i.SubTotal = SubTotal;
-				i.Iva = 16;
-				i.IvaUnitario = IvaUnitario;
-				i.TotalIva = TotalIva;
+				//i.Iva = 16;
+				//i.IvaUnitario = IvaUnitario;
+				//i.TotalIva = TotalIva;
 				i.Total = Total;
 			}
 			else
@@ -71,16 +71,16 @@ namespace ArquitecturaModel.ViewModels
 					Cantidad = model.Cantidad,
 					PrecioUnitario = model.PrecioUnitario,
 					SubTotal = SubTotal,
-					Iva = 16,
-					IvaUnitario = IvaUnitario,
-					TotalIva = TotalIva,
+					//Iva = 16,
+					//IvaUnitario = IvaUnitario,
+					//TotalIva = TotalIva,
 					Total = Total
 				});
 			}
 
 			model.SubTotal = listDetalleCotizacion.Where(w => w.Eliminado == false).Sum(s => s.SubTotal);
-			model.TotalIva = model.SubTotal * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
-			model.Total = model.SubTotal + model.TotalIva;
+			//model.TotalIva = model.SubTotal * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
+			model.Total = model.SubTotal /*+ model.TotalIva*/;
 			model.DetalleFacturacionViews = listDetalleCotizacion;
 			//model.Codigo = "";
 			return model;
@@ -97,10 +97,10 @@ namespace ArquitecturaModel.ViewModels
 				DetalleFacturacionViewModel d = new DetalleFacturacionViewModel()
 				{
 					DetalleFacturaId = item.DetalleFacturasId,
-					TotalIva = item.TotalIva,
+					//TotalIva = item.TotalIva,
 					Cantidad = item.Cantidad,
-					Iva = item.Iva,
-					IvaUnitario = item.IvaUnitario,
+					//Iva = item.Iva,
+					//IvaUnitario = item.IvaUnitario,
 					PrecioUnitario = item.PrecioUnitario,
 					Producto = item.Productos.Descripcion,
 					ProductoId = item.ProductosId,
@@ -118,7 +118,7 @@ namespace ArquitecturaModel.ViewModels
 				NFactura = facturacion.NFactura,
 				SubTotal = facturacion.SubTotal,
 				Total = facturacion.Total,
-				TotalIva = facturacion.TotalIva,
+				//TotalIva = facturacion.TotalIva,
 				DetalleFacturacionViews = listFac
 			};
 			return view;
@@ -127,9 +127,9 @@ namespace ArquitecturaModel.ViewModels
 		{
 			List<DetalleFacturacionViewModel> Detalle = DetalleFacturacionViews;
 			model.SubTotal = Detalle.Sum(s => s.SubTotal);
-			model.Iva = 16;
-			model.TotalIva = model.SubTotal * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
-			model.Total = model.SubTotal + model.TotalIva;
+			//model.Iva = 16;
+			//model.TotalIva = model.SubTotal * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
+			model.Total = model.SubTotal;/* + model.TotalIva;*/
 			model.DetalleFacturacionViews = Detalle;
 			return model;
 		}

@@ -85,8 +85,8 @@ namespace Confiteria.Controllers
 					return View(model.AddItems(model));
 				case "Eliminar":
 					model.SubTotal = model.DetalleFacturacionViews.Where(w => w.Eliminado == false).Sum(s => s.SubTotal);
-					model.TotalIva = model.SubTotal * (Convert.ToDecimal(model.FormatPorCentaje(0.16M)) / 100);
-					model.Total = model.SubTotal + model.TotalIva;
+					//model.TotalIva = model.SubTotal * (Convert.ToDecimal(model.FormatPorCentaje(0.16M)) / 100);
+					model.Total = model.SubTotal /*+ model.TotalIva*/;
 					return View(model);
 				case "Registrar Factura":
 					if (model.DetalleFacturacionViews == null)
@@ -120,11 +120,11 @@ namespace Confiteria.Controllers
 							{
 								ClienteId = model.ClienteId,
 								FechaRegistro = DateTime.Now,
-								Iva = model.Iva,
+								//Iva = model.Iva,
 								NFactura = model.NFactura,
-								SubTotal = model.SubTotal,
+								//SubTotal = model.SubTotal,
 								Total = model.Total,
-								TotalIva = model.TotalIva,
+								//TotalIva = model.TotalIva,
 								UsuarioId = UsuarioId.Id.ToString(),
 								User = UsuarioId,
 							};
@@ -142,10 +142,10 @@ namespace Confiteria.Controllers
 									FacturacionId = facturacion.FacturacionId,
 									ProductosId = item.ProductoId,
 									PrecioUnitario = item.PrecioUnitario,
-									SubTotal = item.SubTotal,
-									Iva = 16,
-									IvaUnitario = item.IvaUnitario,
-									TotalIva = item.TotalIva,
+									//SubTotal = item.SubTotal,
+									////Iva = 16,
+									//IvaUnitario = item.IvaUnitario,
+									//TotalIva = item.TotalIva,
 									Total = item.Total,
 									Facturacion = facturacion,
 								};

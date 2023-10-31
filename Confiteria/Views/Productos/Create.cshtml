@@ -40,7 +40,7 @@
 				<div class="col-md-12">
 					<div class="form-group">
 						<label asp-for="Precio" class="control-label"></label>
-						<input asp-for="Precio" class="form-control txtn" />
+						<input asp-for="Precio" class="form-control " />
 						<span asp-validation-for="Precio" class="text-danger"></span>
 					</div>
 				</div>
@@ -54,9 +54,11 @@
 </form>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	@{
+	
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
         <script type="text/javascript">
+
             jQuery(document).ready(function () {
                 jQuery('.txtn').keypress(function (tecla) {
                     if (tecla.charCode < 48 || tecla.charCode > 57) return false;
@@ -65,6 +67,9 @@
             jQuery('.txt').keypress(function (tecla) {
                 if ((tecla.charCode < 97 || tecla.charCode > 122) && (tecla.charCode < 65 || tecla.charCode > 90) && (tecla.charCode != 45) && (tecla.charCode != 32)) return false;
             });
+
+			
         </script>
+
     }
 }

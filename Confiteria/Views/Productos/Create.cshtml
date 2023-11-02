@@ -39,17 +39,17 @@
 				</div>
 				<div class="col-md-12">
 					<div class="form-group">
-						<label asp-for="Precio" class="control-label"></label>
-						<input asp-for="Precio" class="form-control" />
-						<span asp-validation-for="Precio" class="text-danger"></span>
+						<label asp-for="PrecioDolar" class="control-label"></label>
+						<input asp-for="PrecioDolar" class="form-control" />
+						<span asp-validation-for="PrecioDolar" class="text-danger"></span>
 					</div>
 				</div>
 				<div class="col-md-12">
 					<div class="form-group">
-						<label asp-for="PrecioDolar" class="control-label"></label>
-						<input asp-for="PrecioDolar" type="hidden"/>
+						<label asp-for="Precio" class="control-label"></label>
+						<input asp-for="Precio" type="hidden"/>
 						<label class="form-control" id="lblDolar"></label>
-						<span asp-validation-for="PrecioDolar" class="text-danger"></span>
+						<span asp-validation-for="Precio" class="text-danger"></span>
 					</div>
 				</div>
 			</div>
@@ -70,15 +70,15 @@
 		let taza = 0;
 		jQuery(document).ready(function () {
 			GetTaza();
-			$('#Precio').mask('#.##0,00', {reverse:true});
+			$('#PrecioDolar').mask('#.##0,00', {reverse:true});
 			jQuery('.txtn').keypress(function (tecla) {
 				if (tecla.charCode < 48 || tecla.charCode > 57) return false;
 			});
-			$('#Precio').keyup(function (e) {
+			$('#PrecioDolar').keyup(function (e) {
 				var value = $(this).val().replace('.','').replace(',','.');
-				var t = value / taza;
-				$('#lblDolar').text(t).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: '$' });
-				$('#PrecioDolar').val(t);
+				var t = value * taza;
+				$('#lblDolar').text(t).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: 'Bs ' });
+				$('#Precio').val(t);
 			});
 		});
 		jQuery('.txt').keypress(function (tecla) {

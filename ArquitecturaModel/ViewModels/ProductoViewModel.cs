@@ -19,18 +19,10 @@ namespace ArquitecturaModel.ViewModels
         //[Display(Name = "Descripción Detallada del Producto")]
         //public string DetalleDescripcion { get; set; }
 
-        //[Required(ErrorMessage = "Debe seleccionar la Marca del Producto!")]
-        //[Display(Name = "Marca")]
-        //public int MarcaId { get; set; }
-
-        //[Required(ErrorMessage = "Debe seleccionar el Modelo del Producto!")]
-        //[Display(Name = "Modelo")]
-        //public int ModeloId { get; set; }
-
         [Required(ErrorMessage = "El campo {0} es obligatorio!")]
         [Display(Name = "Cantidad del producto")]
         [RegularExpression("^[0-9]*$", ErrorMessage = "* Solo se permiten números.")]
-        public decimal Stock { get; set; }
+        public double Stock { get; set; }
 
         //[Required(ErrorMessage = "El campo {0} es obligatorio!")]
         [Display(Name = "Stock Minimo")]
@@ -42,6 +34,7 @@ namespace ArquitecturaModel.ViewModels
         [RegularExpression("^[0-9]*$", ErrorMessage = "* Solo se permiten números.")]
         public int StockMax { get; set; }
 
+        [Display(Name ="Precio Bs")]
         public string Precio { get; set; }
         public string PrecioDolar { get; set; }
 

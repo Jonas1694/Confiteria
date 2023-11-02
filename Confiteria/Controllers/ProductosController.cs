@@ -68,8 +68,9 @@ namespace Confiteria.Controllers
                 Precio = Convert.ToDouble(productos.Precio.Replace(',', '.')),
                 PrecioDolar = Convert.ToDouble(productos.PrecioDolar.Replace(',', '.')),
                 Stock = Convert.ToInt32(productos.Stock.ToString()),
-                Codigo=productos.Codigo,
-                Descripcion= productos.Descripcion,
+                Codigo = productos.Codigo,
+                Descripcion = productos.Descripcion,
+                Fecha = DateTime.Now,
                 
             };
             if (ModelState.IsValid)
@@ -94,7 +95,16 @@ namespace Confiteria.Controllers
             {
                 return NotFound();
             }
-            return View(productos);
+            var V = new ProductoViewModel()
+            {
+                ProductoId= productos.Id,
+                Codigo = productos.Codigo,
+                Descripcion = productos.Descripcion,
+                Stock = Convert.ToInt32(productos.Stock.ToString()),
+                Precio = productos.Precio.ToString(),
+                PrecioDolar = productos.PrecioDolar.ToString(),
+            };
+            return View(V);
         }
 
         // POST: Clientes/Edit/5
@@ -110,11 +120,13 @@ namespace Confiteria.Controllers
             }
             var p = new Productos()
             {
+                Id = productos.ProductoId,
                 Precio = Convert.ToDouble(productos.Precio.Replace(',', '.')),
                 PrecioDolar = Convert.ToDouble(productos.PrecioDolar.Replace(',', '.')),
                 Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
+                Fecha=DateTime.Now,
 
             };
             if (ModelState.IsValid)

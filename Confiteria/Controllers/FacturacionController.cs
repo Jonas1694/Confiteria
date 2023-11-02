@@ -255,6 +255,7 @@ namespace Confiteria.Controllers
 
 			var facturacion = await _context.Facturacion
 				.Include(f => f.Clientes)
+				.Include(d => d.DetalleFacturas)
 				.FirstOrDefaultAsync(m => m.FacturacionId == id);
 			if (facturacion == null)
 			{

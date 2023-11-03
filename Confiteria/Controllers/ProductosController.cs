@@ -65,8 +65,8 @@ namespace Confiteria.Controllers
             //productos.Imagen = "Watson Watson";
 
             var p = new Productos() {
-                Precio = Convert.ToDouble(productos.Precio.Replace(',', '.')),
-                PrecioDolar = Convert.ToDouble(productos.PrecioDolar.Replace(',', '.')),
+                Precio = Convert.ToDouble(productos.Precio),
+                PrecioDolar = Convert.ToDouble(productos.PrecioDolar),
                 Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
@@ -121,8 +121,8 @@ namespace Confiteria.Controllers
             var p = new Productos()
             {
                 Id = productos.ProductoId,
-                Precio = Convert.ToDouble(productos.Precio.Replace(',', '.')),
-                PrecioDolar = Convert.ToDouble(productos.PrecioDolar.Replace(',', '.')),
+                Precio = Convert.ToDouble(productos.Precio),
+                PrecioDolar = Convert.ToDouble(productos.PrecioDolar),
                 Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,

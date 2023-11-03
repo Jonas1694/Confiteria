@@ -134,7 +134,7 @@ namespace Confiteria.Controllers
 							_context.Add(facturacion);
 							await _context.SaveChangesAsync();
 
-							foreach (var item in model.DetalleFacturacionViews)
+							foreach (var item in model.DetalleFacturacionViews.Where(e => !e.Eliminado))
 							{
 								var detalle = new DetalleFacturas
 								{

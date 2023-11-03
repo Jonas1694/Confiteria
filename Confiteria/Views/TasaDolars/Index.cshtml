@@ -15,6 +15,29 @@
         </div>
     </div>
     <div class="card-footer">
-        <input type="submit" value="Guardar" class="btn btn-primary" />
+        <input type="submit" id="UpdateProductos" value="Guardar" class="btn btn-primary"  />
+        <button type="button" class="btn btn-secondary" onclick="Update();">Actualizar</button>
+
     </div>
 </form>
+@section scripts{
+    <script>
+        jQuery(document).ready(function () {
+            
+        });
+        function Update() { 
+            $.ajax({
+                url: '/TasaDolars/UpdatePrecio',
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    if (data)
+                        alert('Se ha actualizado los precios.')
+                    else
+                        alert('Error al actualizar los precios.');
+                }
+            });
+        }
+    </script>
+    
+}

@@ -27,12 +27,32 @@ namespace Confiteria.Controllers
 			}
 			if (ModelState.IsValid)
 			{
-				_context.Update(tasaDolar);
-				 _context.SaveChanges();
-			}
-
-			return View(tasaDolar);
+                _context.Update(tasaDolar);
+                _context.SaveChanges();
+            }
+            return View(tasaDolar);
 		}
-
+        [HttpPost]
+        public IActionResult UpdatePrecio()
+		{
+			try
+			{
+                var data = _context.TasaDolars.FirstOrDefault();
+                var lis = _context.Productos.ToList();
+                foreach (var item in lis)
+                {
+                    item.Precio = item.PrecioDolar * data.Tasa;
+                };
+                _context.Productos.UpdateRange(lis);
+                _context.SaveChanges();
+            }
+			catch (Exception e)
+			{
+				return Json(false);
+			}
+			
+			return Json (true);
+		}
 	}
+	
 }

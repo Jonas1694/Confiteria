@@ -26,16 +26,15 @@
                         <div class="kt-mycart">
                             <div class="kt-mycart__footer">
                                 <div class="kt-mycart__section">
-                                    <div class="kt-mycart__subtitel">
-                                        @* <span>Sub Total</span>
-                                        <span>Total Iva</span> *@
-                                        <span>Total</span>
+                                    <div class="row">
+                                        <div class="col-md-6"><span>Total Divisa:</span></div>
+                                        <div class="col-md-6"><span class="kt-font-brand">@Html.DisplayFor(model => model.Tasa)</span></div>
                                     </div>
-                                    <div class="kt-mycart__prices">
-                                        @* <span>@Html.DisplayFor(model => model.SubTotal)</span>
-                                        <span>@Html.DisplayFor(model => model.TotalIva)</span> *@
-                                        <span class="kt-font-brand">@Html.DisplayFor(model => model.Total)</span>
+                                    <div class="row">
+                                        <div class="col-md-6"><span>Total Bolivares:</span></div>
+                                        <div class="col-md-6"><span class="kt-font-brand">@Html.DisplayFor(model => model.Total)</span></div>
                                     </div>
+                                 
                                 </div>
                             </div>
                         </div>

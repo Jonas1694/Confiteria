@@ -72,6 +72,7 @@ namespace Confiteria.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(FacturacionViewModel model, string action)
 		{
+			var t = _context.TasaDolars.FirstOrDefault() ?? null;
 			ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif", model.ClienteId);
 			ViewData["ProductosId"] = new SelectList(_context.Productos, "Id", "GetDescripcion", model.ProductosId);
 			switch (action)
@@ -82,6 +83,7 @@ namespace Confiteria.Controllers
 						ModelState.AddModelError("", "Debe introducir una cantidad");
 						return View(model);
 					}
+					model.Tasa = t == null ? 0 : t.Tasa;
 					return View(model.AddItems(model));
 				case "Eliminar":
 					model.SubTotal = model.DetalleFacturacionViews.Where(w => w.Eliminado == false).Sum(s => s.SubTotal);
@@ -116,7 +118,7 @@ namespace Confiteria.Controllers
 					{
 						try
 						{
-							var t = _context.TasaDolars.FirstOrDefault() ?? null;
+							
 							model.Tasa = (double.Parse(model.Total.ToString()) / (t == null? 0 : t.Tasa));
 							var facturacion = new Facturacion
 							{

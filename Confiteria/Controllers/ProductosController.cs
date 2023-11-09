@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using ArquitecturaModel.ViewModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Globalization;
 
 namespace Confiteria.Controllers
 {
@@ -65,7 +68,7 @@ namespace Confiteria.Controllers
             //productos.Imagen = "Watson Watson";
 
             var p = new Productos() {
-                Precio = Convert.ToDouble(productos.Precio),
+                Precio = Convert.ToDecimal(productos.Precio),
                 PrecioDolar = Convert.ToDouble(productos.PrecioDolar),
                 Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,
@@ -73,6 +76,7 @@ namespace Confiteria.Controllers
                 Fecha = DateTime.Now,
                 
             };
+
             if (ModelState.IsValid)
             {
                 _context.Add(p);
@@ -81,9 +85,9 @@ namespace Confiteria.Controllers
             }
             return View(productos);
         }
-
-        // GET: Clientes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+		
+		// GET: Clientes/Edit/5
+		public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Productos == null)
             {
@@ -121,7 +125,7 @@ namespace Confiteria.Controllers
             var p = new Productos()
             {
                 Id = productos.ProductoId,
-                Precio = Convert.ToDouble(productos.Precio),
+                Precio = Convert.ToDecimal(productos.Precio),
                 PrecioDolar = Convert.ToDouble(productos.PrecioDolar),
                 Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,

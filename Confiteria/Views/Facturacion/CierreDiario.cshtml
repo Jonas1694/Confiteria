@@ -75,6 +75,12 @@
 								@Model.Sum(s=> s.Total)
 							</td>
 						</tr>
+						<tr>
+							<td colspan="4" class="text-end">
+								<label>Monto Total Divisa: </label>
+								@Model.Sum(s=> s.Tasa).ToString("N")
+							</td>
+						</tr>
 					</tfoot>
 				</table>
 			</div>

@@ -27,13 +27,13 @@
                             <div class="kt-mycart__footer">
                                 <div class="kt-mycart__section">
                                     <div class="kt-mycart__subtitel">
-                                        <span>Sub Total</span>
-                                        <span>Total Iva</span>
+                                        @* <span>Sub Total</span>
+                                        <span>Total Iva</span> *@
                                         <span>Total</span>
                                     </div>
                                     <div class="kt-mycart__prices">
-                                        <span>@Html.DisplayFor(model => model.SubTotal)</span>
-                                        <span>@Html.DisplayFor(model => model.TotalIva)</span>
+                                        @* <span>@Html.DisplayFor(model => model.SubTotal)</span>
+                                        <span>@Html.DisplayFor(model => model.TotalIva)</span> *@
                                         <span class="kt-font-brand">@Html.DisplayFor(model => model.Total)</span>
                                     </div>
                                 </div>
@@ -68,9 +68,9 @@
                             <th>
                                 Precio Unitario
                             </th>
-                            <th>
+                          @*   <th>
                                 SubTotal
-                            </th>
+                            </th> *@
                         </tr>
                     </thead>
                     <tbody>
@@ -88,9 +88,9 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => Model.DetalleFacturacionViews[j].PrecioUnitario)
                                     </td>
-                                    <td>
+                                    @* <td>
                                         @Html.DisplayFor(modelItem => Model.DetalleFacturacionViews[j].SubTotal)
-                                    </td>
+                                    </td> *@
                                 </tr>
                             }
                         }

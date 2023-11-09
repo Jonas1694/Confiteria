@@ -52,6 +52,7 @@ namespace ArquitecturaModel.ViewModels
 			decimal SubTotal = model.PrecioUnitario * model.Cantidad;
 			//decimal IvaUnitario = model.PrecioUnitario * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
 			//decimal TotalIva = IvaUnitario * model.Cantidad;
+			double REF = Convert.ToDouble(model.Total)/model.Tasa;
 			decimal Total = SubTotal /*+ TotalIva*/;
 			if (listDetalleCotizacion.Any(a => a.ProductoId == model.ProductosId))
 			{
@@ -62,6 +63,7 @@ namespace ArquitecturaModel.ViewModels
 				//i.IvaUnitario = IvaUnitario;
 				//i.TotalIva = TotalIva;
 				i.Total = Total;
+				i.Tasa = REF;
 			}
 			else
 			{
@@ -75,13 +77,15 @@ namespace ArquitecturaModel.ViewModels
 					//Iva = 16,
 					//IvaUnitario = IvaUnitario,
 					//TotalIva = TotalIva,
-					Total = Total
+					Total = Total,
+					Tasa= REF
 				});
 			}
 
 			model.SubTotal = listDetalleCotizacion.Where(w => w.Eliminado == false).Sum(s => s.SubTotal);
 			//model.TotalIva = model.SubTotal * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
 			model.Total = model.SubTotal /*+ model.TotalIva*/;
+			model.Tasa = Convert.ToDouble(model.Total) / Tasa;
 			model.DetalleFacturacionViews = listDetalleCotizacion;
 			//model.Codigo = "";
 			return model;
@@ -106,7 +110,9 @@ namespace ArquitecturaModel.ViewModels
 					Producto = item.Productos.Descripcion,
 					ProductoId = item.ProductosId,
 					SubTotal = item.SubTotal,
-					Total = item.Total
+					Total = item.Total,
+					Tasa = item.Facturacion.Tasa
+					
 				};
 				listFac.Add(d);
 			}
@@ -119,6 +125,7 @@ namespace ArquitecturaModel.ViewModels
 				NFactura = facturacion.NFactura,
 				SubTotal = facturacion.SubTotal,
 				Total = facturacion.Total,
+				Tasa = facturacion.Tasa,
 				//TotalIva = facturacion.TotalIva,
 				DetalleFacturacionViews = listFac
 			};
@@ -131,6 +138,7 @@ namespace ArquitecturaModel.ViewModels
 			//model.Iva = 16;
 			//model.TotalIva = model.SubTotal * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
 			model.Total = model.SubTotal;/* + model.TotalIva;*/
+			model.Tasa = Convert.ToDouble(model.Total) / Tasa;
 			model.DetalleFacturacionViews = Detalle;
 			return model;
 		}

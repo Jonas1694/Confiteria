@@ -11,10 +11,11 @@
 </head>
 <body>
 	<div class="row">
-		<div class="col-12">
-			REYES DE LA CONFITERIA DE CLEYDER REYES F.P
+		<br />
+		<div class="col-12 text-center">
+			REYES DE LA CONFITERIA DE CLEYDER REYES 
 		</div>
-		<div class="col-12">
+		<div class="col-12 text-center" >
 			V: 19609734-8
 			CALLE MONSEÑOR CAMARGO, PAMPAN EDO TRUJILLO
 		</div>
@@ -87,6 +88,12 @@
 		<div class="offset-6 col-6">
 			<label>Total a Pagar: </label>
 			@Model.Total
+		</div>
+	</div>
+	<div class="row">
+		<div class="offset-6 col-6 text-center">
+			<label>REF: </label>
+			@Model.Tasa.ToString("N")
 		</div>
 	</div>
 

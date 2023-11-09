@@ -41,7 +41,7 @@ namespace Confiteria.Controllers
                 var lis = _context.Productos.ToList();
                 foreach (var item in lis)
                 {
-                    item.Precio = item.PrecioDolar * data.Tasa;
+                    item.Precio = Convert.ToDecimal(item.PrecioDolar * data.Tasa);
                 };
                 _context.Productos.UpdateRange(lis);
                 _context.SaveChanges();

@@ -46,7 +46,8 @@
 							</div> *@
 							<div class="row">
 								<div class="col-md-6"><span>Total Divisa</span></div>
-								<div class="col-md-6"><span class="kt-font-brand">@Html.DisplayFor(model => model.Tasa)</span></div>
+								@* <div class="col-md-6"><span class="kt-font-brand">@Html.DisplayFor(model => model.Tasa)</span></div> *@
+								<div class="col-md-6">@Model.Tasa.ToString("N")</div>
 							</div>
 							<br />
 							<div class="row">

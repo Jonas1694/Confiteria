@@ -24,7 +24,7 @@ namespace ArquitecturaModel.Model
         [Display(Name = "Fecha")]
         public DateTime FechaRegistro { get; set; }
         public virtual List<DetalleFacturas> DetalleFacturas { get; set; }
-        public double Tasa { get; set; }
+        public decimal Tasa { get; set; }
 
     }
 }

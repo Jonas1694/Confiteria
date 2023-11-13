@@ -36,7 +36,7 @@ namespace ArquitecturaModel.ViewModels
 		public int StockMax { get; set; }
 		public int Stock { get; set; }
 		public int PedidoId { get; set; }
-		public double Tasa { get; set; }
+		public decimal Tasa { get; set; }
 		//public string Codigo { get; set; }
 
 		public List<DetalleFacturacionViewModel> DetalleFacturacionViews { get; set; }
@@ -52,7 +52,7 @@ namespace ArquitecturaModel.ViewModels
 			decimal SubTotal = model.PrecioUnitario * model.Cantidad;
 			//decimal IvaUnitario = model.PrecioUnitario * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
 			//decimal TotalIva = IvaUnitario * model.Cantidad;
-			double REF = Convert.ToDouble(model.Total)/model.Tasa;
+			decimal REF = model.Total/model.Tasa;
 			decimal Total = SubTotal /*+ TotalIva*/;
 			if (listDetalleCotizacion.Any(a => a.ProductoId == model.ProductosId))
 			{
@@ -85,7 +85,7 @@ namespace ArquitecturaModel.ViewModels
 			model.SubTotal = listDetalleCotizacion.Where(w => w.Eliminado == false).Sum(s => s.SubTotal);
 			//model.TotalIva = model.SubTotal * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
 			model.Total = model.SubTotal /*+ model.TotalIva*/;
-			model.Tasa = Convert.ToDouble(model.Total) / Tasa;
+			model.Tasa = model.Total / Tasa;
 			model.DetalleFacturacionViews = listDetalleCotizacion;
 			//model.Codigo = "";
 			return model;
@@ -138,7 +138,7 @@ namespace ArquitecturaModel.ViewModels
 			//model.Iva = 16;
 			//model.TotalIva = model.SubTotal * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
 			model.Total = model.SubTotal;/* + model.TotalIva;*/
-			model.Tasa = Convert.ToDouble(model.Total) / Tasa;
+			model.Tasa = model.Total / Tasa;
 			model.DetalleFacturacionViews = Detalle;
 			return model;
 		}

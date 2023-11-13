@@ -119,7 +119,7 @@ namespace Confiteria.Controllers
 						try
 						{
 							
-							model.Tasa = (double.Parse(model.Total.ToString()) / (t == null? 0 : t.Tasa));
+							model.Tasa = (decimal.Parse(model.Total.ToString()) / (t == null? 0 : t.Tasa));
 							var facturacion = new Facturacion
 							{
 								ClienteId = model.ClienteId,

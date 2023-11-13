@@ -69,7 +69,7 @@ namespace Confiteria.Controllers
 
             var p = new Productos() {
                 Precio = Convert.ToDecimal(productos.Precio),
-                PrecioDolar = Convert.ToDouble(productos.PrecioDolar),
+                PrecioDolar = Convert.ToDecimal(productos.PrecioDolar),
                 Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
@@ -126,7 +126,7 @@ namespace Confiteria.Controllers
             {
                 Id = productos.ProductoId,
                 Precio = Convert.ToDecimal(productos.Precio),
-                PrecioDolar = Convert.ToDouble(productos.PrecioDolar),
+                PrecioDolar = Convert.ToDecimal(productos.PrecioDolar),
                 Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,

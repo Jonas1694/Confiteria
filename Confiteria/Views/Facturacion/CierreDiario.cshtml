@@ -33,6 +33,7 @@
 							<th>N Factura</th>
 							<th>Cliente</th>
 							<th>Fecha</th>
+							<th>Tipo Pago</th>
 							<th>Total</th>
 						</tr>
 					</thead>
@@ -43,6 +44,7 @@
 								<td class="text-center">@i.NFactura</td>
 								<td class="text-center">@i.Clientes.RazonSocial</td>
 								<td class="text-center">@i.FechaRegistro</td>
+								<td class="text-center">@i.FormaPago.Name</td>
 								<td class="text-end">@i.Total</td>
 							</tr>
 							<tr>

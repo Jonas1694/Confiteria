@@ -4,6 +4,7 @@ using ArquitecturaModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArquitecturaModel.Migrations
 {
     [DbContext(typeof(AplicationDbContext))]
-    partial class AplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231113192604_formaPago")]
+    partial class formaPago
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,13 +280,7 @@ namespace ArquitecturaModel.Migrations
                     b.Property<DateTime>("FechaRegistro")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("FormaPagoId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Iva")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("MontoCancelar")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<double>("NFactura")
@@ -311,8 +308,6 @@ namespace ArquitecturaModel.Migrations
                     b.HasKey("FacturacionId");
 
                     b.HasIndex("ClienteId");
-
-                    b.HasIndex("FormaPagoId");
 
                     b.HasIndex("UserId");
 
@@ -595,10 +590,6 @@ namespace ArquitecturaModel.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ArquitecturaModel.Model.FormaPago", "FormaPago")
-                        .WithMany()
-                        .HasForeignKey("FormaPagoId");
-
                     b.HasOne("ArquitecturaModel.Model.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -606,8 +597,6 @@ namespace ArquitecturaModel.Migrations
                         .IsRequired();
 
                     b.Navigation("Clientes");
-
-                    b.Navigation("FormaPago");
 
                     b.Navigation("User");
                 });

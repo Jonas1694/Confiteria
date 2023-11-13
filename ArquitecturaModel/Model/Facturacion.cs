@@ -25,6 +25,9 @@ namespace ArquitecturaModel.Model
         public DateTime FechaRegistro { get; set; }
         public virtual List<DetalleFacturas> DetalleFacturas { get; set; }
         public decimal Tasa { get; set; }
+        public int? FormaPagoId { get; set; }
+        public FormaPago FormaPago { get; set; }
+        public decimal? MontoCancelar { get; set; }
 
     }
 }

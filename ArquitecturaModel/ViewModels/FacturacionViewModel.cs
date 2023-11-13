@@ -37,9 +37,10 @@ namespace ArquitecturaModel.ViewModels
 		public int Stock { get; set; }
 		public int PedidoId { get; set; }
 		public decimal Tasa { get; set; }
-		//public string Codigo { get; set; }
-
-		public List<DetalleFacturacionViewModel> DetalleFacturacionViews { get; set; }
+        //public string Codigo { get; set; }
+        public int FormaPagoId { get; set; }
+        public string MontoCancelar { get; set; }
+        public List<DetalleFacturacionViewModel> DetalleFacturacionViews { get; set; }
 
 		#region
 		public FacturacionViewModel AddItems(FacturacionViewModel model)
@@ -88,6 +89,7 @@ namespace ArquitecturaModel.ViewModels
 			model.Tasa = model.Total / Tasa;
 			model.DetalleFacturacionViews = listDetalleCotizacion;
 			//model.Codigo = "";
+			model.MontoCancelar = model.Total.ToString();
 			return model;
 		}
 		public string FormatPorCentaje(decimal valor)

@@ -30,19 +30,19 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label asp-for="ClienteId" class="control-label"></label>
-								<select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId">
+								<select asp-for="ClienteId" class="form-select" asp-items="ViewBag.ClienteId">
 									<option value="">Seleccionar Cliente</option>
 								</select>
 							</div>
 						</div>
 						<div class="col-md-6">
 							@* <div class="row">
-								<div class="col-md-6"><span>Sub Total</span></div>
-								<div class="col-md-6"><span>@Html.DisplayFor(model => model.SubTotal)</span></div>
+							<div class="col-md-6"><span>Sub Total</span></div>
+							<div class="col-md-6"><span>@Html.DisplayFor(model => model.SubTotal)</span></div>
 							</div>
 							<div class="row">
-								<div class="col-md-6"><span>Total Iva</span></div>
-								<div class="col-md-6"><span>@Html.DisplayFor(model => model.TotalIva)</span></div>
+							<div class="col-md-6"><span>Total Iva</span></div>
+							<div class="col-md-6"><span>@Html.DisplayFor(model => model.TotalIva)</span></div>
 							</div> *@
 							<div class="row">
 								<div class="col-md-6"><span>Total Divisa</span></div>
@@ -94,7 +94,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<label asp-for="ProductosId" class="control-label"></label>
-							<select asp-for="ProductosId" id="btoProducto" class="form-control" asp-items="ViewBag.ProductosId">
+							<select asp-for="ProductosId" id="btoProducto" class="form-select" asp-items="ViewBag.ProductosId">
 								<option value="">Seleccionar Producto</option>
 							</select>
 						</div>
@@ -150,7 +150,7 @@
 										Precio Unitario
 									</th>
 									@* <th>
-										SubTotal
+									SubTotal
 									</th> *@
 									<th></th>
 								</tr>
@@ -184,8 +184,8 @@
 													@Model.DetalleFacturacionViews[j].PrecioUnitario.ToString("C")
 												</td>
 												@* <td>
-													@Model.DetalleFacturacionViews[j].SubTotal.ToString("C")
-												</td> *@
+									@Model.DetalleFacturacionViews[j].SubTotal.ToString("C")
+									</td> *@
 												<td>
 													<button name="action" type="submit" value="Eliminar" class="btn btn-danger btn-sm" id="" onclick="confirmar(@j)">Eliminar</button>
 												</td>
@@ -198,17 +198,67 @@
 					</div>
 					<div class="kt-portlet__foot">
 						<div class="kt-form__actions">
-							<button class="btn btn-primary" type="submit" value="Registrar Factura" name="action">
-								Registrar Factura
+
+							<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#mFormaPago">
+								Procesar
 							</button>
-							<a asp-action="Create" asp-controller="Facturacion" class="btn btn-secondary">Cancelar</a>
-							<a asp-action="Index" class="btn btn-info">Ir a la Lista</a>
+							<a asp-action="Create" asp-controller="Facturacion" class="btn btn-sm btn-secondary">Cancelar</a>
+							<a asp-action="Index" class="btn btn-sm btn-info">Ir a la Lista</a>
 						</div>
 					</div>
 					<!--end::Form-->
 				</div>
 				<!--end::Portlet-->
 
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="mFormaPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Forma de Pago</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<select id="sFormaPago" class="form-select" asp-items="ViewBag.SelectFormaPago" asp-for="FormaPagoId">
+									<option value="">Seleccionar....</option>
+								</select>
+							</div>
+						</div>
+						<div class="row" id="fNoMixto">
+							<label class="control-label">Monto a cancelar</label>
+							<div class="form-group">
+								<input asp-for="MontoCancelar" class="form-control"/>
+							</div>
+						</div>
+						<div id="fMixto">
+							<div class="row">
+								<label class="control-label">Efectivo</label>
+								<div class="form-group">
+									<input type="text" />
+								</div>
+							</div>
+							<div class="row">
+								<label class="control-label">Divisa</label>
+								<div class="form-group">
+									<input type="text" />
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+					<button class="btn btn-primary" type="submit" value="Registrar Factura" name="action">
+						Registrar Factura
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -221,13 +271,13 @@
 				<h1 class="modal-title fs-5" id="exampleModalLabel">Escanerar Codigo</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			
+
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-						 <div class="form-group">
-							 <input id="txtCodigoBarra" class="form-control" onchange="BuscarProductos();" />
-						 </div>
+						<div class="form-group">
+							<input id="txtCodigoBarra" class="form-control" onchange="BuscarProductos();" />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -238,12 +288,10 @@
 		</div>
 	</div>
 </div>
-<div>
-	<a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
 	@*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
 		var cantidad = 0;
 		var stockMin = 0;
@@ -253,6 +301,8 @@
 			$('#btoProducto').val('');
 			$('#txtCantidad').val('0');
 			$('#PrecioUnitario').val('0,00');
+			$('#MontoCancelar').mask('#.##0,00', { reverse: true });
+
 			$('#btoProducto').change(function () {
 				$.ajax({
 					url: '/Facturacion/GetPrecio',
@@ -282,6 +332,26 @@
 			// // $('#txtCodigo').val('');
 			//     // return false;
 			// });
+			$('#fNoMixto').hide();
+			$('#fMixto').hide();
+			$('#sFormaPago').change(function () {
+				var select = parseInt($(this).val());
+				$('#MontoCancelar').val('');
+				switch (select) {
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+					case 5:
+						$('#fNoMixto').show();
+						$('#fMixto').hide();
+						break;
+					case 6:
+						$('#fMixto').show();
+						$('#fNoMixto').hide();
+						break;
+				}
+			});
 		});
 		function Barras() {
 			return false;

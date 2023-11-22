@@ -77,6 +77,7 @@ namespace Confiteria.Controllers
 			ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif", model.ClienteId);
 			ViewData["ProductosId"] = new SelectList(_context.Productos, "Id", "GetDescripcion", model.ProductosId);
 			ViewData["SelectFormaPago"] = new SelectList(_context.FormaPago, "Id", "Name",model.FormaPagoId);
+			
 			switch (action)
 			{
 				case "addproducto":
@@ -86,7 +87,9 @@ namespace Confiteria.Controllers
 						return View(model);
 					}
 					model.Tasa = t == null ? 0 : t.Tasa;
-					return View(model.AddItems(model));
+					var data_ = model.AddItems(model);
+					ModelState.Clear();
+					return View(data_);
 				case "Eliminar":
 					model.SubTotal = model.DetalleFacturacionViews.Where(w => w.Eliminado == false).Sum(s => s.SubTotal);
 					//model.TotalIva = model.SubTotal * (Convert.ToDecimal(model.FormatPorCentaje(0.16M)) / 100);

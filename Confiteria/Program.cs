@@ -1,6 +1,5 @@
 using ArquitecturaModel;
 using ArquitecturaModel.Model;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
@@ -11,10 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<AplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
+
+
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-
-
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
 	.AddEntityFrameworkStores<AplicationDbContext>();
 
@@ -39,6 +38,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

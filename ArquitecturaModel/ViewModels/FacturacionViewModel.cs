@@ -59,11 +59,11 @@ namespace ArquitecturaModel.ViewModels
 			{
 				var i = listDetalleCotizacion.FirstOrDefault(f => f.ProductoId == model.ProductosId);
 				i.Cantidad = model.Cantidad + i.Cantidad;
-				i.SubTotal = SubTotal;
+				i.SubTotal = SubTotal + i.SubTotal;
 				//i.Iva = 16;
 				//i.IvaUnitario = IvaUnitario;
 				//i.TotalIva = TotalIva;
-				i.Total = Total;
+				i.Total = Total + i.Total;
 				i.Tasa = REF;
 			}
 			else

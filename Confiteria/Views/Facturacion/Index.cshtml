@@ -48,27 +48,27 @@
 			<tbody>
 				@foreach (var item in Model)
 				{
-				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => item.Clientes.RazonSocial)
-					</td>
-					<td>
-						N° @Html.DisplayFor(modelItem => item.NFactura)
-					</td>
-					<td>
-						@item.Total.ToString("C")
-					</td>
-					<td>
-						@item.FechaRegistro.ToShortDateString()
-					</td>
-					<td>
-						@*<a asp-action="Edit" asp-route-id="@item.FacturacionId">Edit</a>*@
-						<a asp-action="Details" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Detalles</a>
-						<a asp-action="rptFactura" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Imprimir</a>
-						@*<a asp-action="Delete" asp-route-id="@item.FacturacionId">Delete</a>*@
-						@* <a asp-action="Create" asp-controller="Devoluciones" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Devolución</a> *@
-					</td>
-				</tr>
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.Clientes.RazonSocial)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.NFactura)
+						</td>
+						<td>
+							@item.Total.ToString("C")
+						</td>
+						<td>
+							@item.FechaRegistro.ToShortDateString()
+						</td>
+						<td>
+							@*<a asp-action="Edit" asp-route-id="@item.FacturacionId">Edit</a>*@
+							<a asp-action="Details" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Detalles</a>
+							<a asp-action="rptFactura" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Imprimir</a>
+							@*<a asp-action="Delete" asp-route-id="@item.FacturacionId">Delete</a>*@
+							@* <a asp-action="Create" asp-controller="Devoluciones" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Devolución</a> *@
+						</td>
+					</tr>
 				}
 			</tbody>
 		</table>
@@ -76,18 +76,22 @@
 </div>
 <!--end::Portlet-->
 @section Scripts {
-<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript">
-	$(document).ready(function () {
-		$('#MyTable').DataTable({
-			"language": {
-				"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-			},
-			"aLengthMenu": [
-				[25, 50, 100, 200, -1],
-				[25, 50, 100, 200, "Todos"]
-			]
+	<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#MyTable').DataTable({
+				order: [[1, 'desc']],
+				"language": {
+					"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+				},
+				"aLengthMenu": [
+					[25, 50, 100, 200, -1],
+					[25, 50, 100, 200, "Todos"]
+				]
+
+
+			});
 		});
-	});
-</script>
+	</script>
 }

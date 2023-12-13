@@ -11,8 +11,5 @@ namespace ArquitecturaModel.Model
     {
         public string DescripcionRole { get; set; }
         public DateTime RegistrationDate { get; set; }
-        public string ModifyByUserId { get; set; }
-        public DateTime ModifyDate { get; set; }
-        public string ModifyDescription { get; set; }
     }
 }

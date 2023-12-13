@@ -10,7 +10,7 @@ using System.Globalization;
 
 namespace Confiteria.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class ProductosController : Controller
     {
         private readonly AplicationDbContext _context;

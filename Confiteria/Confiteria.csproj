@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Common\" />
     <Folder Include="wwwroot\rotativa\" />
   </ItemGroup>
 

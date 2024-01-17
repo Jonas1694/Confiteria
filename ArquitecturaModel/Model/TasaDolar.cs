@@ -9,6 +9,6 @@ namespace ArquitecturaModel.Model
 	public class TasaDolar
 	{
         public int Id { get; set; }
-        public double Tasa { get; set; }
+        public decimal Tasa { get; set; }
     }
 }

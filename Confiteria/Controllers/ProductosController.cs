@@ -10,7 +10,7 @@ using System.Globalization;
 
 namespace Confiteria.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class ProductosController : Controller
     {
         private readonly AplicationDbContext _context;
@@ -68,8 +68,8 @@ namespace Confiteria.Controllers
             //productos.Imagen = "Watson Watson";
 
             var p = new Productos() {
-                Precio = Convert.ToDecimal(productos.Precio),
-                PrecioDolar = Convert.ToDouble(productos.PrecioDolar),
+                Precio = Convert.ToDecimal(productos.Precio.Replace(",",".")),
+                PrecioDolar = Convert.ToDecimal(productos.PrecioDolar.Replace(",", ".")),
                 Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
@@ -125,8 +125,8 @@ namespace Confiteria.Controllers
             var p = new Productos()
             {
                 Id = productos.ProductoId,
-                Precio = Convert.ToDecimal(productos.Precio),
-                PrecioDolar = Convert.ToDouble(productos.PrecioDolar),
+                Precio = Convert.ToDecimal(productos.Precio.Replace(",",".")),
+                PrecioDolar = Convert.ToDecimal(productos.PrecioDolar.Replace(",", ".")),
                 Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,

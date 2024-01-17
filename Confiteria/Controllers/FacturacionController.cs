@@ -62,6 +62,7 @@ namespace Confiteria.Controllers
 		{
 			ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif");
 			ViewData["ProductosId"] = new SelectList(_context.Productos, "Id", "GetDescripcion");
+			ViewData["SelectFormaPago"] = new SelectList(_context.FormaPago, "Id", "Name");
 			return View(new FacturacionViewModel());
 		}
 
@@ -75,6 +76,8 @@ namespace Confiteria.Controllers
 			var t = _context.TasaDolars.FirstOrDefault() ?? null;
 			ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif", model.ClienteId);
 			ViewData["ProductosId"] = new SelectList(_context.Productos, "Id", "GetDescripcion", model.ProductosId);
+			ViewData["SelectFormaPago"] = new SelectList(_context.FormaPago, "Id", "Name",model.FormaPagoId);
+			
 			switch (action)
 			{
 				case "addproducto":
@@ -84,7 +87,9 @@ namespace Confiteria.Controllers
 						return View(model);
 					}
 					model.Tasa = t == null ? 0 : t.Tasa;
-					return View(model.AddItems(model));
+					var data_ = model.AddItems(model);
+					ModelState.Clear();
+					return View(data_);
 				case "Eliminar":
 					model.SubTotal = model.DetalleFacturacionViews.Where(w => w.Eliminado == false).Sum(s => s.SubTotal);
 					//model.TotalIva = model.SubTotal * (Convert.ToDecimal(model.FormatPorCentaje(0.16M)) / 100);
@@ -96,6 +101,7 @@ namespace Confiteria.Controllers
 						ModelState.AddModelError("", "No se puede procesar, porque no hay producto en la lista");
 						return View(model);
 					}
+					model.Tasa = t.Tasa;
 					model = model.ToModel(model);
 					var data = _context.Facturacion;
 					double ncorrelativo = 0;
@@ -119,7 +125,7 @@ namespace Confiteria.Controllers
 						try
 						{
 							
-							model.Tasa = (double.Parse(model.Total.ToString()) / (t == null? 0 : t.Tasa));
+							model.Tasa = (decimal.Parse(model.Total.ToString()) / (t == null? 0 : t.Tasa));
 							var facturacion = new Facturacion
 							{
 								ClienteId = model.ClienteId,
@@ -132,6 +138,8 @@ namespace Confiteria.Controllers
 								UsuarioId = UsuarioId.Id.ToString(),
 								User = UsuarioId,
 								Tasa= model.Tasa,
+								FormaPagoId = model.FormaPagoId,
+								MontoCancelar = Convert.ToDecimal(model.MontoCancelar.Replace(".","").Replace(",","."))
 							};
 							_context.Add(facturacion);
 							await _context.SaveChangesAsync();
@@ -349,6 +357,7 @@ namespace Confiteria.Controllers
 			var h = new DateTime(f.Year, f.Month, f.Day, 0, 0, 0);
 			var consulta = _context.Facturacion.Include(d=> d.DetalleFacturas)
 				.Include("DetalleFacturas.Productos")
+				.Include(i=> i.FormaPago)
 				.Include(i=> i.Clientes).Where(f => f.FechaRegistro >= h && f.FechaRegistro <= d).ToList();
 			
 			return new ViewAsPdf(nameof(CierreDiario), consulta)

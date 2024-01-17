@@ -36,17 +36,6 @@ namespace ArquitecturaModel.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ModifyByUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifyDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifyDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -277,7 +266,13 @@ namespace ArquitecturaModel.Migrations
                     b.Property<DateTime>("FechaRegistro")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("FormaPagoId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Iva")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("MontoCancelar")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<double>("NFactura")
@@ -286,8 +281,8 @@ namespace ArquitecturaModel.Migrations
                     b.Property<decimal>("SubTotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<double>("Tasa")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Tasa")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
@@ -306,9 +301,28 @@ namespace ArquitecturaModel.Migrations
 
                     b.HasIndex("ClienteId");
 
+                    b.HasIndex("FormaPagoId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Facturacion");
+                });
+
+            modelBuilder.Entity("ArquitecturaModel.Model.FormaPago", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FormaPago");
                 });
 
             modelBuilder.Entity("ArquitecturaModel.Model.Productos", b =>
@@ -336,8 +350,8 @@ namespace ArquitecturaModel.Migrations
                     b.Property<decimal>("Precio")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<double>("PrecioDolar")
-                        .HasColumnType("float");
+                    b.Property<decimal>("PrecioDolar")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
@@ -403,8 +417,8 @@ namespace ArquitecturaModel.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("Tasa")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Tasa")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -570,6 +584,10 @@ namespace ArquitecturaModel.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ArquitecturaModel.Model.FormaPago", "FormaPago")
+                        .WithMany()
+                        .HasForeignKey("FormaPagoId");
+
                     b.HasOne("ArquitecturaModel.Model.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -577,6 +595,8 @@ namespace ArquitecturaModel.Migrations
                         .IsRequired();
 
                     b.Navigation("Clientes");
+
+                    b.Navigation("FormaPago");
 
                     b.Navigation("User");
                 });

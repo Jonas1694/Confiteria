@@ -19,7 +19,7 @@ namespace ArquitecturaModel.Model
         [Required(ErrorMessage = "El campo {0} es obligatorio!")]
 		//[DisplayFormat(DataFormatString = "{0:C2}")]
 		public decimal Precio { get; set; }
-        public double PrecioDolar { get; set; }
+        public decimal PrecioDolar { get; set; }
         public DateTime Fecha { get; set; }
         [Required(ErrorMessage = "El campo {0} es obligatorio!")]
         [Display(Name = "Cantidad del producto")]

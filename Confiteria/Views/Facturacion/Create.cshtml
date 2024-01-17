@@ -51,7 +51,7 @@
 							<br />
 							<div class="row">
 								<div class="col-md-6"><span>Total</span></div>
-								<div class="col-md-6"><span class="kt-font-brand">@Html.DisplayFor(model => model.Total)</span></div>
+								<div class="col-md-6"><span id="sTotal" class="kt-font-brand">@Html.DisplayFor(model => model.Total)</span></div>
 							</div>
 						</div>
 					</div>
@@ -199,7 +199,7 @@
 					<div class="kt-portlet__foot">
 						<div class="kt-form__actions">
 
-							<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#mFormaPago">
+							<button type="button" id="mPago" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#mFormaPago">
 								Procesar
 							</button>
 							<a asp-action="Create" asp-controller="Facturacion" class="btn btn-sm btn-secondary">Cancelar</a>
@@ -255,7 +255,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button class="btn btn-primary" type="submit" value="Registrar Factura" name="action">
+					<button class="btn btn-primary" type="submit" value="Registrar Factura" name="action" onclick="return ValidarPrecioTotal();">
 						Registrar Factura
 					</button>
 				</div>
@@ -297,7 +297,12 @@
 		var stockMin = 0;
 		var stockMax = 0;
 		var stock = 0;
+		var monto = 0;
+		var pagototal = 0;
 		$(document).ready(function () {
+			$('#mPago').click(function () {
+				pagototal = parseFloat($('#sTotal').text());
+			});
 			$('#btoProducto').val('');
 			$('#txtCantidad').val('0');
 			$('#PrecioUnitario').val('0,00');
@@ -351,11 +356,23 @@
 						$('#fNoMixto').hide();
 						break;
 				}
-			});
+							});
 		});
 		function Barras() {
 			return false;
 		}
+		function ValidarPrecioTotal() {
+			if ($('#mPago').val() != '') {
+				monto = parseInt($('#mPago').val());
+			}
+			if (monto == pagototal) {
+				return true;
+			}
+			alert("el monto ingresado no puede ser diferente al total " + pagototal + ".");
+			return false;
+
+		}
+		
 		function validarStock() {
 			if ($('#txtCantidad').val() != '') {
 				cantidad = parseInt($('#txtCantidad').val());

@@ -234,7 +234,7 @@
 						<div class="row" id="fNoMixto">
 							<label class="control-label">Monto a cancelar</label>
 							<div class="form-group">
-								<input asp-for="MontoCancelar" class="form-control"/>
+								<input asp-for="MontoCancelar" class="form-control" id='txtMontoPagar' />
 							</div>
 						</div>
 						<div id="fMixto">
@@ -363,8 +363,8 @@
 			return false;
 		}
 		function ValidarPrecioTotal() {
-			if ($('#mPago').val() != '') {
-				monto = parseInt($('#mPago').val());
+			if ($('#txtMontoPagar').val() != '') {
+				monto = parseFloat($('##txtMontoPagar').val());
 			}
 			if (monto == pagototal) {
 				return true;

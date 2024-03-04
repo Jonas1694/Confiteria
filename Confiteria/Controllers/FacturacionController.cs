@@ -170,8 +170,6 @@ namespace Confiteria.Controllers
 								_context.Update(producto);
 								await _context.SaveChangesAsync();
 							}
-							await _context.SaveChangesAsync();
-
 							//if (model.PedidoId > 0)
 							//{
 							//    var pedido = _context.Pedidos.Find(model.PedidoId);

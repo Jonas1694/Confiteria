@@ -37,6 +37,7 @@ namespace ArquitecturaModel.ViewModels
         [Display(Name ="Precio Bs")]
         public string Precio { get; set; }
         public string PrecioDolar { get; set; }
+        public string PrecioCosto { get; set; }
 
         public string Codigo { get; set; }
 

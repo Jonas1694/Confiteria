@@ -68,6 +68,7 @@ namespace Confiteria.Controllers
             //productos.Imagen = "Watson Watson";
 
             var p = new Productos() {
+                PrecioCosto= Convert.ToDecimal(productos.PrecioCosto.Replace(",", ".")),
                 Precio = Convert.ToDecimal(productos.Precio.Replace(",",".")),
                 PrecioDolar = Convert.ToDecimal(productos.PrecioDolar.Replace(",", ".")),
                 Stock = Convert.ToInt32(productos.Stock.ToString()),
@@ -105,6 +106,7 @@ namespace Confiteria.Controllers
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
                 Stock = Convert.ToInt32(productos.Stock.ToString()),
+                PrecioCosto= productos.PrecioCosto.ToString(),
                 Precio = productos.Precio.ToString(),
                 PrecioDolar = productos.PrecioDolar.ToString(),
             };
@@ -125,6 +127,7 @@ namespace Confiteria.Controllers
             var p = new Productos()
             {
                 Id = productos.ProductoId,
+                PrecioCosto = Convert.ToDecimal(productos.PrecioCosto.Replace(",", ".")),
                 Precio = Convert.ToDecimal(productos.Precio.Replace(",",".")),
                 PrecioDolar = Convert.ToDecimal(productos.PrecioDolar.Replace(",", ".")),
                 Stock = Convert.ToInt32(productos.Stock.ToString()),

@@ -4,6 +4,8 @@
 }
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 
 <p>
     <a asp-action="Create" class=" btn btn-outline-primary">Crear Nuevo</a>
@@ -38,11 +40,12 @@
                             </th>
                             <th></th>
                         </tr>
+                      
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
+                            <tr class="@(item.Stock <= 3 ? "table-danger" : "")">
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Codigo)
                                 </td>
@@ -50,7 +53,7 @@
                                     @Html.DisplayFor(modelItem => item.Descripcion)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Stock)
+                                    @Html.DisplayFor(modelItem => item.Stock )
                                 </td>
                                 @* <td>
                                     @Html.DisplayFor(modelItem => item.Imagen)

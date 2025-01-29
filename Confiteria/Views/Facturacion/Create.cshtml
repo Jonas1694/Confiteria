@@ -149,9 +149,9 @@
 									<th>
 										Precio Unitario
 									</th>
-									@* <th>
+									<th>
 									SubTotal
-									</th> *@
+									</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -183,9 +183,9 @@
 												<td>
 													@Model.DetalleFacturacionViews[j].PrecioUnitario.ToString("C")
 												</td>
-												@* <td>
-									@Model.DetalleFacturacionViews[j].SubTotal.ToString("C")
-									</td> *@
+												<td>
+													@Model.DetalleFacturacionViews[j].SubTotal.ToString("C")
+												</td>
 												<td>
 													<button name="action" type="submit" value="Eliminar" class="btn btn-danger btn-sm" id="" onclick="confirmar(@j)">Eliminar</button>
 												</td>

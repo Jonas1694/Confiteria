@@ -46,6 +46,13 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
+                        <label asp-for="PrecioCosto" class="control-label"></label>
+                        <input asp-for="PrecioCosto" class="form-control" />
+                        <span asp-validation-for="PrecioCosto" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
                         <label asp-for="PrecioDolar" class="control-label"></label>
                         <input asp-for="PrecioDolar" class="form-control" />
                         <span asp-validation-for="PrecioDolar" class="text-danger"></span>

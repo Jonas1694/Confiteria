@@ -32,6 +32,15 @@
 				</div>
 				<div class="col-md-12">
 					<div class="form-group">
+						<label asp-for="MarcasId" class="control-label">Marca</label>
+						<select asp-for="MarcasId" class="form-select" id="MarcasId" asp-items="ViewBag.marcasId" style="height:40px;">
+							<option value="">Seleccionar Producto</option>
+						</select>
+						<span asp-validation-for="MarcasId" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
 						<label asp-for="Stock" class="control-label"></label>
 						<input asp-for="Stock" class="form-control txtn" />
 						<span asp-validation-for="Stock" class="text-danger"></span>
@@ -55,7 +64,7 @@
 					<div class="form-group">
 						<label asp-for="Precio" class="control-label"></label>
 						<input asp-for="Precio" type="hidden"/>
-						<label class="form-control" id="lblDolar"></label>
+						<label class="form-control" id="lblDolar" style="height:40px;"></label>
 						<span asp-validation-for="Precio" class="text-danger"></span>
 					</div>
 				</div>
@@ -72,11 +81,13 @@
 	@{
 		await Html.RenderPartialAsync("_ValidationScriptsPartial");
 	}
-	
+	<script src="~/lib/select2/dist/js/select2.full.min.js"></script>
+	<script src="~/lib/select2/dist/js/select2.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
 		let taza = 0;
 		jQuery(document).ready(function () {
+			$('#MarcasId').select2();
 			GetTaza();
 			$('#PrecioCosto').mask('#.##0,00', { reverse: true });
 			jQuery('.txtn').keypress(function (tecla) {

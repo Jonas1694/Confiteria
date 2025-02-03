@@ -37,7 +37,9 @@ namespace ArquitecturaModel.Model
         //[RegularExpression("^[0-9]*$", ErrorMessage = "* Solo se permiten números.")]
         public int StockMax { get; set; }
         public string GetDescripcion { get => $"{Codigo} - {Descripcion}"; }
-        
 
+        [Required(ErrorMessage = "El campo {0} es obligatorio!")]
+        public int MarcasId { get; set; }
+        public Marcas Marcas { get; set; }
     }
 }

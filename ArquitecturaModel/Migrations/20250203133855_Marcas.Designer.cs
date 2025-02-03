@@ -4,6 +4,7 @@ using ArquitecturaModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArquitecturaModel.Migrations
 {
     [DbContext(typeof(AplicationDbContext))]
-    partial class AplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250203133855_Marcas")]
+    partial class Marcas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.20")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -364,9 +367,6 @@ namespace ArquitecturaModel.Migrations
                     b.Property<string>("Imagen")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MarcasId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Precio")
                         .HasColumnType("decimal(18,2)");
 
@@ -386,8 +386,6 @@ namespace ArquitecturaModel.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MarcasId");
 
                     b.ToTable("Productos");
                 });
@@ -624,17 +622,6 @@ namespace ArquitecturaModel.Migrations
                     b.Navigation("FormaPago");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ArquitecturaModel.Model.Productos", b =>
-                {
-                    b.HasOne("ArquitecturaModel.Model.Marcas", "Marcas")
-                        .WithMany()
-                        .HasForeignKey("MarcasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Marcas");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

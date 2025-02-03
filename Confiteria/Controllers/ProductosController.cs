@@ -7,6 +7,7 @@ using ArquitecturaModel.ViewModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Confiteria.Controllers
 {
@@ -24,7 +25,7 @@ namespace Confiteria.Controllers
         public async Task<IActionResult> Index()
         {
             return _context.Productos != null ?
-                        View(await _context.Productos.ToListAsync()) :
+                        View(await _context.Productos.Include(i=> i.Marcas).ToListAsync()) :
                         Problem("Entity set 'AplicationDbContext.Productos'  is null.");
         }
 
@@ -36,7 +37,7 @@ namespace Confiteria.Controllers
                 return NotFound();
             }
 
-            var productos = await _context.Productos
+            var productos = await _context.Productos.Include(i => i.Marcas)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (productos == null)
             {
@@ -54,6 +55,7 @@ namespace Confiteria.Controllers
         // GET: Clientes/Create
         public IActionResult Create()
         {
+            ViewData["marcasId"] = new SelectList(_context.Marcas, "Id", "Descripcion");
             return View();
         }
 
@@ -66,7 +68,7 @@ namespace Confiteria.Controllers
         {
             //productos.Fecha = DateTime.Now;
             //productos.Imagen = "Watson Watson";
-
+            ViewData["marcasId"] = new SelectList(_context.Marcas, "Id", "Descripcion", productos.MarcasId);
             var p = new Productos() {
                 PrecioCosto= Convert.ToDecimal(productos.PrecioCosto.Replace(",", ".")),
                 Precio = Convert.ToDecimal(productos.Precio.Replace(",",".")),
@@ -75,7 +77,7 @@ namespace Confiteria.Controllers
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
                 Fecha = DateTime.Now,
-                
+                MarcasId = productos.MarcasId
             };
 
             if (ModelState.IsValid)
@@ -109,7 +111,9 @@ namespace Confiteria.Controllers
                 PrecioCosto= productos.PrecioCosto.ToString(),
                 Precio = productos.Precio.ToString(),
                 PrecioDolar = productos.PrecioDolar.ToString(),
+                MarcasId = productos.MarcasId
             };
+            ViewData["marcasId"] = new SelectList(_context.Marcas, "Id", "Descripcion", productos.MarcasId);
             return View(V);
         }
 
@@ -124,6 +128,7 @@ namespace Confiteria.Controllers
             {
                 return NotFound();
             }
+            ViewData["marcasId"] = new SelectList(_context.Marcas, "Id", "Descripcion", productos.MarcasId);
             var p = new Productos()
             {
                 Id = productos.ProductoId,
@@ -134,7 +139,7 @@ namespace Confiteria.Controllers
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
                 Fecha=DateTime.Now,
-
+                MarcasId = productos.MarcasId
             };
             if (ModelState.IsValid)
             {
@@ -167,7 +172,7 @@ namespace Confiteria.Controllers
                 return NotFound();
             }
 
-            var productos = await _context.Productos
+            var productos = await _context.Productos.Include(i => i.Marcas)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (productos == null)
             {

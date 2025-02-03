@@ -36,7 +36,7 @@ namespace ArquitecturaModel.Model
         //[Display(Name = "Stock Maximo")]
         //[RegularExpression("^[0-9]*$", ErrorMessage = "* Solo se permiten números.")]
         public int StockMax { get; set; }
-        public string GetDescripcion { get => $"{Descripcion}"; }
+        public string GetDescripcion { get => $"{Codigo} - {Descripcion}"; }
         
 
     }

@@ -1,18 +1,17 @@
-﻿using ArquitecturaModel.Model;
-using ArquitecturaModel;
+﻿using ArquitecturaModel;
+using ArquitecturaModel.Model;
+using ArquitecturaModel.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
-using ArquitecturaModel.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json.Serialization;
 using Rotativa.AspNetCore;
-using Stimulsoft.Data.Extensions;
 
 namespace Confiteria.Controllers
 {
-	[Authorize]
+    [Authorize]
 	public class FacturacionController : Controller
 	{
 		private readonly AplicationDbContext _context;

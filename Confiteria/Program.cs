@@ -1,10 +1,7 @@
 ﻿using ArquitecturaModel;
 using ArquitecturaModel.Model;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
-using Microsoft.Extensions.DependencyInjection;
-using Confiteria.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

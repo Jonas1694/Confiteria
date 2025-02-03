@@ -2,11 +2,10 @@
 using ArquitecturaModel.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Confiteria.Controllers
 {
-	[Authorize(Roles ="Admin")]
+    [Authorize(Roles ="Admin")]
 	public class TasaDolarsController : Controller
 	{
 		private readonly AplicationDbContext _context;

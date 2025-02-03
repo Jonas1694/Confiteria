@@ -1,13 +1,10 @@
-﻿using ArquitecturaModel.Model;
-using ArquitecturaModel;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
+﻿using ArquitecturaModel;
+using ArquitecturaModel.Model;
 using ArquitecturaModel.ViewModels;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Confiteria.Controllers
 {

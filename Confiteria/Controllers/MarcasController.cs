@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using ArquitecturaModel.Model;
 using Confiteria.Data;
 using ArquitecturaModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Confiteria.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class MarcasController : Controller
     {
         private readonly AplicationDbContext _context;

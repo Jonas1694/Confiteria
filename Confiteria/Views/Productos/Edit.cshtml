@@ -94,6 +94,7 @@
     <script>
         let taza = 0;
         jQuery(document).ready(function () {
+            $('#MarcasId').select2();
             GetTaza();
             $('#lblDolar').text($('#Precio').val()).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: 'Bs ' });
             $('#PrecioDolar').mask('#.##0,00', { reverse: true });

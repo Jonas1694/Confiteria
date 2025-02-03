@@ -1,18 +1,17 @@
-﻿using ArquitecturaModel.Model;
-using ArquitecturaModel;
+﻿using ArquitecturaModel;
+using ArquitecturaModel.Model;
+using ArquitecturaModel.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
-using ArquitecturaModel.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json.Serialization;
 using Rotativa.AspNetCore;
-using Stimulsoft.Data.Extensions;
 
 namespace Confiteria.Controllers
 {
-	[Authorize]
+    [Authorize]
 	public class FacturacionController : Controller
 	{
 		private readonly AplicationDbContext _context;
@@ -60,8 +59,9 @@ namespace Confiteria.Controllers
 		// GET: Facturacion/Create
 		public async Task<IActionResult> Create(int? id)
 		{
-			ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif");
-			ViewData["ProductosId"] = new SelectList(_context.Productos, "Id", "GetDescripcion");
+			ViewData["ClienteId"] = new SelectList(await _context.Clientes.ToListAsync(), "id", "GetRif");
+			//var products = await _context.Productos.Select(s=> new { Id = s.Id, GetDescripcion = $"{s.Codigo} {s.Descripcion}"}).ToListAsync();
+			ViewData["ProductosId"] = new SelectList(await _context.Productos.ToListAsync(), "Id", "GetDescripcion");
 			ViewData["SelectFormaPago"] = new SelectList(_context.FormaPago, "Id", "Name");
 			return View(new FacturacionViewModel());
 		}

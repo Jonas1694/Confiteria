@@ -1,6 +1,5 @@
-using ArquitecturaModel;
+﻿using ArquitecturaModel;
 using ArquitecturaModel.Model;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
 

@@ -40,6 +40,7 @@ namespace ArquitecturaModel.ViewModels
         public string PrecioCosto { get; set; }
 
         public string Codigo { get; set; }
+        public int MarcasId { get; set; }
 
     }
 }

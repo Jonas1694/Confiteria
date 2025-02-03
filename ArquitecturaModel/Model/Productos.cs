@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ArquitecturaModel.Model
 {
@@ -36,8 +31,10 @@ namespace ArquitecturaModel.Model
         //[Display(Name = "Stock Maximo")]
         //[RegularExpression("^[0-9]*$", ErrorMessage = "* Solo se permiten números.")]
         public int StockMax { get; set; }
-        public string GetDescripcion { get => $"{Descripcion}"; }
-        
+        public string GetDescripcion { get => $"{Codigo} - {Descripcion}"; }
 
+        [Required(ErrorMessage = "El campo {0} es obligatorio!")]
+        public int MarcasId { get; set; }
+        public Marcas Marcas { get; set; }
     }
 }

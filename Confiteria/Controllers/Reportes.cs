@@ -23,5 +23,15 @@ namespace Confiteria.Controllers
         {
             return StiNetCoreViewer.ViewerEventResult(this);
         }
+        public IActionResult ReporteGanancia()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ReporteGanancia(int id)
+        {
+            return View();
+        }
     }
 }

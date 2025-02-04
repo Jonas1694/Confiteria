@@ -295,6 +295,7 @@
 	@*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
+		let taza = 0;
 		var cantidad = 0;
 		var stockMin = 0;
 		var stockMax = 0;
@@ -436,6 +437,16 @@
 					// $.each(data, function () {
 
 					// });
+				}
+			});
+		}
+		function GetTaza() {
+			$.ajax({
+				url: '/Productos/GetTaza',
+				type: "get",
+				dataType: "json",
+				success: function (data) {
+					taza = parseFloat(data.tasa);
 				}
 			});
 		}

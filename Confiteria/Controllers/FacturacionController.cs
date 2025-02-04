@@ -81,19 +81,27 @@ namespace Confiteria.Controllers
 			switch (action)
 			{
 				case "addproducto":
-					if (model.Cantidad == 0)
+                    ModelState.Clear();
+                    if (model.Cantidad == 0)
 					{
 						ModelState.AddModelError("", "Debe introducir una cantidad");
 						return View(model);
 					}
 					model.Tasa = t == null ? 0 : t.Tasa;
 					var data_ = model.AddItems(model);
-					ModelState.Clear();
+					data_.ProductosId = 0;
 					return View(data_);
 				case "Eliminar":
-					model.SubTotal = model.DetalleFacturacionViews.Where(w => w.Eliminado == false).Sum(s => s.SubTotal);
-					//model.TotalIva = model.SubTotal * (Convert.ToDecimal(model.FormatPorCentaje(0.16M)) / 100);
-					model.Total = model.SubTotal /*+ model.TotalIva*/;
+                    ModelState.Clear();
+                    model.SubTotal = model.DetalleFacturacionViews.Where(w => w.Eliminado == false).Sum(s => s.SubTotal);
+					model.DetalleFacturacionViews.Where(w => w.Eliminado == true).ToList().ForEach(f => 
+					{ 
+						f.Cantidad = 0; 
+						f.Iva = 0;
+						f.SubTotal = 0;
+					});
+                    //model.TotalIva = model.SubTotal * (Convert.ToDecimal(model.FormatPorCentaje(0.16M)) / 100);
+                    model.Total = model.SubTotal /*+ model.TotalIva*/;
 					return View(model);
 				case "Registrar Factura":
 					if (model.DetalleFacturacionViews == null)

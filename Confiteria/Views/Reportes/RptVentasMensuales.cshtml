@@ -22,7 +22,7 @@
 					CALLE MONSEÑOR CAMARGO, PAMPAN EDO TRUJILLO
 				</div>
 				<div class="col-12 text-center">
-					Fecha de Cierrre: @Model.FirstOrDefault().FechaRegistro.ToShortDateString()
+					Fecha de Cierrre: @Model.FirstOrDefault()!.FechaRegistro!.ToShortDateString()
 				</div>
 			</div>
 
@@ -96,3 +96,4 @@
 		<h3>No hay informacion.</h3>
 	}
 </body>
+

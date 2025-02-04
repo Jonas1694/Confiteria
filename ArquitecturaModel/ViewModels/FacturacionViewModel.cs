@@ -64,6 +64,7 @@ namespace ArquitecturaModel.ViewModels
 				//i.IvaUnitario = IvaUnitario;
 				//i.TotalIva = TotalIva;
 				i.Total = Total + i.Total;
+				i.Eliminado = false;
 				i.Tasa = REF;
 			}
 			else

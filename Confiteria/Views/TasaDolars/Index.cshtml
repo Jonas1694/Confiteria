@@ -4,8 +4,26 @@
 }
 
 <h1>Index</h1>
-
-<form asp-action="Index">
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Tasa</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <label asp-for="Tasa" class="control-label"></label>
+                <input asp-for="Tasa" class="form-control" />
+                <span asp-validation-for="Tasa" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" id="UpdateProductos" value="Guardar" class="btn btn-primary" />
+            <button type="button" class="btn btn-secondary" onclick="Update();">Actualizar Productos</button>
+        </div>
+    </div>
+</form>
+@* <form asp-action="Index">
     <input type="hidden" asp-for="Id" />
     <div class="col-md-6">
         <div class="form-group">
@@ -16,10 +34,10 @@
     </div>
     <div class="card-footer">
         <input type="submit" id="UpdateProductos" value="Guardar" class="btn btn-primary"  />
-        <button type="button" class="btn btn-secondary" onclick="Update();">Actualizar</button>
+        <button type="button" class="btn btn-secondary" onclick="Update();">Actualizar Productos</button>
 
     </div>
-</form>
+</form> *@
 @section scripts{
     <script>
         jQuery(document).ready(function () {

@@ -12,7 +12,7 @@
     <input type="hidden" asp-for="Stock" id="stock" />
     <input type="hidden" asp-for="PrecioUnitario" id="Precioprod" />
     <input type="hidden" asp-for="PedidoId" />
-    <input type="hidden" asp-for="TazaDolarId" id="tazaDolarId" />
+    <input type="hidden" asp-for="TasaDolarId" id="tazaDolarId" />
 
     <div class="row">
         <div class="col-md-12">
@@ -350,6 +350,7 @@
             $('#sFormaPago').change(function () {
                 var select = parseInt($(this).val());
                 $('#txtMontoPagar').val('');
+                $('#tazaDolarId').val(null);
                  pagototal = parseFloat($('#sTotal').text());
                 switch (select) {
                     case 3:

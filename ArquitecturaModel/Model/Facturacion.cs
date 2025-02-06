@@ -28,6 +28,7 @@ namespace ArquitecturaModel.Model
         public int? FormaPagoId { get; set; }
         public FormaPago FormaPago { get; set; }
         public decimal? MontoCancelar { get; set; }
-
+        public int? TasaDolarId { get; set; }
+        public TasaDolar TasaDolar { get; set; }
     }
 }

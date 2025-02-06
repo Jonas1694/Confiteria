@@ -36,7 +36,7 @@ namespace ArquitecturaModel.ViewModels
 		public int StockMax { get; set; }
 		public int Stock { get; set; }
 		public int PedidoId { get; set; }
-		public int? TazaDolarId { get; set; }
+		public int? TasaDolarId { get; set; }
 		public decimal Tasa { get; set; }
         //public string Codigo { get; set; }
         public int FormaPagoId { get; set; }

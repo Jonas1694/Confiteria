@@ -73,8 +73,8 @@ namespace Confiteria.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(FacturacionViewModel model, string action)
 		{
-			var tazaId = _context.TasaDolars.Max(m => m.Id);
-            var t = _context.TasaDolars.Find(tazaId) ?? null;
+			var tazaId = _context.TasaDolar.Max(m => m.Id);
+            var t = _context.TasaDolar.Find(tazaId) ?? null;
 			ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif", model.ClienteId);
 			ViewData["ProductosId"] = new SelectList(_context.Productos, "Id", "GetDescripcion", model.ProductosId);
 			ViewData["SelectFormaPago"] = new SelectList(_context.FormaPago, "Id", "Name",model.FormaPagoId);
@@ -154,7 +154,8 @@ namespace Confiteria.Controllers
 								User = UsuarioId,
 								Tasa= model.Tasa,
 								FormaPagoId = model.FormaPagoId,
-								MontoCancelar = Convert.ToDecimal(model.MontoCancelar.Replace(".","").Replace(",","."))
+								MontoCancelar = Convert.ToDecimal(model.MontoCancelar.Replace(".","").Replace(",",".")),
+								TasaDolarId = model.TasaDolarId
 							};
 							_context.Add(facturacion);
 							await _context.SaveChangesAsync();

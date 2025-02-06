@@ -47,8 +47,8 @@ namespace Confiteria.Controllers
         [HttpGet]
         public IActionResult GetTaza()
         {
-            var tazaId = _context.TasaDolars.Max(m => m.Id);
-            return Json(_context.TasaDolars.Find(tazaId));
+            var tazaId = _context.TasaDolar.Max(m => m.Id);
+            return Json(_context.TasaDolar.Find(tazaId));
         }
         // GET: Clientes/Create
         public IActionResult Create()

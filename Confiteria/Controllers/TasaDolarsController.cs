@@ -16,8 +16,8 @@ namespace Confiteria.Controllers
 		}
         public IActionResult Index()
 		{
-            var tazaId = _context.TasaDolars.Max(m => m.Id);
-            var data = _context.TasaDolars.Find(tazaId);
+            var tazaId = _context.TasaDolar.Max(m => m.Id);
+            var data = _context.TasaDolar.Find(tazaId);
             return View(data);
 		}
 		[HttpPost]
@@ -40,8 +40,8 @@ namespace Confiteria.Controllers
 		{
 			try
 			{
-                var tazaId = _context.TasaDolars.Max(m => m.Id);
-                var data = _context.TasaDolars.Find(tazaId);
+                var tazaId = _context.TasaDolar.Max(m => m.Id);
+                var data = _context.TasaDolar.Find(tazaId);
                 var lis = _context.Productos.ToList();
                 foreach (var item in lis)
                 {

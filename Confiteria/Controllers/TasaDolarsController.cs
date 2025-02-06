@@ -16,8 +16,9 @@ namespace Confiteria.Controllers
 		}
         public IActionResult Index()
 		{
-			var t = _context.TasaDolars.FirstOrDefault();
-			return View(t);
+            var tazaId = _context.TasaDolars.Max(m => m.Id);
+            var data = _context.TasaDolars.Find(tazaId);
+            return View(data);
 		}
 		[HttpPost]
 		public IActionResult Index(TasaDolar tasaDolar)
@@ -39,11 +40,12 @@ namespace Confiteria.Controllers
 		{
 			try
 			{
-                var data = _context.TasaDolars.MaxBy(m=> m.Id);
+                var tazaId = _context.TasaDolars.Max(m => m.Id);
+                var data = _context.TasaDolars.Find(tazaId);
                 var lis = _context.Productos.ToList();
                 foreach (var item in lis)
                 {
-                    item.Precio = Convert.ToDecimal(item.PrecioDolar * data.Tasa);
+                    item.Precio = Convert.ToDecimal(item.PrecioDolar * data!.Tasa);
                 };
                 _context.Productos.UpdateRange(lis);
                 _context.SaveChanges();

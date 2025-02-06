@@ -320,6 +320,7 @@
                     url: '/Facturacion/GetPrecio',
                     type: "post",
                     dataType: "json",
+                    async: false,
                     data: {
                         id: $(this).val()
                     },
@@ -425,6 +426,7 @@
                 url: '/Facturacion/BuscarProductos',
                 type: "post",
                 dataType: "json",
+                async: false,
                 data: {
                     codigo: $('#txtCodigoBarra').val()
                 },
@@ -442,9 +444,6 @@
                     $('#stock').val(data.stock);
                     $('#txtCodigoBarra').val('');
                     $('#exampleModal').modal('hide');
-                    // $.each(data, function () {
-
-                    // });
                 }
             });
         }

@@ -47,6 +47,7 @@ namespace Confiteria.Controllers
             List<RptGananciaViewModel> rpt = new List<RptGananciaViewModel>();
             var detalle = _context.DetalleFacturas
                 .Include(i => i.Productos)
+                .Include(i => i.Facturacion)
                 .AsNoTracking()
                 .Where(f => f.FechaRegistro >= desde && f.FechaRegistro <= hasta)
                 .ToList();
@@ -56,10 +57,11 @@ namespace Confiteria.Controllers
                 var ganancia = new RptGananciaViewModel();
                 ganancia.Id = id.Id;
                 var d = detalle.Where(w => w.ProductosId == id.Id).ToList();
-                var product = d.FirstOrDefault().Productos;
+                var product = d.FirstOrDefault()!.Productos;
+                var fact = d.FirstOrDefault()!.Facturacion;
                 ganancia.NombreProducto = product.Descripcion;
                 ganancia.Cantidad = d.Sum(s => s.Cantidad);
-                ganancia.Total = d.Sum(s => s.Total);
+                ganancia.Total = d.Sum(s => s.SubTotal);
                 ganancia.Ganancia = ganancia.Total - (product.PrecioCosto * ganancia.Cantidad);
                 rpt.Add(ganancia);
             }

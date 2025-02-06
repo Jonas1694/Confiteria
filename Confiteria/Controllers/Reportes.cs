@@ -39,7 +39,33 @@ namespace Confiteria.Controllers
         }
 
         [HttpPost]
-        public IActionResult ReporteGanancia(int id)
+        public IActionResult ReporteGanancia(ReporteVentasMensualesViewModel viewModel)
+        {
+            var desde = new DateTime(viewModel.Desde.Year, viewModel.Desde.Month, viewModel.Desde.Day, 0, 0, 0);
+            var hasta = new DateTime(viewModel.Hasta.Year, viewModel.Hasta.Month, viewModel.Hasta.Day, 23, 59, 59);
+            List<RptGananciaViewModel> rpt = new List<RptGananciaViewModel>();
+            var detalle = _context.DetalleFacturas
+                .Include(i => i.Productos)
+                .AsNoTracking()
+                .Where(f => f.FechaRegistro >= desde && f.FechaRegistro <= hasta)
+                .ToList();
+            var productIds = detalle.Select(i => new { Id = i.Productos.Id }).Distinct().ToList();
+            foreach (var id in productIds)
+            {
+                var ganancia = new RptGananciaViewModel();
+                ganancia.Id = id.Id;
+                var d = detalle.Where(w => w.ProductosId == id.Id).ToList();
+                ganancia.NombreProducto = d.FirstOrDefault().Productos.Descripcion;
+                ganancia.Cantidad = d.Sum(s => s.Cantidad);
+                ganancia.Ganancia = 0;
+                rpt.Add(ganancia);
+            }
+            return new ViewAsPdf(nameof(RptReporteGanancia), rpt)
+            {
+                PageMargins = new Rotativa.AspNetCore.Options.Margins(10, 5, 10, 5)
+            };
+        }
+        public IActionResult RptReporteGanancia()
         {
             return View();
         }

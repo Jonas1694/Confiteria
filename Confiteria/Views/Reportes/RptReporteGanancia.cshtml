@@ -1,0 +1,24 @@
+﻿@model IEnumerable<ArquitecturaModel.ViewModels.RptGananciaViewModel>
+
+@{
+    ViewData["Title"] = "RptReporteGanancia";
+}
+
+<h1>RptReporteGanancia</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Producto</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.NombreProducto</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

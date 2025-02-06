@@ -1,7 +1,13 @@
-﻿
+﻿@model ArquitecturaModel.ViewModels.ReporteVentasMensualesViewModel
+
 @{
     ViewData["Title"] = "ReporteGanancia";
 }
 
-<h1>ReporteGanancia</h1>
+<h1>Reporte Ganancia</h1>
 
+<form asp-action="ReporteGanancia">
+    <input type="date" asp-for="Desde" />
+    <input type="date" asp-for="Hasta" />
+    <button type="submit" value="Consultar">Consultar</button>
+</form>

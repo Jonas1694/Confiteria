@@ -1,4 +1,5 @@
 ﻿using ArquitecturaModel;
+using ArquitecturaModel.Model;
 using ArquitecturaModel.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -77,17 +78,27 @@ namespace Confiteria.Controllers
         }
 
         [HttpPost]
-        public IActionResult ReporteVentasMensuales(ReporteVentasMensualesViewModel viewModel)
-        {
-            var d = new DateTime(viewModel.Desde.Year, viewModel.Desde.Month, viewModel.Desde.Day, 0, 0, 0);
-            var h = new DateTime(viewModel.Hasta.Year, viewModel.Hasta.Month, viewModel.Hasta.Day, 23, 59, 59);
-            List<ArquitecturaModel.Model.Facturacion> facturacions = new List<ArquitecturaModel.Model.Facturacion>();
-            var consulta = _context.Facturacion.Include(d => d.DetalleFacturas)
-                .Include("DetalleFacturas.Productos")
-                .Include(i => i.FormaPago)
-                .Include(i => i.Clientes).Where(f => f.FechaRegistro >= d && f.FechaRegistro <= h).OrderBy(o=> o.FormaPagoId).ToList();
-            if(consulta.Count != 0)
-                facturacions = consulta;
+		public IActionResult ReporteVentasMensuales(ReporteVentasMensualesViewModel viewModel)
+		{
+			var d = new DateTime(viewModel.Desde.Year, viewModel.Desde.Month, viewModel.Desde.Day, 0, 0, 0);
+			var h = new DateTime(viewModel.Hasta.Year, viewModel.Hasta.Month, viewModel.Hasta.Day, 23, 59, 59);
+			List<ArquitecturaModel.Model.Facturacion> facturacions = new List<ArquitecturaModel.Model.Facturacion>();
+			var consulta = _context.Facturacion.Include(d => d.DetalleFacturas)
+				//.Include("DetalleFacturas.Productos")
+				.Include(i => i.FormaPago)
+				.Include(i => i.Clientes).Where(f => f.FechaRegistro >= d && f.FechaRegistro <= h).OrderBy(o => o.FormaPagoId).ToList();
+			if (consulta.Count != 0)
+				facturacions = consulta;
+           // Agrupar por Forma de Pago y calcular el total
+               var reportePorFormaPago = consulta
+                   .GroupBy(f => f.FormaPago.Name) // Agrupa por el nombre de la forma de pago
+                   .Select(g => new
+                   {
+                       FormaPago = g.Key,
+                       Total = g.Sum(x => x.Total) 
+                   })
+                   .ToList();
+
             return new ViewAsPdf(nameof(RptVentasMensuales), facturacions)
             {
                 PageMargins = new Rotativa.AspNetCore.Options.Margins(10, 5, 10, 5)

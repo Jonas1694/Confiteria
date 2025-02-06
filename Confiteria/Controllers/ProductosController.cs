@@ -76,8 +76,13 @@ namespace Confiteria.Controllers
                 Fecha = DateTime.Now,
                 MarcasId = productos.MarcasId
             };
+			if (_context.Productos.Any(a => a.Codigo == productos.Codigo))
+			{
+				ModelState.AddModelError(nameof(productos.Codigo), $"El Codigo {productos.Codigo} ya existe.!");
+				return View(productos);
+			}
 
-            if (ModelState.IsValid)
+			if (ModelState.IsValid)
             {
                 _context.Add(p);
                 await _context.SaveChangesAsync();

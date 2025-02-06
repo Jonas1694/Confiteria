@@ -87,6 +87,12 @@ namespace Confiteria.Controllers
 						ModelState.AddModelError("", "Debe introducir una cantidad");
 						return View(model);
 					}
+					var p = _context.Productos.Find(model.ProductosId);
+					if(model.Cantidad > p.Stock)
+					{
+                        ModelState.AddModelError("", $"No hay suficiente esto, la cantidad disponible es {p.Stock}.");
+                        return View(model);
+                    }
 					model.Tasa = t == null ? 0 : t.Tasa;
 					var data_ = model.AddItems(model);
 					data_.ProductosId = 0;

@@ -28,7 +28,8 @@ namespace Confiteria.Controllers
 			}
 			if (ModelState.IsValid)
 			{
-                _context.Update(tasaDolar);
+				tasaDolar.Id = 0;
+                _context.Add(tasaDolar);
                 _context.SaveChanges();
             }
             return View(tasaDolar);
@@ -38,7 +39,7 @@ namespace Confiteria.Controllers
 		{
 			try
 			{
-                var data = _context.TasaDolars.FirstOrDefault();
+                var data = _context.TasaDolars.MaxBy(m=> m.Id);
                 var lis = _context.Productos.ToList();
                 foreach (var item in lis)
                 {

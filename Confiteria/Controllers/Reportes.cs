@@ -55,9 +55,11 @@ namespace Confiteria.Controllers
                 var ganancia = new RptGananciaViewModel();
                 ganancia.Id = id.Id;
                 var d = detalle.Where(w => w.ProductosId == id.Id).ToList();
-                ganancia.NombreProducto = d.FirstOrDefault().Productos.Descripcion;
+                var product = d.FirstOrDefault().Productos;
+                ganancia.NombreProducto = product.Descripcion;
                 ganancia.Cantidad = d.Sum(s => s.Cantidad);
-                ganancia.Ganancia = 0;
+                ganancia.Total = d.Sum(s => s.Total);
+                ganancia.Ganancia = ganancia.Total - (product.PrecioCosto * ganancia.Cantidad);
                 rpt.Add(ganancia);
             }
             return new ViewAsPdf(nameof(RptReporteGanancia), rpt)

@@ -1,24 +1,37 @@
 ﻿@model IEnumerable<ArquitecturaModel.ViewModels.RptGananciaViewModel>
 
 @{
-    ViewData["Title"] = "RptReporteGanancia";
+    Layout = null;
 }
 
-<h1>RptReporteGanancia</h1>
-
-<table>
-    <thead>
-        <tr>
-            <th>Producto</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<!DOCTYPE html>
+<head>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>@item.NombreProducto</td>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Total Venta</th>
+                <th>Ganancia</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.NombreProducto.ToUpper()</td>
+                    <td class="text-center">@item.Cantidad</td>
+                    <td class="text-end">@item.Total.ToString("n2")</td>
+                    <td class="text-end">@item.Ganancia.ToString("n2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
+</body>

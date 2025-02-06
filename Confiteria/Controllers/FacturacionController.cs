@@ -73,7 +73,8 @@ namespace Confiteria.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(FacturacionViewModel model, string action)
 		{
-			var t = _context.TasaDolars.FirstOrDefault() ?? null;
+			var tazaId = _context.TasaDolars.Max(m => m.Id);
+            var t = _context.TasaDolars.Find(tazaId) ?? null;
 			ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif", model.ClienteId);
 			ViewData["ProductosId"] = new SelectList(_context.Productos, "Id", "GetDescripcion", model.ProductosId);
 			ViewData["SelectFormaPago"] = new SelectList(_context.FormaPago, "Id", "Name",model.FormaPagoId);

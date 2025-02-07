@@ -217,6 +217,7 @@ namespace Confiteria.Controllers
 			var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
 			return Json(data);
 		}
+
 		// GET: Facturacion/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{

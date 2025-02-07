@@ -1,4 +1,5 @@
 ﻿@model ArquitecturaModel.ViewModels.FacturacionViewModel
+@using System.Globalization;
 
 @{
     ViewData["Title"] = "Facturación";
@@ -182,10 +183,10 @@
                                                     @Html.DisplayFor(modelItem => Model.DetalleFacturacionViews[j].Cantidad)
                                                 </td>
                                                 <td>
-                                                    @Model.DetalleFacturacionViews[j].PrecioUnitario.ToString("C")
+                                                    @Model.DetalleFacturacionViews[j].PrecioUnitario.ToString("N2")
                                                 </td>
                                                 <td>
-                                                    @Model.DetalleFacturacionViews[j].SubTotal.ToString("C")
+                                                    @Model.DetalleFacturacionViews[j].SubTotal.ToString("N2")
                                                 </td>
                                                 <td>
                                                     <button name="action" type="submit" value="Eliminar" class="btn btn-danger btn-sm" id="" onclick="confirmar(@j)">Eliminar</button>
@@ -234,7 +235,7 @@
                         <div class="row" id="fNoMixto">
                             <label class="control-label">Monto a cancelar</label>
                             <div class="form-group">
-                                <input asp-for="MontoCancelar" class="form-control" id='txtMontoPagar' />
+                                <input asp-for="MontoCancelar" class="form-control txtn" id='txtMontoPagar' />
                             </div>
                         </div>
                         <div id="fMixto">
@@ -296,174 +297,175 @@
     @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        let taza = 0;
-        var cantidad = 0;
-        var stockMin = 0;
-        var stockMax = 0;
-        var stock = 0;
-        var monto = 0;
-        var pagototal = 0;
-        $(document).ready(function () {
-            $('#btoProducto').select2();
-            $('#ClienteId').select2();
+                let taza = 0;
+                var cantidad = 0;
+                var stockMin = 0;
+                var stockMax = 0;
+                var stock = 0;
+                var monto = 0;
+                var pagototal = 0;
+                $(document).ready(function () {
+                    $('#btoProducto').select2();
+                    $('#ClienteId').select2();
 
-            $('#mPago').click(function () {
-                pagototal = parseFloat($('#sTotal').text());
-            });
-            $('#btoProducto').val('');
-            $('#txtCantidad').val('0');
-            $('#PrecioUnitario').val('0,00');
-            $('#MontoCancelar').mask('#.##0,00', { reverse: true });
+                    $('#mPago').click(function () {
+                        pagototal = parseFloat($('#sTotal').text());
+                    });
+                    $('#btoProducto').val('');
+                    $('#txtCantidad').val('0');
+                    $('#PrecioUnitario').val('0,00');
+                    $('#txtMontoPagar').mask('#.##0,00', { reverse: true });
 
-            $('#btoProducto').change(function () {
-                $.ajax({
-                    url: '/Facturacion/GetPrecio',
-                    type: "post",
-                    dataType: "json",
-                    async: false,
-                    data: {
-                        id: $(this).val()
-                    },
-                    success: function (data) {
-                        $('#txtCantidad').val('1');
-                        $('#PrecioUnitario').val('0,00');
-                        $('#txtCodigo').val(data.codigo);
-                        $('#PrecioUnitario').val(data.precio).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: 'Bs' });
-                        $('#Precioprod').val(data.precio);
-                        $('#prod').val(data.descripcion);
-                        $('#stockMin').val(data.stockMin);
-                        $('#stockMax').val(data.stockMax);
-                        $('#stock').val(data.stock);
-                        $.each(data, function () {
+                    $('#btoProducto').change(function () {
+                        $.ajax({
+                            url: '/Facturacion/GetPrecio',
+                            type: "post",
+                            dataType: "json",
+                            async: false,
+                            data: {
+                                id: $(this).val()
+                            },
+                            success: function (data) {
+                                $('#txtCantidad').val('1');
+                                $('#PrecioUnitario').val('0,00');
+                                $('#txtCodigo').val(data.codigo);
+                                $('#PrecioUnitario').val(data.precio).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: 'Bs' });
+                                $('#Precioprod').val(data.precio);
+                                $('#prod').val(data.descripcion);
+                                $('#stockMin').val(data.stockMin);
+                                $('#stockMax').val(data.stockMax);
+                                $('#stock').val(data.stock);
+                                $.each(data, function () {
 
+                                });
+                            }
                         });
-                    }
+                    });
+                    // $('#CodigoBarra').change(function (e) {
+                    //     BuscarProductos($('#CodigoBarra').val());
+                    // // $('#txtCodigo').val('');
+                    //     // return false;
+                    // });
+                    $('#fNoMixto').hide();
+                    $('#fMixto').hide();
+                    $('#sFormaPago').change(function () {
+                        var select = parseInt($(this).val());
+                        $('#txtMontoPagar').val('');
+                        $('#tazaDolarId').val(null);
+                         pagototal =parseFloat($('#sTotal').text());
+                        switch (select) {
+                            case 3:
+                                GetTaza();
+                                pagototal =dosDecimales(pagototal / taza) ;
+                                $('#fNoMixto').show();
+                                $('#fMixto').hide();
+                                break;
+                            case 1:
+                            case 2:
+                            case 4:
+                            case 5:
+                                $('#fNoMixto').show();
+                                $('#fMixto').hide();
+                                break;
+                            case 6:
+                                $('#fMixto').show();
+                                $('#fNoMixto').hide();
+                                break;
+                        }
+                         $('#txtMontoPagar').val(pagototal).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.' , symbol: ''});
+                    });
                 });
-            });
-            // $('#CodigoBarra').change(function (e) {
-            //     BuscarProductos($('#CodigoBarra').val());
-            // // $('#txtCodigo').val('');
-            //     // return false;
-            // });
-            $('#fNoMixto').hide();
-            $('#fMixto').hide();
-            $('#sFormaPago').change(function () {
-                var select = parseInt($(this).val());
-                $('#txtMontoPagar').val('');
-                $('#tazaDolarId').val(null);
-                 pagototal =parseFloat($('#sTotal').text());
-                switch (select) {
-                    case 3:
-                        GetTaza();
-                        pagototal =dosDecimales(pagototal / taza) ;
-                        $('#fNoMixto').show();
-                        $('#fMixto').hide();
-                        break;
-                    case 1:
-                    case 2:
-                    case 4:
-                    case 5:
-                        $('#fNoMixto').show();
-                        $('#fMixto').hide();
-                        break;
-                    case 6:
-                        $('#fMixto').show();
-                        $('#fNoMixto').hide();
-                        break;
-                }
-                 $('#txtMontoPagar').val(pagototal);
-            });
-        });
-        function Barras() {
-            return false;
-        }
-        function ValidarPrecioTotal() {
-            if ($('#txtMontoPagar').val() != '') {
-                monto = parseFloat($('#txtMontoPagar').val());
-            }
-            if (monto == pagototal) {
-                return true;
-            }
-            alert("el monto ingresado no puede ser diferente al total " + pagototal + ".");
-            return false;
 
-        }
-
-        function validarStock() {
-            if ($('#txtCantidad').val() != '') {
-                cantidad = parseInt($('#txtCantidad').val());
-                stockMin = parseInt($('#stockMin').val());
-                stockMax = parseInt($('#stockMax').val());
-                stock = parseInt($('#stock').val());
-                if (cantidad > stock) {
-                    alert("La cantidad del Stock disponible del Producto " + $('#prod').val() + ", es de " + stock + ".");
+                function Barras() {
                     return false;
                 }
-                //else if (cantidad >= stockMax)
-                //{
-                //    alert("La cantidad no puede ser mayor, ni igual al Stock Maximo del producto: " + $('#prod').val() + ", es de " + stock + ".");
-                //    return false;
-                //}
-                else {
-                    return true;
+                function ValidarPrecioTotal() {
+                    if ($('#txtMontoPagar').val() != '') {
+                        monto = parseFloat($('#txtMontoPagar').val());
+                    }
+                    if (monto == pagototal) {
+                        return true;
+                    }
+                    alert("el monto ingresado no puede ser diferente al total " + pagototal + ".");
+                    return false;
+
                 }
-            }
-            return false;
-        }
-        function dosDecimales(n) {
-  let t=n.toString();
-  let regex=/(\d*.\d{0,2})/;
-  return t.match(regex)[0];
-}
-        jQuery(document).ready(function () {
-            jQuery('.txtn').keypress(function (tecla) {
-                if (tecla.charCode < 48 || tecla.charCode > 57) return false;
-            });
-        });
-        function confirmar(control) {
-            if (confirm('¿Está seguro de retirar el item seleccionado?')) {
-                $("#delete_" + control).val(true);
-                return true;
-            }
-            return false;
-        }
-        function BuscarProductos() {
-            $.ajax({
-                url: '/Facturacion/BuscarProductos',
-                type: "post",
-                dataType: "json",
-                async: false,
-                data: {
-                    codigo: $('#txtCodigoBarra').val()
-                },
-                success: function (data) {
-                    var d = data;
-                    $('#txtCantidad').val(1);
-                    $('#PrecioUnitario').val('0,00');
-                    $('#PrecioUnitario').val(data.precio);
-                    $('#Precioprod').val(data.precio);
-                    $('#btoProducto').val(data.id);
-                    $('#prod').val(data.descripcion);
-                    $('#txtCodigo').val($('#txtCodigoBarra').val());
-                    $('#stockMin').val(data.stockMin);
-                    $('#stockMax').val(data.stockMax);
-                    $('#stock').val(data.stock);
-                    $('#txtCodigoBarra').val('');
-                    $('#exampleModal').modal('hide');
+
+                function validarStock() {
+                    if ($('#txtCantidad').val() != '') {
+                        cantidad = parseInt($('#txtCantidad').val());
+                        stockMin = parseInt($('#stockMin').val());
+                        stockMax = parseInt($('#stockMax').val());
+                        stock = parseInt($('#stock').val());
+                        if (cantidad > stock) {
+                            alert("La cantidad del Stock disponible del Producto " + $('#prod').val() + ", es de " + stock + ".");
+                            return false;
+                        }
+                        //else if (cantidad >= stockMax)
+                        //{
+                        //    alert("La cantidad no puede ser mayor, ni igual al Stock Maximo del producto: " + $('#prod').val() + ", es de " + stock + ".");
+                        //    return false;
+                        //}
+                        else {
+                            return true;
+                        }
+                    }
+                    return false;
                 }
-            });
+                function dosDecimales(n) {
+          let t=n.toString();
+          let regex=/(\d*.\d{0,2})/;
+          return t.match(regex)[0];
         }
-        function GetTaza() {
-            $.ajax({
-                url: '/Productos/GetTaza',
-                type: "get",
-                dataType: "json",
-                async: false,
-                success: function (data) {
-                    taza = parseFloat(data.tasa);
-                    $('#tazaDolarId').val(data.id);
+                jQuery(document).ready(function () {
+                    jQuery('.txtn').keypress(function (tecla) {
+                        if (tecla.charCode < 48 || tecla.charCode > 57) return false;
+                    });
+                });
+                function confirmar(control) {
+                    if (confirm('¿Está seguro de retirar el item seleccionado?')) {
+                        $("#delete_" + control).val(true);
+                        return true;
+                    }
+                    return false;
                 }
-            });
-        }
+                function BuscarProductos() {
+                    $.ajax({
+                        url: '/Facturacion/BuscarProductos',
+                        type: "post",
+                        dataType: "json",
+                        async: false,
+                        data: {
+                            codigo: $('#txtCodigoBarra').val()
+                        },
+                        success: function (data) {
+                            var d = data;
+                            $('#txtCantidad').val(1);
+                            $('#PrecioUnitario').val('0,00');
+                            $('#PrecioUnitario').val(data.precio);
+                            $('#Precioprod').val(data.precio);
+                            $('#btoProducto').val(data.id);
+                            $('#prod').val(data.descripcion);
+                            $('#txtCodigo').val($('#txtCodigoBarra').val());
+                            $('#stockMin').val(data.stockMin);
+                            $('#stockMax').val(data.stockMax);
+                            $('#stock').val(data.stock);
+                            $('#txtCodigoBarra').val('');
+                            $('#exampleModal').modal('hide');
+                        }
+                    });
+                }
+                function GetTaza() {
+                    $.ajax({
+                        url: '/Productos/GetTaza',
+                        type: "get",
+                        dataType: "json",
+                        async: false,
+                        success: function (data) {
+                            taza = parseFloat(data.tasa);
+                            $('#tazaDolarId').val(data.id);
+                        }
+                    });
+                }
     </script>
 }

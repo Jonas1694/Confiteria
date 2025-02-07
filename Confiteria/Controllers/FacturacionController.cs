@@ -157,7 +157,7 @@ namespace Confiteria.Controllers
 								User = UsuarioId,
 								Tasa= model.Tasa,
 								FormaPagoId = model.FormaPagoId,
-								MontoCancelar = Convert.ToDecimal(model.MontoCancelar.Replace(".", "").Replace(",", ".")),
+								MontoCancelar = Convert.ToDecimal(model.MontoCancelar.Replace(",", ".")),
 								TasaDolarId = model.TasaDolarId == null? t!.Id: model.TasaDolarId,
 							};
 							_context.Add(facturacion);

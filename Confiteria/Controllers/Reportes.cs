@@ -58,11 +58,17 @@ namespace Confiteria.Controllers
                 ganancia.Id = id.Id;
                 var d = detalle.Where(w => w.ProductosId == id.Id).ToList();
                 var product = d.FirstOrDefault()!.Productos;
+                decimal total = 0;
+                foreach (var f in d)
+                {
+                    var tasa = _context.TasaDolar.Find(f.Facturacion.TasaDolarId);
+                    total += f.SubTotal / tasa.Tasa;
+                }
                 var fact = d.FirstOrDefault()!.Facturacion;
                 ganancia.NombreProducto = product.Descripcion;
                 ganancia.Cantidad = d.Sum(s => s.Cantidad);
-                ganancia.Total = d.Sum(s => s.SubTotal);
-                ganancia.Ganancia = ganancia.Total - (product.PrecioCosto * ganancia.Cantidad);
+                ganancia.Total = total;
+                ganancia.Ganancia =total - (product.PrecioCosto * ganancia.Cantidad);
                 rpt.Add(ganancia);
             }
             return new ViewAsPdf(nameof(RptReporteGanancia), rpt)

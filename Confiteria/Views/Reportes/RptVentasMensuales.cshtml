@@ -13,6 +13,15 @@
 <body>
 	@if(Model.Count() > 0)
 	{
+		var registro = Model.FirstOrDefault();
+		var fechaRegistro = registro?.FechaRegistro;
+
+		// Calcular la fecha de cierre como el último día del mes de la fecha de registro
+		var fechaCierre = fechaRegistro.HasValue
+		? new DateTime(fechaRegistro.Value.Year, fechaRegistro.Value.Month, DateTime.DaysInMonth(fechaRegistro.Value.Year, fechaRegistro.Value.Month)).ToShortDateString()
+		: "Fecha no disponible";
+		var fechaDesde = fechaRegistro != null ? fechaRegistro.Value.ToString("d") : "Fecha no disponible";
+
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-12 text-center">
@@ -23,11 +32,10 @@
 					AV PRINCIPAL FRANCISCO DE MIRANDA, EDO ARAGUA
 				</div>
 				<div class="col-12 text-center">
-					Fecha de Cierrre: @Model.FirstOrDefault()!.FechaRegistro!.ToShortDateString()
+					<p style="display: inline;">Fecha Desde: @fechaDesde</p>
+					<p style="display: inline; margin-left: 20px;">Fecha Hasta: @fechaCierre</p>
 				</div>
 			</div>
-
-			<br />
 			<div class="row">
 				<div class="col-12">
 					<table class="table table-bordered">
@@ -48,7 +56,7 @@
 									<td class="text-center">@i.Clientes.RazonSocial</td>
 									<td class="text-center">@i.FechaRegistro</td>
 									<td class="text-center">@i.FormaPago.Name</td>
-									<td class="text-end">@i.Total.ToString("N2")</td>
+									<td class="text-end">@i.MontoCancelar.Value.ToString("N2")</td>
 								</tr>
 							@* 	<tr>
 									<td colspan="4">

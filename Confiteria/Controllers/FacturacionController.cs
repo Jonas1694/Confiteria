@@ -171,7 +171,7 @@ namespace Confiteria.Controllers
 									FacturacionId = facturacion.FacturacionId,
 									ProductosId = item.ProductoId,
 									PrecioUnitario = item.PrecioUnitario,
-									SubTotal = item.PrecioUnitario * model.Cantidad,
+									SubTotal = item.PrecioUnitario * item.Cantidad,
                                     ////Iva = 16,
                                     //IvaUnitario = item.IvaUnitario,
                                     //TotalIva = item.TotalIva,

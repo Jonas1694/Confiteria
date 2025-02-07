@@ -64,7 +64,6 @@ namespace Confiteria.Controllers
                     var tasa = _context.TasaDolar.Find(f.Facturacion.TasaDolarId);
                     total += f.SubTotal / tasa.Tasa;
                 }
-                var fact = d.FirstOrDefault()!.Facturacion;
                 ganancia.NombreProducto = product.Descripcion;
                 ganancia.Cantidad = d.Sum(s => s.Cantidad);
                 ganancia.Total = total;

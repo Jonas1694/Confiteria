@@ -1,4 +1,5 @@
 ﻿using ArquitecturaModel;
+using ArquitecturaModel.Migrations;
 using ArquitecturaModel.Model;
 using ArquitecturaModel.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -140,7 +141,9 @@ namespace Confiteria.Controllers
 						try
 						{
 							
-							model.Tasa = (decimal.Parse(model.Total.ToString()) / (t == null? 0 : t.Tasa));
+							//model.Tasa = (decimal.Parse(model.Total.ToString()) / (t == null? 0 : t.Tasa));
+							model.Tasa = (t == null || t.Tasa == 0) ? 0 : (decimal.Parse(model.Total.ToString()) / t.Tasa);
+
 							var facturacion = new Facturacion
 							{
 								ClienteId = model.ClienteId,
@@ -154,7 +157,7 @@ namespace Confiteria.Controllers
 								User = UsuarioId,
 								Tasa= model.Tasa,
 								FormaPagoId = model.FormaPagoId,
-								MontoCancelar = Convert.ToDecimal(model.MontoCancelar.Replace(".","").Replace(",",".")),
+								MontoCancelar = Convert.ToDecimal(model.MontoCancelar.Replace(".", "").Replace(",", ".")),
 								TasaDolarId = model.TasaDolarId == null? t!.Id: model.TasaDolarId,
 							};
 							_context.Add(facturacion);

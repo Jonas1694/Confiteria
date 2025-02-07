@@ -84,7 +84,7 @@
 							<tr>
 								<td colspan="6" class="text-end">
 									<label>Monto Total Divisas: </label>
-									@Model.Sum(s => s.Tasa).ToString("N")
+									@Model.Where(s => s.FormaPago.Name == "Divisa").Sum(s => s.Tasa).ToString("N2")
 								</td>
 							</tr>
 							<tr>

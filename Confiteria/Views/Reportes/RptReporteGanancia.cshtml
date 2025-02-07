@@ -32,6 +32,14 @@
                 </tr>
             }
         </tbody>
+		<tfoot>
+			<tr>
+				<td colspan="6" class="text-end">
+					<label>Monto Total de Ganancias : </label>
+					@Model.Sum(s => s.Ganancia).ToString("N2")
+				</td>
+			</tr>
+		</tfoot>
     </table>
 
 </body>

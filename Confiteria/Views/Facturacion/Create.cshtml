@@ -48,12 +48,12 @@
 							</div> *@
                             <div class="row">
                                 <div class="col-md-6"><span>Total Divisa</span></div>
-                                <div class="col-md-6"><span class="kt-font-brand">@Html.DisplayFor(model => model.Tasa)</span></div>
+                                <div class="col-md-6"><span class="kt-font-brand">@Model.Tasa.ToString("N2")</span></div>
                             </div>
                             <br />
                             <div class="row">
                                 <div class="col-md-6"><span>Total</span></div>
-                                <div class="col-md-6"><span id="sTotal" class="kt-font-brand">@Html.DisplayFor(model => model.Total)</span></div>
+                                <div class="col-md-6"><span id="sTotal" class="kt-font-brand">@Model.Total.ToString("N2")</span></div>
                             </div>
                         </div>
                     </div>
@@ -314,7 +314,7 @@
                     $('#btoProducto').val('');
                     $('#txtCantidad').val('0');
                     $('#PrecioUnitario').val('0,00');
-                    $('#txtMontoPagar').mask('#.##0,00', { reverse: true });
+                    $('#txtMontoPagar').mask('#,##0.00', { reverse: true });
 
                     $('#btoProducto').change(function () {
                         $.ajax({
@@ -352,11 +352,11 @@
                         var select = parseInt($(this).val());
                         $('#txtMontoPagar').val('');
                         $('#tazaDolarId').val(null);
-                         pagototal =parseFloat($('#sTotal').text());
+                         pagototal = parseFloat(@Model.Total);
                         switch (select) {
                             case 3:
                                 GetTaza();
-                                pagototal =dosDecimales(pagototal / taza) ;
+                                pagototal = parseFloat(dosDecimales(pagototal / taza));
                                 $('#fNoMixto').show();
                                 $('#fMixto').hide();
                                 break;
@@ -372,18 +372,21 @@
                                 $('#fNoMixto').hide();
                                 break;
                         }
-                         $('#txtMontoPagar').val(pagototal).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.' , symbol: ''});
+                         $('#txtMontoPagar').val(pagototal).formatCurrency({ region: 'en-US', decimalSymbol: '.', digitGroupSymbol: ',', symbol: '' });
                     });
                 });
-
+                function formatMony(value){
+                    return value.replace(',','');
+                }
                 function Barras() {
                     return false;
                 }
                 function ValidarPrecioTotal() {
                     if ($('#txtMontoPagar').val() != '') {
-                        monto = parseFloat($('#txtMontoPagar').val());
+                        monto =parseFloat(formatMony($('#txtMontoPagar').val()));
                     }
-                    if (monto == pagototal) {
+                    if (monto == pagototal) 
+                    {
                         return true;
                     }
                     alert("el monto ingresado no puede ser diferente al total " + pagototal + ".");

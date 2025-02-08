@@ -30,6 +30,7 @@ namespace Confiteria.Controllers
 			if (ModelState.IsValid)
 			{
 				tasaDolar.Id = 0;
+				//tasaDolar.Tasa = tasaDolar.Tasa;
                 _context.Add(tasaDolar);
                 _context.SaveChanges();
             }

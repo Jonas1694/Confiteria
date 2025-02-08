@@ -30,16 +30,16 @@
 		<table class="table table-hover table-responsive table-striped" id="MyTable">
 			<thead>
 				<tr>
-					<th>
+					<th class="text-center">
 						@Html.DisplayNameFor(model => model.Clientes)
 					</th>
-					<th>
+					<th class="text-center">
 						@Html.DisplayNameFor(model => model.NFactura)
 					</th>
-					<th>
+					<th class="text-center">
 						@Html.DisplayNameFor(model => model.Total)
 					</th>
-					<th>
+					<th class="text-center">
 						@Html.DisplayNameFor(model => model.FechaRegistro)
 					</th>
 					<th></th>
@@ -52,16 +52,16 @@
 						<td>
 							@Html.DisplayFor(modelItem => item.Clientes.RazonSocial)
 						</td>
-						<td>
+						<td class="text-center">
 							@Html.DisplayFor(modelItem => item.NFactura)
 						</td>
-						<td>
-							@item.Total.ToString("C")
+						<td class="text-end">
+							@item.Total.ToString("n2")
 						</td>
-						<td>
+						<td class="text-center">
 							@item.FechaRegistro.ToShortDateString()
 						</td>
-						<td>
+						<td class="text-end">
 							@*<a asp-action="Edit" asp-route-id="@item.FacturacionId">Edit</a>*@
 							<a asp-action="Details" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Detalles</a>
 							<a asp-action="rptFactura" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Imprimir</a>

@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Facturación";
 }
-
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" />
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Producto" id="prod" />
@@ -82,12 +82,22 @@
                                 <input class="form-control" id="txtCodigo" type="text" />
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-1">
                             <div class="form-group">
                                 <label class="control-label" style="color:white;">k</label>
                                 <div>
                                     <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         <i class=""></i> Escanear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label class="control-label" style="color:white;">k</label>
+                                <div>
+                                    <button type="button" class="btn btn-sm btn-primary" id="btnStock">
+                                        <i class=""></i> Stock
                                     </button>
                                 </div>
                             </div>
@@ -290,10 +300,42 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="modelProduct" tabindex="-1" aria-labelledby="modelProductLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalReservarLabel">Lista de stock</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover table-responsive table-striped" id="dtProduct">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Descripcion</th>
+                                    <th>Marca</th>
+                                    <th>Stock</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts {
     <script src="~/lib/select2/dist/js/select2.full.min.js"></script>
     <script src="~/lib/select2/dist/js/select2.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
@@ -307,7 +349,9 @@
                 $(document).ready(function () {
                     $('#btoProducto').select2();
                     $('#ClienteId').select2();
-
+                    $('#btnStock').click(function () {
+                        GetAllProducto();
+                    });
                     $('#mPago').click(function () {
                         pagototal = parseFloat($('#sTotal').text());
                     });
@@ -385,7 +429,7 @@
                     if ($('#txtMontoPagar').val() != '') {
                         monto =parseFloat(formatMony($('#txtMontoPagar').val()));
                     }
-                    if (monto == pagototal) 
+                    if (monto == pagototal)
                     {
                         return true;
                     }
@@ -469,6 +513,42 @@
                             $('#tazaDolarId').val(data.id);
                         }
                     });
+                }
+                function GetAllProducto() {
+                     $.ajax({
+                        url: '/Productos/GetAllProducto',
+                        type: "get",
+                        dataType: "json",
+                        async: false,
+                        success: function (data) {
+                            $('#dtProduct').dataTable({
+            // "processing": true,
+             "destroy": true,
+            "filter": true,
+            "orderMulti": false,
+            data:data,
+            // "ajax": {
+            //     "url": "/Productos/GetAllProducto",
+            //     "url": "/Productos/GetAllProducto",
+            //     "type": "get",
+            //     "datatype": "json"
+            // },
+            "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                },
+            "columns": [
+                { "data": "codigo", "name": "Codigo", "autoWidth": true },
+                { "data": "descripcion", "name": "Descripcion", "autoWidth": true },
+                { "data": "marcas.descripcion", "name": "Marcas", "autoWidth": true },
+                { "data": "stock", "name": "Stock", "autoWidth": true, "className": 'dt-center' },
+                { "data": "precio", "name": "Precio", "autoWidth": true, "className": 'dt-right' },
+            ]
+        });
+        $("#modelProduct").modal("show");
+                        }
+                    });
+                     
+         
                 }
     </script>
 }

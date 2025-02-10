@@ -50,6 +50,12 @@ namespace Confiteria.Controllers
             var tazaId = _context.TasaDolar.Max(m => m.Id);
             return Json(_context.TasaDolar.Find(tazaId));
         }
+
+        [HttpGet]
+        public IActionResult GetAllProducto()
+        {
+            return Ok( _context.Productos.Include(i => i.Marcas).ToList());
+        }
         // GET: Clientes/Create
         public IActionResult Create()
         {

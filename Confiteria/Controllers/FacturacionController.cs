@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Rotativa.AspNetCore;
+using System.Threading.Tasks;
 
 namespace Confiteria.Controllers
 {
@@ -108,9 +109,11 @@ namespace Confiteria.Controllers
 						f.Iva = 0;
 						f.SubTotal = 0;
 					});
+                    model.Tasa = t == null ? 0 : t.Tasa;
                     //model.TotalIva = model.SubTotal * (Convert.ToDecimal(model.FormatPorCentaje(0.16M)) / 100);
                     model.Total = model.SubTotal /*+ model.TotalIva*/;
-					return View(model);
+                    model.Tasa = model.Total / model.Tasa;
+                    return View(model);
 				case "Registrar Factura":
 					if (model.DetalleFacturacionViews == null)
 					{

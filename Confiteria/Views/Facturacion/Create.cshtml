@@ -353,6 +353,9 @@
                         GetAllProducto();
                     });
                     $('#mPago').click(function () {
+                        $('#sFormaPago').val('');
+                         $('#fMixto').hide();
+                                $('#fNoMixto').hide();
                         pagototal = parseFloat($('#sTotal').text());
                     });
                     $('#btoProducto').val('');
@@ -547,8 +550,8 @@
         $("#modelProduct").modal("show");
                         }
                     });
-                     
-         
+
+
                 }
     </script>
 }

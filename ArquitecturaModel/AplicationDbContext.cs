@@ -18,6 +18,7 @@ namespace ArquitecturaModel
         public DbSet<FormaPago> FormaPago { get; set; }
         public DbSet<Marcas> Marcas { get; set; }
         public DbSet<StatusDocumentos> StatusDocumentos { get; set; }
+        public DbSet<Devolucion> Devolucions { get; set; }
         public AplicationDbContext(DbContextOptions<AplicationDbContext> options)
           : base(options)
         {

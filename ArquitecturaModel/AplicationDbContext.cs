@@ -1,6 +1,7 @@
 ﻿using ArquitecturaModel.Model;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace ArquitecturaModel
 {
@@ -19,6 +20,7 @@ namespace ArquitecturaModel
         public DbSet<Marcas> Marcas { get; set; }
         public DbSet<StatusDocumentos> StatusDocumentos { get; set; }
         public DbSet<Devolucion> Devolucions { get; set; }
+        public DbSet<DetalleDevolucion> DetalleDevoluciones { get; set; }
         public AplicationDbContext(DbContextOptions<AplicationDbContext> options)
           : base(options)
         {
@@ -28,6 +30,8 @@ namespace ArquitecturaModel
         {
             builder.Entity<Cliente>().HasIndex(o => o.RazonSocial).IsUnique();
             builder.Entity<StatusDocumentos>().HasKey(i => i.StatusDocumentoId);
+            builder.Entity<DetalleDevolucion>().HasOne(d => d.Devolucion).WithMany() .HasForeignKey(d => d.DocumentoId)
+        .OnDelete(DeleteBehavior.Restrict);
             base.OnModelCreating(builder);
         }
     }

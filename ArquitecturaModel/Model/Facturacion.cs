@@ -30,5 +30,8 @@ namespace ArquitecturaModel.Model
         public decimal? MontoCancelar { get; set; }
         public int? TasaDolarId { get; set; }
         public TasaDolar TasaDolar { get; set; }
+        public int StatusDocumentoId { get; set; }
+        [Display(Name ="Status")]
+        public StatusDocumentos StatusDocumento { get; set; }
     }
 }

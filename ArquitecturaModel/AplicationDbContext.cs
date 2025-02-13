@@ -17,6 +17,7 @@ namespace ArquitecturaModel
         public DbSet<TasaDolar> TasaDolar { get; set; }
         public DbSet<FormaPago> FormaPago { get; set; }
         public DbSet<Marcas> Marcas { get; set; }
+        public DbSet<StatusDocumentos> StatusDocumentos { get; set; }
         public AplicationDbContext(DbContextOptions<AplicationDbContext> options)
           : base(options)
         {
@@ -25,6 +26,7 @@ namespace ArquitecturaModel
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Cliente>().HasIndex(o => o.RazonSocial).IsUnique();
+            builder.Entity<StatusDocumentos>().HasKey(i => i.StatusDocumentoId);
             base.OnModelCreating(builder);
         }
     }

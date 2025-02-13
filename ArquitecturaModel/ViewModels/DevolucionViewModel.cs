@@ -26,13 +26,94 @@ namespace ArquitecturaModel.ViewModels
         public decimal Iva { get; set; }
         public decimal Total { get; set; }
 
-        public int ProductoId { get; set; }
+		[Display(Name = "Producto")]
+		public int ProductoId { get; set; }
         public string Producto { get; set; }
         public int Cantidad { get; set; }
+        public decimal Tasa { get; set; }
         public decimal PrecioUnitario { get; set; }
         [Required(ErrorMessage = "De introducir la descripción de la devolución!")]
         [Display(Name = "Descripción")]
         public string DescripcionDevolucion { get; set; }
-        public List<DetalleDevolucionViewModel> DetalleDecomentoViews { get; set; }
+        public List<DetalleDevolucionViewModel> DetalleDocumentoViews { get; set; }
+        #region
+        public DevolucionViewModel ReturnViewModel(Devolucion compras, List<DetalleDevolucion> detalle)
+        {
+
+            List<DetalleDevolucionViewModel> list = new List<DetalleDevolucionViewModel>();
+            foreach (var item in detalle)
+            {
+                list.Add(new DetalleDevolucionViewModel
+                {
+                    ProductoId = item.ProductoId,
+                    Producto = item.Productos.GetDescripcion,
+                    Cantidad = item.Cantidad,
+                    PrecioUnitario = item.PrecioUnitario,
+                    SubTotal = item.SubTotal,
+                    Iva = 12,
+                    IvaUnitario = item.IvaUnitario,
+                    TotalIva = item.TotalIva,
+                    Total = item.Total
+                });
+            }
+            var view = new DevolucionViewModel
+            {
+                DocumentoId = compras.DevolucionId,
+                Iva = compras.Iva,
+                NDocumento = compras.NDocumento,
+                Clientes = compras.Clientes,
+                SubTotal = compras.SubTotal,
+                Total = compras.Total,
+                TotalIva = compras.TotalIva,
+                ClienteId = compras.ClienteId,
+                DetalleDocumentoViews = list
+            };
+            return view;
+        }
+        public DevolucionViewModel AddItems(DevolucionViewModel model)
+        {
+            List<DetalleDevolucionViewModel> listDetalleCotizacion = new List<DetalleDevolucionViewModel>();
+
+            if (model.DetalleDocumentoViews != null)
+                listDetalleCotizacion = model.DetalleDocumentoViews;
+
+            decimal SubTotal = model.PrecioUnitario * model.Cantidad;
+            decimal IvaUnitario = model.PrecioUnitario * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
+            decimal TotalIva = IvaUnitario * model.Cantidad;
+            decimal Total = SubTotal + TotalIva;
+            listDetalleCotizacion.Add(new DetalleDevolucionViewModel
+            {
+                ProductoId = model.ProductoId,
+                Producto = model.Producto,
+                Cantidad = model.Cantidad,
+                PrecioUnitario = model.PrecioUnitario,
+                SubTotal = SubTotal,
+                Iva = 16,
+                IvaUnitario = IvaUnitario,
+                TotalIva = TotalIva,
+                Total = Total
+            });
+
+            model.SubTotal = listDetalleCotizacion.Sum(s => s.SubTotal);
+            model.TotalIva = model.SubTotal * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
+            model.Total = model.SubTotal + model.TotalIva;
+            model.DetalleDocumentoViews = listDetalleCotizacion;
+            return model;
+        }
+        public string FormatPorCentaje(decimal valor)
+        {
+            return valor.ToString("P2").Replace("%", "");
+        }
+        public DevolucionViewModel ToModel(DevolucionViewModel model)
+        {
+            List<DetalleDevolucionViewModel> Detalle = DetalleDocumentoViews;
+            model.SubTotal = Detalle.Sum(s => s.SubTotal);
+            model.Iva = 16;
+            model.TotalIva = model.SubTotal * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
+            model.Total = model.SubTotal + model.TotalIva;
+            model.DetalleDocumentoViews = Detalle;
+            return model;
+        }
+        #endregion
     }
 }

@@ -1,0 +1,77 @@
+﻿@model ArquitecturaModel.Model.Devolucion
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h3>Esta Seguro que quiere borrar esta Devolucion?</h3>
+<form asp-action="Delete">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Devolucion</h3>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Clientes)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Clientes.DireccionFiscal)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.NDocumento)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.NDocumento)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.SubTotal)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.SubTotal)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.TotalIva)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.TotalIva)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Iva)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Iva)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Total)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Total)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.UsuarioId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UsuarioId)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.StatusDocumento)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.StatusDocumento.StatusDocumentoId)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.FechaRegistro)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.FechaRegistro)
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <input type="hidden" asp-for="DevolucionId" />
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</form>

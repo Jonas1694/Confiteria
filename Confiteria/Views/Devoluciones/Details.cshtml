@@ -1,0 +1,106 @@
+﻿@model ArquitecturaModel.ViewModels.DevolucionViewModel
+@{
+    ViewData["Title"] = "Detalle";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <!--begin::Portlet-->
+        <div class="kt-portlet">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        Detalle Devolución N° @Html.DisplayFor(model => model.DocumentoId)
+                    </h3>
+                </div>
+            </div>
+            <div class="kt-portlet__body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>
+                            <label asp-for="ClienteId" class="control-label"></label>
+                            <p class="form-control-static">@Html.DisplayFor(model => model.Clientes.RazonSocial)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-offset-3 col-md-3">
+                        <div class="kt-mycart">
+                            <div class="kt-mycart__footer">
+                                <div class="kt-mycart__section">
+                                    <div class="kt-mycart__subtitel">
+                                        <div class="col-md-6"><span>Total Divisa:</span></div>
+                                        <div class="col-md-6"><span class="kt-font-brand">@Html.DisplayFor(model => model.Tasa)</span></div>
+                                    </div>
+                                    <div class="kt-mycart__prices">
+                                        <div class="col-md-6"><span>Total Bolivares:</span></div>
+                                        <span class="kt-font-brand">@Html.DisplayFor(model => model.Total)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Portlet-->
+    </div>
+    <div class="col-md-12">
+        <!--begin::Portlet-->
+        <div class="kt-portlet">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        Detalles Devolucion
+                    </h3>
+                </div>
+            </div>
+            <div class="kt-portlet__body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Producto
+                            </th>
+                            <th>
+                                Cantidad
+                            </th>
+                            <th>
+                                Precio Unitario
+                            </th>
+                            <th>
+                                SubTotal
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.DetalleDocumentoViews != null)
+                        {
+                            for (var j = 0; j < Model.DetalleDocumentoViews.Count; ++j)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => Model.DetalleDocumentoViews[j].Producto)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => Model.DetalleDocumentoViews[j].Cantidad)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => Model.DetalleDocumentoViews[j].PrecioUnitario)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => Model.DetalleDocumentoViews[j].SubTotal)
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="kt-portlet__foot">
+                <div class="kt-form__actions">
+                    <a asp-action="Index" class="btn btn-secondary">Regresar a la Lista</a>
+                </div>
+            </div>
+        </div>
+        <!--end::Portlet-->
+    </div>
+</div>

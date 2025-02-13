@@ -33,32 +33,50 @@
 						<li class="nav-item">
 						<a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>*@
-						<li class="nav-item">
-							<a class="nav-link text-white" asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a>
-						</li>
-						
-						@if (User.IsInRole("Admin"))
+						@if (User.IsInRole("Facturador"))
 						{
 							<li class="nav-item">
-								<a class="nav-link text-white" asp-area="" asp-controller="Productos" asp-action="Index">Productos</a>
+								<a class="nav-link text-white" asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link text-white" asp-area="" asp-controller="Marcas" asp-action="Index">Marcas</a>
+								<a class="nav-link text-white" asp-area="" asp-controller="Facturacion" asp-action="Index">Facturacion</a>
+							</li>
+						}
+
+						@if (User.IsInRole("Admin"))
+						{
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Registros</a>
+								<ul class="dropdown-menu">
+									<li><a class="dropdown-item" asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li><a class="dropdown-item" asp-area="" asp-controller="Productos" asp-action="Index">Productos</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li><a class="dropdown-item" asp-area="" asp-controller="Marcas" asp-action="Index">Marcas</a></li>
+								</ul>
 							</li>
 						}
 						
 						@* <li class="nav-item">
 						<a class="nav-link text-white" asp-area="" asp-controller="Proveedors" asp-action="Index">Proveedores</a>
 						</li> *@
-						<li class="nav-item">
-							<a class="nav-link text-white" asp-area="" asp-controller="Facturacion" asp-action="Index">Facturacion</a>
-						</li>
+						
 						@if (User.IsInRole("Admin"))
 						{
-							<li class="nav-item">
-								<a class="nav-link text-white" asp-area="" asp-controller="TasaDolars" asp-action="Index">TasaDolar</a>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Procesos</a>
+								<ul class="dropdown-menu">
+									<li><a class="dropdown-item" asp-controller="Facturacion" asp-action="Index">Facturacion</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li><a class="dropdown-item" asp-controller="Devoluciones" asp-action="Index">Devoluciones</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li class="nav-item">
+										<a class="dropdown-item" asp-area="" asp-controller="TasaDolars" asp-action="Index">TasaDolar</a>
+									</li>
+									@*
+								<li><a class="dropdown-item" href="#">Separated link</a></li> *@
+								</ul>
 							</li>
-						
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Reportes</a>
 							<ul class="dropdown-menu">

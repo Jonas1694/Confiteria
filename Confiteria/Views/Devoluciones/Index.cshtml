@@ -1,7 +1,7 @@
-﻿@model IEnumerable<ArquitecturaModel.Model.Facturacion>
+﻿@model IEnumerable<ArquitecturaModel.Model.Devolucion>
 
 @{
-	ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista";
 }
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
@@ -10,18 +10,15 @@
 	<div class="kt-portlet__head kt-portlet__head--lg">
 		<div class="kt-portlet__head-label">
 			<h3 class="kt-portlet__head-title">
-				Listas de Facturas
+                Lista de Devoluciones
 			</h3>
 		</div>
 		<div>
 			<div>
 				<div class="col-md-12">
 					<a asp-action="Create" class="btn btn-outline-info">
-						<i class="la la-plus"></i>Nueva Factura
+                        <i class="la la-plus"></i>Nueva Devolución
 					</a>
-					@* <a asp-action="CierreDiario" class="btn btn-outline-danger">
-						<i class="la la-plus"></i>Cierre Diario
-					</a> *@
 				</div>
 			</div>
 		</div>
@@ -34,7 +31,7 @@
 						@Html.DisplayNameFor(model => model.Clientes)
 					</th>
 					<th>
-						@Html.DisplayNameFor(model => model.NFactura)
+						@Html.DisplayNameFor(model => model.NDocumento)
 					</th>
 					<th>
 						@Html.DisplayNameFor(model => model.StatusDocumento)
@@ -42,6 +39,7 @@
 					<th>
 						@Html.DisplayNameFor(model => model.Total)
 					</th>
+                   
 					<th>
 						@Html.DisplayNameFor(model => model.FechaRegistro)
 					</th>
@@ -56,10 +54,10 @@
 							@Html.DisplayFor(modelItem => item.Clientes.RazonSocial)
 						</td>
 						<td>
-							@Html.DisplayFor(modelItem => item.NFactura)
+							@Html.DisplayFor(modelItem => item.NDocumento)
 						</td>
 						<td>
-							@Html.DisplayFor(modelItem => item.StatusDocumento.StatusDocumentoId)
+							@Html.DisplayFor(modelItem => item.StatusDocumento.StatusDocumento)
 						</td>
 						<td>
 							@item.Total.ToString("C")
@@ -68,11 +66,9 @@
 							@item.FechaRegistro.ToShortDateString()
 						</td>
 						<td>
-							@*<a asp-action="Edit" asp-route-id="@item.FacturacionId">Edit</a>*@
-							<a asp-action="Details" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Detalles</a>
-							<a asp-action="rptFactura" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Imprimir</a>
-							@*<a asp-action="Delete" asp-route-id="@item.FacturacionId">Delete</a>*@
-							<a asp-action="Create" asp-controller="Devoluciones" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Devolución</a>
+                            <a asp-action="Edit" asp-route-id="@item.DevolucionId">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.DevolucionId" class="btn btn-outline-info btn-sm">Detalles</a>
+                            <a asp-action="Delete" asp-route-id="@item.DevolucionId">delete</a>
 						</td>
 					</tr>
 				}
@@ -80,7 +76,7 @@
 		</table>
 	</div>
 </div>
-<!--end::Portlet-->
+
 @section Scripts {
 	<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 

@@ -1,6 +1,6 @@
 ﻿using ArquitecturaModel;
-using ArquitecturaModel.Model;
 using ArquitecturaModel.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
@@ -9,6 +9,7 @@ using Stimulsoft.Report.Mvc;
 
 namespace Confiteria.Controllers
 {
+    [Authorize]
     public class Reportes : Controller
     {
         private readonly AplicationDbContext _context;

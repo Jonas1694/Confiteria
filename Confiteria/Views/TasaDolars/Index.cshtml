@@ -4,7 +4,7 @@
 }
 
 <h1>Index</h1>
-<form asp-action="Create">
+<form asp-action="Index">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="card card-primary">
         <div class="card-header">
@@ -13,7 +13,7 @@
         <div class="card-body">
             <div class="row">
                 <label asp-for="Tasa" class="control-label"></label>
-                <input asp-for="Tasa" class="form-control" />
+                <input asp-for="Tasa" class="form-control" id="txtTasaDolar"/>
                 <span asp-validation-for="Tasa" class="text-danger"></span>
             </div>
         </div>
@@ -39,9 +39,10 @@
     </div>
 </form> *@
 @section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         jQuery(document).ready(function () {
-            
+            $('#txtTasaDolar').mask('#,##0.00', { reverse: true });
         });
         function Update() { 
             $.ajax({

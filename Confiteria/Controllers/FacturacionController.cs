@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Rotativa.AspNetCore;
+using System.Threading.Tasks;
 
 namespace Confiteria.Controllers
 {
@@ -109,9 +110,11 @@ namespace Confiteria.Controllers
 						f.Iva = 0;
 						f.SubTotal = 0;
 					});
+                    model.Tasa = t == null ? 0 : t.Tasa;
                     //model.TotalIva = model.SubTotal * (Convert.ToDecimal(model.FormatPorCentaje(0.16M)) / 100);
                     model.Total = model.SubTotal /*+ model.TotalIva*/;
-					return View(model);
+                    model.Tasa = model.Total / model.Tasa;
+                    return View(model);
 				case "Registrar Factura":
 					if (model.DetalleFacturacionViews == null)
 					{
@@ -159,7 +162,7 @@ namespace Confiteria.Controllers
 								User = UsuarioId,
 								Tasa= model.Tasa,
 								FormaPagoId = model.FormaPagoId,
-								MontoCancelar = Convert.ToDecimal(model.MontoCancelar.Replace(".", "").Replace(",", ".")),
+								MontoCancelar = Convert.ToDecimal(model.MontoCancelar),
 								TasaDolarId = model.TasaDolarId == null? t!.Id: model.TasaDolarId,
 							};
 							_context.Add(facturacion);
@@ -222,6 +225,7 @@ namespace Confiteria.Controllers
 			var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
 			return Json(data);
 		}
+
 		// GET: Facturacion/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{

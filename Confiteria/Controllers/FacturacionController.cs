@@ -32,6 +32,7 @@ namespace Confiteria.Controllers
 		public async Task<IActionResult> Index()
 		{
 			var applicationDbContext = _context.Facturacion.Include(f => f.Clientes)
+				.Include(f => f.StatusDocumento)
 				.OrderByDescending(n => n.NFactura);
 			return View(await applicationDbContext.ToListAsync());
 		}
@@ -150,6 +151,7 @@ namespace Confiteria.Controllers
 								FechaRegistro = DateTime.Now,
 								//Iva = model.Iva,
 								NFactura = model.NFactura,
+								StatusDocumentoId=2,
 								//SubTotal = model.SubTotal,
 								Total = model.Total,
 								//TotalIva = model.TotalIva,

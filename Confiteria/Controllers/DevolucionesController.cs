@@ -97,6 +97,7 @@ namespace Confiteria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DevolucionViewModel model, string action)
         {
+            
             ViewData["ClienteId"] = new SelectList(await _context.Clientes.ToListAsync(), "id", "GetRif");
             ViewData["ProductosId"] = new SelectList(await _context.Productos.ToListAsync(), "Id", "GetDescripcion");
             //ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "GetRif", model.ClienteId);

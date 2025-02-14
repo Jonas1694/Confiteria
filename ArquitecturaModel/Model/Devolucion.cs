@@ -18,7 +18,7 @@ namespace ArquitecturaModel.Model
         public decimal TotalIva { get; set; }
         public decimal Iva { get; set; }
         public decimal Total { get; set; }
-        public string UsuarioId { get; set; }
+        public Guid UserId { get; set; }
         public ApplicationUser User { get; set; }
         public int StatusDocumentoId { get; set; }
         [Display(Name = "Status")]

@@ -46,7 +46,7 @@ namespace ArquitecturaModel.ViewModels
                 list.Add(new DetalleDevolucionViewModel
                 {
                     ProductoId = item.ProductoId,
-                    Producto = item.Productos.GetDescripcion,
+                    Producto = item.Producto.GetDescripcion,
                     Cantidad = item.Cantidad,
                     PrecioUnitario = item.PrecioUnitario,
                     SubTotal = item.SubTotal,

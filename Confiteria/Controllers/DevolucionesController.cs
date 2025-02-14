@@ -41,7 +41,7 @@ namespace Confiteria.Controllers
             }
             var model = new DevolucionViewModel();
 
-            return View(model.ReturnViewModel(devolucion, _context.DetalleDevoluciones.Include(i => i.Productos).Include(i => i.Productos.Marcas).Where(w => w.DocumentoId == id).ToList()));
+            return View(model.ReturnViewModel(devolucion, _context.DetalleDevoluciones.Include(i => i.Producto).Include(i => i.Producto.Marcas).Where(w => w.DocumentoId == id).ToList()));
         }
         // GET: Devoluciones/Create
         public async Task<IActionResult> Create(int? id)
@@ -154,7 +154,7 @@ namespace Confiteria.Controllers
                                 SubTotal = model.SubTotal,
                                 Total = model.Total,
                                 TotalIva = model.TotalIva,
-                                UsuarioId = UsuarioId.Id.ToString(),
+                                UserId = UsuarioId.Id,
                                 DescripcionDevolucion = model.DescripcionDevolucion
                             };
                             _context.Add(devolucion);
@@ -165,7 +165,7 @@ namespace Confiteria.Controllers
                                 var detalle = new DetalleDevolucion
                                 {
                                     Cantidad = item.Cantidad,
-                                    UsuarioId = UsuarioId.Id.ToString(),
+                                    UserId = UsuarioId.Id,
                                     FechaRegistro = DateTime.Now,
                                     DocumentoId = devolucion.DevolucionId,
                                     ProductoId = item.ProductoId,
@@ -191,7 +191,6 @@ namespace Confiteria.Controllers
                                     await _context.SaveChangesAsync();
                                 }
                             }
-                            await _context.SaveChangesAsync();
                             trans.Commit();
                             return RedirectToAction(nameof(Index));
                         }

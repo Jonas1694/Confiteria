@@ -12,7 +12,7 @@ namespace ArquitecturaModel.Model
         public int DocumentoId { get; set; }
         public Devolucion Devolucion { get; set; }
         public int ProductoId { get; set; }
-        public Productos Productos { get; set; }
+        public Productos Producto { get; set; }
         public int Cantidad { get; set; }
         public decimal PrecioUnitario { get; set; }
         public decimal IvaUnitario { get; set; }
@@ -20,7 +20,7 @@ namespace ArquitecturaModel.Model
         public decimal TotalIva { get; set; }
         public decimal Iva { get; set; }
         public decimal Total { get; set; }
-        public string UsuarioId { get; set; }
+        public Guid UserId { get; set; }
         public ApplicationUser User { get; set; }
         public DateTime FechaRegistro { get; set; }
     }

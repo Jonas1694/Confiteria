@@ -4,6 +4,7 @@ using ArquitecturaModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArquitecturaModel.Migrations
 {
     [DbContext(typeof(AplicationDbContext))]
-    partial class AplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250214204458_UserId_Devolucion")]
+    partial class UserId_Devolucion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,6 +228,9 @@ namespace ArquitecturaModel.Migrations
                     b.Property<int>("ProductoId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ProductosId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("SubTotal")
                         .HasColumnType("decimal(18,2)");
 
@@ -237,11 +243,15 @@ namespace ArquitecturaModel.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("DetalleDevolucionId");
 
                     b.HasIndex("DocumentoId");
 
-                    b.HasIndex("ProductoId");
+                    b.HasIndex("ProductosId");
 
                     b.HasIndex("UserId");
 
@@ -716,9 +726,9 @@ namespace ArquitecturaModel.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ArquitecturaModel.Model.Productos", "Producto")
+                    b.HasOne("ArquitecturaModel.Model.Productos", "Productos")
                         .WithMany()
-                        .HasForeignKey("ProductoId")
+                        .HasForeignKey("ProductosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -730,7 +740,7 @@ namespace ArquitecturaModel.Migrations
 
                     b.Navigation("Devolucion");
 
-                    b.Navigation("Producto");
+                    b.Navigation("Productos");
 
                     b.Navigation("User");
                 });

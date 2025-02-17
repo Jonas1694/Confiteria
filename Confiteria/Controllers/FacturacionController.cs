@@ -382,6 +382,7 @@ namespace Confiteria.Controllers
 			var consulta = _context.Facturacion.Include(d=> d.DetalleFacturas)
 				.Include("DetalleFacturas.Productos")
 				.Include(i=> i.FormaPago)
+				.Include(i=> i.StatusDocumento).Where(s=> s.StatusDocumentoId ==2)
 				.Include(i=> i.Clientes).Where(f => f.FechaRegistro >= h && f.FechaRegistro <= d).ToList();
 			
 			return new ViewAsPdf(nameof(CierreDiario), consulta)

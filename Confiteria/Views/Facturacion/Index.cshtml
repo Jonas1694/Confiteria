@@ -51,7 +51,7 @@
 			<tbody>
 				@foreach (var item in Model)
 				{
-					@if (item.StatusDocumento.StatusDocumento != "anulado") // Condición para ocultar
+					@if (item.StatusDocumento.StatusDocumento == "Procesado") // Condición para ocultar
 					{
 						<tr>
 							<td>

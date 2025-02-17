@@ -229,7 +229,7 @@ namespace Confiteria.Controllers
                 return NotFound();
             }
 
-            var devolucion = await _context.Devolucions.FindAsync(id);
+            var devolucion = await _context.Devolucions.Include(i=> i.Clientes).FirstOrDefaultAsync(f=> f.DevolucionId == id);
             if (devolucion == null)
             {
                 return NotFound();

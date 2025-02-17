@@ -1,105 +1,116 @@
 ﻿@model IEnumerable<ArquitecturaModel.Model.Facturacion>
 
 @{
-	ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index";
 }
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
 <!--begin::Portlet-->
 <div class="kt-portlet">
-	<div class="kt-portlet__head kt-portlet__head--lg">
-		<div class="kt-portlet__head-label">
-			<h3 class="kt-portlet__head-title">
-				Listas de Facturas
-			</h3>
-		</div>
-		<div>
-			<div>
-				<div class="col-md-12">
-					<a asp-action="Create" class="btn btn-outline-info">
-						<i class="la la-plus"></i>Nueva Factura
-					</a>
-					@* <a asp-action="CierreDiario" class="btn btn-outline-danger">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">
+                Listas de Facturas
+            </h3>
+        </div>
+        <div>
+            <div>
+                <div class="col-md-12">
+                    <a asp-action="Create" class="btn btn-outline-info">
+                        <i class="la la-plus"></i>Nueva Factura
+                    </a>
+                    @* <a asp-action="CierreDiario" class="btn btn-outline-danger">
 						<i class="la la-plus"></i>Cierre Diario
 					</a> *@
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="kt-portlet__body">
-		<table class="table table-hover table-responsive table-striped" id="MyTable">
-			<thead>
-				<tr>
-					<th class="text-center">
-						@Html.DisplayNameFor(model => model.Clientes)
-					</th>
-					<th class="text-center">
-						@Html.DisplayNameFor(model => model.NFactura)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.StatusDocumento)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Total)
-					</th>
-					<th class="text-center">
-						@Html.DisplayNameFor(model => model.FechaRegistro)
-					</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model)
-				{
-					@if (item.StatusDocumento.StatusDocumento == "Procesado") // Condición para ocultar
-					{
-						<tr>
-							<td>
-								@Html.DisplayFor(modelItem => item.Clientes.RazonSocial)
-							</td>
-							<td class="text-center">
-								@Html.DisplayFor(modelItem => item.NFactura)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.StatusDocumento.StatusDocumento)
-							</td>
-							<td>
-								@item.Total.ToString("C")
-							</td>
-							<td class="text-center">
-								@item.FechaRegistro.ToShortDateString()
-							</td>
-							<td class="text-end">
-								@*<a asp-action="Edit" asp-route-id="@item.FacturacionId">Edit</a>*@
-								<a asp-action="Details" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Detalles</a>
-								<a asp-action="rptFactura" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Imprimir</a>
-								@*<a asp-action="Delete" asp-route-id="@item.FacturacionId">Delete</a>*@
-								<a asp-action="Create" asp-controller="Devoluciones" asp-route-id="@item.FacturacionId" class="btn btn-outline-danger btn-sm">Devolución</a>
-							</td>
-						</tr>
-					}
-				
-				}
-			</tbody>
-		</table>
-	</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <table class="table table-hover table-responsive table-striped" id="MyTable">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.Clientes)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.NFactura)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StatusDocumento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Total)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.FechaRegistro)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Clientes.RazonSocial)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.NFactura)
+                        </td>
+                        <td>
+                            @{
+                                string textCss = string.Empty;
+                                if (item.StatusDocumento.StatusDocumento == "Procesado")
+                                {
+                                    textCss = "text-primary";
+                                }
+                                else if (item.StatusDocumento.StatusDocumento == "Anulado")
+                                {
+                                    textCss = "text-danger";
+                                }
+                            }
+                            <span class="badge @textCss">@Html.DisplayFor(modelItem => item.StatusDocumento.StatusDocumento)</span>
+                        </td>
+                        <td>
+                            @item.Total.ToString("C")
+                        </td>
+                        <td class="text-center">
+                            @item.FechaRegistro.ToShortDateString()
+                        </td>
+                        <td class="text-end">
+                            @*<a asp-action="Edit" asp-route-id="@item.FacturacionId">Edit</a>*@
+                            <a asp-action="Details" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Detalles</a>
+                            <a asp-action="rptFactura" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Imprimir</a>
+                            @*<a asp-action="Delete" asp-route-id="@item.FacturacionId">Delete</a>*@
+                            @if (item.StatusDocumento.StatusDocumento == "Procesado") // Condición para ocultar
+                            {
+                                <a asp-action="Create" asp-controller="Devoluciones" asp-route-id="@item.FacturacionId" class="btn btn-outline-danger btn-sm">Devolución</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 <!--end::Portlet-->
 @section Scripts {
-	<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('#MyTable').DataTable({
-				order: [[1, 'desc']],
-				"language": {
-					"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-				},
-				"aLengthMenu": [
-					[10, 25, 50, 100, 200, -1],
-					[10, 25, 50, 100, 200, "Todos"]
-				]
-			});
-		});
-	</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable({
+                order: [[1, 'desc']],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                },
+                "aLengthMenu": [
+                    [10, 25, 50, 100, 200, -1],
+                    [10, 25, 50, 100, 200, "Todos"]
+                ]
+            });
+        });
+    </script>
 }

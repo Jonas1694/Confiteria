@@ -66,6 +66,7 @@ namespace Confiteria.Controllers
                         ProductoId = item.ProductosId,
                         SubTotal = item.SubTotal,
                         Total = item.Total,
+                        Tasa=item.Facturacion.Tasa,
                         TotalIva = item.TotalIva
                     });
                 }
@@ -77,6 +78,7 @@ namespace Confiteria.Controllers
                     NDocumento = _context.Devolucions.Count() + 1,
                     SubTotal = doc.SubTotal,
                     Total = doc.Total,
+                    Tasa= doc.Tasa,
                     TotalIva = doc.TotalIva,
                     DetalleDocumentoViews = List
                 };
@@ -158,6 +160,7 @@ namespace Confiteria.Controllers
                                 Total = model.Total,
                                 TotalIva = model.TotalIva,
                                 UserId = UsuarioId.Id,
+                                Tasa= model.Tasa,
                                 DescripcionDevolucion = model.DescripcionDevolucion
                             };
                             _context.Add(devolucion);

@@ -18,6 +18,7 @@ namespace ArquitecturaModel.ViewModels
         public decimal TotalIva { get; set; }
         public decimal Iva { get; set; }
         public decimal Total { get; set; }
+        public decimal Tasa { get; set; }
         public bool Eliminado { get; set; }
     }
 }

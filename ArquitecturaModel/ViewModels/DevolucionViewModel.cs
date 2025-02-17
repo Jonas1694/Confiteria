@@ -53,6 +53,7 @@ namespace ArquitecturaModel.ViewModels
                     Iva = 12,
                     IvaUnitario = item.IvaUnitario,
                     TotalIva = item.TotalIva,
+                    Tasa= item.Devolucion.Tasa,
                     Total = item.Total
                 });
             }
@@ -65,6 +66,7 @@ namespace ArquitecturaModel.ViewModels
                 SubTotal = compras.SubTotal,
                 Total = compras.Total,
                 TotalIva = compras.TotalIva,
+                Tasa= compras.Tasa,
                 ClienteId = compras.ClienteId,
                 DetalleDocumentoViews = list
             };
@@ -81,7 +83,8 @@ namespace ArquitecturaModel.ViewModels
             decimal IvaUnitario = model.PrecioUnitario * (Convert.ToDecimal(FormatPorCentaje(0.16M)) / 100);
             decimal TotalIva = IvaUnitario * model.Cantidad;
             decimal Total = SubTotal + TotalIva;
-            listDetalleCotizacion.Add(new DetalleDevolucionViewModel
+			decimal REF = model.Total / model.Tasa;
+			listDetalleCotizacion.Add(new DetalleDevolucionViewModel
             {
                 ProductoId = model.ProductoId,
                 Producto = model.Producto,
@@ -91,6 +94,7 @@ namespace ArquitecturaModel.ViewModels
                 Iva = 16,
                 IvaUnitario = IvaUnitario,
                 TotalIva = TotalIva,
+                Tasa= model.Tasa,
                 Total = Total
             });
 

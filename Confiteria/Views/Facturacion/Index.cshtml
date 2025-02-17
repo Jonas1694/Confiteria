@@ -51,30 +51,34 @@
 			<tbody>
 				@foreach (var item in Model)
 				{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.Clientes.RazonSocial)
-						</td>
-						<td class="text-center">
-							@Html.DisplayFor(modelItem => item.NFactura)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.StatusDocumento.StatusDocumento)
-						</td>
-						<td>
-							@item.Total.ToString("C")
-						</td>
-						<td class="text-center">
-							@item.FechaRegistro.ToShortDateString()
-						</td>
-						<td class="text-end">
-							@*<a asp-action="Edit" asp-route-id="@item.FacturacionId">Edit</a>*@
-							<a asp-action="Details" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Detalles</a>
-							<a asp-action="rptFactura" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Imprimir</a>
-							@*<a asp-action="Delete" asp-route-id="@item.FacturacionId">Delete</a>*@
-							<a asp-action="Create" asp-controller="Devoluciones" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Devolución</a>
-						</td>
-					</tr>
+					@if (item.StatusDocumento.StatusDocumento != "anulado") // Condición para ocultar
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.Clientes.RazonSocial)
+							</td>
+							<td class="text-center">
+								@Html.DisplayFor(modelItem => item.NFactura)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.StatusDocumento.StatusDocumento)
+							</td>
+							<td>
+								@item.Total.ToString("C")
+							</td>
+							<td class="text-center">
+								@item.FechaRegistro.ToShortDateString()
+							</td>
+							<td class="text-end">
+								@*<a asp-action="Edit" asp-route-id="@item.FacturacionId">Edit</a>*@
+								<a asp-action="Details" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Detalles</a>
+								<a asp-action="rptFactura" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Imprimir</a>
+								@*<a asp-action="Delete" asp-route-id="@item.FacturacionId">Delete</a>*@
+								<a asp-action="Create" asp-controller="Devoluciones" asp-route-id="@item.FacturacionId" class="btn btn-outline-danger btn-sm">Devolución</a>
+							</td>
+						</tr>
+					}
+				
 				}
 			</tbody>
 		</table>

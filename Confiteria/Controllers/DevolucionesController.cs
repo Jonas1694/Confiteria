@@ -97,8 +97,10 @@ namespace Confiteria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DevolucionViewModel model, string action)
         {
-            
-            ViewData["ClienteId"] = new SelectList(await _context.Clientes.ToListAsync(), "id", "GetRif");
+			var tazaId = _context.TasaDolar.Max(m => m.Id);
+			var t = _context.TasaDolar.Find(tazaId) ?? null;
+
+			ViewData["ClienteId"] = new SelectList(await _context.Clientes.ToListAsync(), "id", "GetRif");
             ViewData["ProductosId"] = new SelectList(await _context.Productos.ToListAsync(), "Id", "GetDescripcion");
             //ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "GetRif", model.ClienteId);
             //ViewData["ProductoId"] = new SelectList(_context.Productos.Include(i => i.Marcas), "Id", "GetDescripcion");
@@ -144,7 +146,8 @@ namespace Confiteria.Controllers
                     {
                         try
                         {
-                            var devolucion = new Devolucion
+							model.Tasa = (t == null || t.Tasa == 0) ? 0 : (decimal.Parse(model.Total.ToString()) / t.Tasa);
+							var devolucion = new Devolucion
                             {
                                 ClienteId = model.ClienteId,
                                 FechaRegistro = DateTime.Now,

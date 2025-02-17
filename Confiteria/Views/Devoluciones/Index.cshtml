@@ -66,9 +66,9 @@
 							@item.FechaRegistro.ToShortDateString()
 						</td>
 						<td>
-                            <a asp-action="Edit" asp-route-id="@item.DevolucionId">Edit</a>
+							<a asp-action="Edit" asp-route-id="@item.DevolucionId" class="btn btn-outline-warning">Edit</a>
                             <a asp-action="Details" asp-route-id="@item.DevolucionId" class="btn btn-outline-info btn-sm">Detalles</a>
-                            <a asp-action="Delete" asp-route-id="@item.DevolucionId">delete</a>
+							<a asp-action="Delete" asp-route-id="@item.DevolucionId" class="btn btn-outline-danger">delete</a>
 						</td>
 					</tr>
 				}

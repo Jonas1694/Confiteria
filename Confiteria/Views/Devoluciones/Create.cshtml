@@ -27,7 +27,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="ClienteId" class="control-label"></label><label asp-for="ClienteId" class="control-label"></label>
+                                <label asp-for="ClienteId" class="control-label"></label>
                                 <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId">
                                     <option value="">Seleccionar Cliente</option>
                                 </select>
@@ -50,7 +50,7 @@
                 <!--end::Portlet-->
             </div>
 
-            <div class="col-md-12">
+          @*   <div class="col-md-12">
                 <!--begin::Portlet-->
                 <div class="kt-portlet">
                     <div class="kt-portlet__head">
@@ -95,7 +95,7 @@
                     <!--end::Form-->
                 </div>
                 <!--end::Portlet-->
-            </div>
+            </div> *@
             <div class="col-md-12">
                 <!--begin::Portlet-->
                 <div class="kt-portlet">
@@ -120,9 +120,9 @@
                                     <th>
                                         Precio Unitario
                                     </th>
-                                    <th>
+                                   @*  <th>
                                         SubTotal
-                                    </th>
+                                    </th> *@
                                     <th></th>
                                 </tr>
                             </thead>
@@ -155,12 +155,12 @@
                                                 <td>
                                                     @Html.DisplayFor(modelItem => Model.DetalleDocumentoViews[j].PrecioUnitario)
                                                 </td>
-                                                <td>
+                                               @*  <td>
                                                     @Html.DisplayFor(modelItem => Model.DetalleDocumentoViews[j].SubTotal)
-                                                </td>
-                                                <td>
+                                                </td> *@
+                                              @*   <td>
                                                     <button name="action" type="submit" value="Eliminar" class="btn btn-danger btn-sm" id="" onclick="confirmar(@j)">Eliminar</button>
-                                                </td>
+                                                </td> *@
                                             </tr>
                                         }
                                     }
@@ -188,6 +188,7 @@
                         <textarea asp-for="DescripcionDevolucion" class="form-control"></textarea>
                         <span asp-validation-for="DescripcionDevolucion" class="text-danger"></span>
                     </div>
+                    <br />
                     <div class="kt-portlet__foot">
                         <div class="kt-form__actions">
                             <button class="btn btn-primary" type="submit" value="Registrar Factura" name="action">

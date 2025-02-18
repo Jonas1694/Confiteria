@@ -1,7 +1,9 @@
 ﻿using ArquitecturaModel;
 using ArquitecturaModel.Model;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +22,22 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 var app = builder.Build();
-
+var defaultDateCulture = "en-US";
+var ci = new CultureInfo(defaultDateCulture);
+ci.NumberFormat.NumberDecimalSeparator = ".";
+ci.NumberFormat.CurrencyDecimalSeparator = ".";
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(ci),
+    SupportedCultures = new List<CultureInfo>
+                {
+                    ci,
+                },
+    SupportedUICultures = new List<CultureInfo>
+                {
+                    ci,
+                }
+});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

@@ -73,8 +73,8 @@
                             }
                             <span class="badge @textCss">@Html.DisplayFor(modelItem => item.StatusDocumento.StatusDocumento)</span>
                         </td>
-                        <td>
-                            @item.Total.ToString("C")
+                        <td class="text-end">
+                            @item.Total.ToString("N2")
                         </td>
                         <td class="text-center">
                             @item.FechaRegistro.ToShortDateString()

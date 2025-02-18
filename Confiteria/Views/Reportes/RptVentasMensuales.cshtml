@@ -83,7 +83,16 @@
 						</tbody>
 						<br />
 						<tfoot>
-							<tr>
+							@foreach (var item in Model.Select(s => new { Name = s.FormaPago.Name, Id = s.FormaPagoId }).Distinct())
+							{
+								<tr>
+									<td colspan="6" class="text-end">
+										<label>Monto Total @item.Name: </label>
+										@Model.Where(w => w.FormaPagoId == item.Id ).Sum(s => s.MontoCancelar)?.ToString("N2")
+									</td>
+								</tr>
+							}
+							@* <tr>
 								<td colspan="6" class="text-end">
 									<label>Monto Total Efectivo BS : </label>
 									@Model.Where(s => s.FormaPago.Name == "Efectivo BS").Sum(s => s.Total).ToString("N2")
@@ -124,7 +133,7 @@
 									<label>Monto Total en Bolivares : </label>
 									@Model.Sum(s => s.Total).ToString("N2")
 								</td>
-							</tr>
+							</tr> *@
 						</tfoot>
 					</table>
 				</div>

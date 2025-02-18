@@ -47,7 +47,7 @@
 									<td class="text-center">@i.Clientes.RazonSocial</td>
 									<td class="text-center">@i.FechaRegistro</td>
 									<td class="text-center">@i.FormaPago.Name</td>
-									<td class="text-end">@i.Total</td>
+									<td class="text-end">@i.Total.ToString("N2")</td>
 								</tr>
 								<tr>
 									<td colspan="4">
@@ -76,13 +76,13 @@
 							<tr>
 								<td colspan="4" class="text-end">
 									<label>Monto Total Diario: </label>
-									@Model.Sum(s => s.Total)
+									@Model.Sum(s => s.Total).ToString("N2")
 								</td>
 							</tr>
 							<tr>
 								<td colspan="4" class="text-end">
 									<label>Monto Total Divisa: </label>
-									@Model.Sum(s => s.Tasa).ToString("N")
+									@Model.Sum(s => s.Tasa).ToString("N2")
 								</td>
 							</tr>
 						</tfoot>

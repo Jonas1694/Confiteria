@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Confiteria.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class ProductosController : Controller
     {
         private readonly AplicationDbContext _context;

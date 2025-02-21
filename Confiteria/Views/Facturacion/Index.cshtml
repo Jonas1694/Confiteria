@@ -84,7 +84,7 @@
                             <a asp-action="Details" asp-route-id="@item.FacturacionId" class="btn btn-outline-info btn-sm">Detalles</a>
                             <a asp-action="rptFactura" asp-route-id="@item.FacturacionId" class="btn btn-outline-warning btn-sm">Imprimir</a>
                             @*<a asp-action="Delete" asp-route-id="@item.FacturacionId">Delete</a>*@
-                            @if (item.StatusDocumento.StatusDocumento == "Procesado") // Condición para ocultar
+                            @if (item.StatusDocumento.StatusDocumento == "Procesado" && User.IsInRole("Admin")) // Condición para ocultar
                             {
                                 <a asp-action="Create" asp-controller="Devoluciones" asp-route-id="@item.FacturacionId" class="btn btn-outline-danger btn-sm">Devolución</a>
                             }

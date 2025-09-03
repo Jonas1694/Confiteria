@@ -21,6 +21,7 @@ namespace ArquitecturaModel
         public DbSet<StatusDocumentos> StatusDocumentos { get; set; }
         public DbSet<Devolucion> Devolucions { get; set; }
         public DbSet<DetalleDevolucion> DetalleDevoluciones { get; set; }
+        public DbSet<Sucursales> Sucursales { get; set; }
         public AplicationDbContext(DbContextOptions<AplicationDbContext> options)
           : base(options)
         {
@@ -30,9 +31,10 @@ namespace ArquitecturaModel
         {
             builder.Entity<Cliente>().HasIndex(o => o.RazonSocial).IsUnique();
             builder.Entity<StatusDocumentos>().HasKey(i => i.StatusDocumentoId);
-            builder.Entity<DetalleDevolucion>().HasOne(d => d.Devolucion).WithMany() .HasForeignKey(d => d.DocumentoId)
-        .OnDelete(DeleteBehavior.Restrict);
-            base.OnModelCreating(builder);
+            builder.Entity<DetalleDevolucion>().HasOne(d => d.Devolucion).WithMany().HasForeignKey(d => d.DocumentoId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Sucursales>().HasIndex(s => s.SucursalName).IsUnique();
+			builder.Entity<Sucursales>().HasKey(s => s.SucursalId);
+			base.OnModelCreating(builder);
         }
     }
 }

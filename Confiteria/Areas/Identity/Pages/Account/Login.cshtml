@@ -11,44 +11,46 @@
 <h1 class="text-center" style="color:Background">@ViewData["Title"]</h1>
 
 <form id="account" method="post">
-    <div class="card mb-3" style="max-width: 1500px;">
+    <div class="col-md-5 offset-1" style="max-width: 1000px;">
         <div class="row g-0">
             <div class="col-md-2">
-                <img src="~/imagen/1730746215860 (1).jpg" class="rounded" />
+                <img src="~/imagen/img-20250408-wa0033.jpg" />
+                @* <img src="~/imagen/1730746215860 (1).jpg" class="rounded" /> *@
 				@* <img src="~/imagen/depositphotos_106207830-stock-photo-housewives-women-with-shopping-cart.jpg" class="rounded" /> *@
             </div>
-            <div class="col-md-5 offset-5">
-                <div class="card-body">
-                    <h4 class="text-center" style="color:midnightblue">Iniciar Sesion</h4>
-                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                        <label asp-for="Input.Email" class="form-label">Email</label>
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Input.Password" class="form-control" placeholder="Contraseña" />
-                        <label asp-for="Input.Password" class="form-label">Contraseña</label>
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
-                    </div>
-                    <div class="checkbox mb-3">
-                        <label asp-for="Input.RememberMe" class="form-label">
-                            <input class="form-check-input" asp-for="Input.RememberMe" />
-                            @Html.DisplayNameFor(m => m.Input.RememberMe)
-                        </label>
-                    </div>
-                    <div>
-                        <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-outline-primary">Iniciar Sesion</button>
-                    </div>
-                    <br />
-                    @*<p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrar un Nuevo Usuario</a>
-                    </p>*@
-                  @*   <p >
-                        <a id="forgot-password" asp-page="./ForgotPassword" class="btn btn-link">"Has olvidado tu Contraseña?</a>
-                    </p> *@
-                </div>
+            
+        </div>
+    </div>
+    <div class="col-md-5 offset-4">
+        <div class="card-body">
+            <h4 class="text-center" style="color:midnightblue">Iniciar Sesion</h4>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.Email" class="form-label">Email</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" placeholder="Contraseña" />
+                <label asp-for="Input.Password" class="form-label">Contraseña</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="checkbox mb-3">
+                <label asp-for="Input.RememberMe" class="form-label">
+                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                </label>
+            </div>
+            <div>
+                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-outline-primary">Iniciar Sesion</button>
+            </div>
+            <br />
+            @*<p>
+            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrar un Nuevo Usuario</a>
+            </p>*@
+            @*   <p >
+            <a id="forgot-password" asp-page="./ForgotPassword" class="btn btn-link">"Has olvidado tu Contraseña?</a>
+            </p> *@
         </div>
     </div>
 </form>

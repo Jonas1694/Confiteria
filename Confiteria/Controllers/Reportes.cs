@@ -76,6 +76,13 @@ namespace Confiteria.Controllers
                 PageMargins = new Rotativa.AspNetCore.Options.Margins(10, 5, 10, 5)
             };
         }
+        public IActionResult InventarioTotal()
+        {
+            var totalInventario = _context.Productos
+                .Sum(p => p.Precio * p.Stock);
+
+            return View(totalInventario);
+        }
         public IActionResult RptReporteGanancia()
         {
             return View();

@@ -104,7 +104,8 @@ namespace Confiteria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Cliente cliente)
         {
-            ViewData["TipoDocumentoId"] = new SelectList(_context.TipoDocumentos, "Documento", "Documento", cliente.TipoDocumento);
+			cliente.Fecha = DateTime.Now;
+			ViewData["TipoDocumentoId"] = new SelectList(_context.TipoDocumentos, "Documento", "Documento", cliente.TipoDocumento);
             if (id != cliente.id)
             {
                 return NotFound();

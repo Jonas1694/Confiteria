@@ -33,5 +33,7 @@ namespace ArquitecturaModel.Model
         public int StatusDocumentoId { get; set; }
         [Display(Name ="Status")]
         public StatusDocumentos StatusDocumento { get; set; }
-    }
+		public int SucursalId { get; set; }
+		public Sucursales Sucursales { get; set; }
+	}
 }

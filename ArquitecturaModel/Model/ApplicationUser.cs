@@ -31,6 +31,9 @@ namespace ArquitecturaModel.Model
         public DateTime ModifyDate { get; set; }
         public string ModifyDescription { get; set; }
         public string FullName { get => $"{Nombre} {Apellido}"; }
+		public int SucursalId { get; set; }
+		public Sucursales Sucursales { get; set; }
 
-    }
+
+	}
 }

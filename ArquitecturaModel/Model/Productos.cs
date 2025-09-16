@@ -12,8 +12,8 @@ namespace ArquitecturaModel.Model
         public string Descripcion { get; set; }
         public string? Imagen { get; set; }
         [Required(ErrorMessage = "El campo {0} es obligatorio!")]
-		//[DisplayFormat(DataFormatString = "{0:C2}")]
-		public decimal Precio { get; set; }
+        //[DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal Precio { get; set; }
         public decimal PrecioDolar { get; set; }
         public decimal PrecioCosto { get; set; }
         public DateTime Fecha { get; set; }
@@ -36,5 +36,8 @@ namespace ArquitecturaModel.Model
         [Required(ErrorMessage = "El campo {0} es obligatorio!")]
         public int MarcasId { get; set; }
         public Marcas Marcas { get; set; }
+
+        public int SucursalId { get; set; }
+        public Sucursales Sucursales { get; set; }
     }
 }

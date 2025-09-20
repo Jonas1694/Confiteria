@@ -33,7 +33,5 @@ namespace ArquitecturaModel.Model
         public string FullName { get => $"{Nombre} {Apellido}"; }
 		public int SucursalId { get; set; }
 		public Sucursales Sucursales { get; set; }
-
-
 	}
 }

@@ -20,5 +20,6 @@ namespace ArquitecturaModel.ViewModels
         public decimal Total { get; set; }
         public bool Eliminado { get; set; }
 		public decimal Tasa { get; set; }
-	}
+        public int SucursalId { get; set; }
+    }
 }

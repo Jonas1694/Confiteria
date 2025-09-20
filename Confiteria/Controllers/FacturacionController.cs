@@ -81,8 +81,9 @@ namespace Confiteria.Controllers
 			ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif", model.ClienteId);
 			ViewData["ProductosId"] = new SelectList(_context.Productos, "Id", "GetDescripcion", model.ProductosId);
 			ViewData["SelectFormaPago"] = new SelectList(_context.FormaPago, "Id", "Name",model.FormaPagoId);
-			
-			switch (action)
+            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+
+            switch (action)
 			{
 				case "addproducto":
                     ModelState.Clear();
@@ -91,10 +92,11 @@ namespace Confiteria.Controllers
 						ModelState.AddModelError("", "Debe introducir una cantidad");
 						return View(model);
 					}
-					var p = _context.Productos.Find(model.ProductosId);
-					if(model.Cantidad > p.Stock)
+					var p = _context.Productos.Include(i=> i.Inventario).Where(w=> w.Id == model.ProductosId).FirstOrDefault();
+                    var stock = p.Inventario.Where(w => w.SucursalId == UsuarioId.SucursalId).FirstOrDefault();
+                    if (model.Cantidad > stock.Stock)
 					{
-                        ModelState.AddModelError("", $"No hay suficiente esto, la cantidad disponible es {p.Stock}.");
+                        ModelState.AddModelError("", $"No hay suficiente esto, la cantidad disponible es {stock.Stock}.");
                         return View(model);
                     }
 					model.Tasa = t == null ? 0 : t.Tasa;
@@ -139,7 +141,7 @@ namespace Confiteria.Controllers
 					{
 						return View(model);
 					}
-					var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+					
 					using (var trans = _context.Database.BeginTransaction())
 					{
 						try
@@ -189,7 +191,7 @@ namespace Confiteria.Controllers
 								_context.Add(detalle);
 								await _context.SaveChangesAsync();
 
-								var producto = _context.Productos.FirstOrDefault(p => p.Id == item.ProductoId);
+								var producto = _context.Inventario.FirstOrDefault(p => p.ProductosId == item.ProductoId && p.SucursalId == item.SucursalId);
 								producto.Stock -= item.Cantidad;
 								_context.Update(producto);
 								await _context.SaveChangesAsync();
@@ -220,8 +222,9 @@ namespace Confiteria.Controllers
 		[HttpPost]
 		public async Task<IActionResult> GetPrecio(int id)
 		{
-			var p = await _context.Productos.SingleOrDefaultAsync(t => t.Id == id);
-			var data = new ProductoViewModel { Codigo = p.Codigo, Descripcion = p.GetDescripcion, Precio = Convert.ToString(p.Precio), Stock = p.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
+            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+            var p = await _context.Productos.Include(i=> i.Inventario).SingleOrDefaultAsync(t => t.Id == id);
+			var data = new ProductoViewModel { Codigo = p.Codigo, Descripcion = p.GetDescripcion, Precio = Convert.ToString(p.Precio), Stock = p.Inventario.FirstOrDefault(w=> w.SucursalId == UsuarioId!.SucursalId)!.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
 			var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
 			return Json(data);
 		}

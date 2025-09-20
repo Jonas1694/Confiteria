@@ -17,10 +17,6 @@ namespace ArquitecturaModel.Model
         public decimal PrecioDolar { get; set; }
         public decimal PrecioCosto { get; set; }
         public DateTime Fecha { get; set; }
-        [Required(ErrorMessage = "El campo {0} es obligatorio!")]
-        [Display(Name = "Cantidad del producto")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "* Solo se permiten números.")]
-        public int Stock { get; set; }
 
         //[Required(ErrorMessage = "El campo {0} es obligatorio!")]
         //[Display(Name = "Stock Minimo")]
@@ -36,8 +32,6 @@ namespace ArquitecturaModel.Model
         [Required(ErrorMessage = "El campo {0} es obligatorio!")]
         public int MarcasId { get; set; }
         public Marcas Marcas { get; set; }
-
-        public int SucursalId { get; set; }
-        public Sucursales Sucursales { get; set; }
+        public List<Inventario> Inventario { get; set; }
     }
 }

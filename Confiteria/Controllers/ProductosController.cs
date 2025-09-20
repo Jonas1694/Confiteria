@@ -73,11 +73,12 @@ namespace Confiteria.Controllers
             //productos.Fecha = DateTime.Now;
             //productos.Imagen = "Watson Watson";
             ViewData["marcasId"] = new SelectList(_context.Marcas, "Id", "Descripcion", productos.MarcasId);
+            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             var p = new Productos() {
                 PrecioCosto= Convert.ToDecimal(productos.PrecioCosto.Replace(",", ".")),
                 Precio = Convert.ToDecimal(productos.Precio.Replace(",",".")),
                 PrecioDolar = Convert.ToDecimal(productos.PrecioDolar.Replace(",", ".")),
-                Stock = Convert.ToInt32(productos.Stock.ToString()),
+                //Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
                 Fecha = DateTime.Now,
@@ -93,6 +94,12 @@ namespace Confiteria.Controllers
             {
                 _context.Add(p);
                 await _context.SaveChangesAsync();
+                await _context.Inventario.AddAsync(new Inventario
+                {
+                    ProductosId = p.Id,
+                    Stock = Convert.ToInt32(productos.Stock.ToString()),
+                    SucursalId = UsuarioId!.SucursalId
+                });
                 return RedirectToAction(nameof(Index));
             }
             return View(productos);
@@ -111,16 +118,18 @@ namespace Confiteria.Controllers
             {
                 return NotFound();
             }
+            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             var V = new ProductoViewModel()
             {
                 ProductoId= productos.Id,
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
-                Stock = Convert.ToInt32(productos.Stock.ToString()),
+                Stock =  Convert.ToInt32(_context.Inventario!.FirstOrDefault(f=> f.SucursalId == UsuarioId.SucursalId && f.ProductosId == productos.Id)!.Stock),
                 PrecioCosto= productos.PrecioCosto.ToString(),
                 Precio = productos.Precio.ToString(),
                 PrecioDolar = productos.PrecioDolar.ToString(),
-                MarcasId = productos.MarcasId
+                MarcasId = productos.MarcasId,
+                SucursalId = UsuarioId!.SucursalId
             };
             ViewData["marcasId"] = new SelectList(_context.Marcas, "Id", "Descripcion", productos.MarcasId);
             return View(V);
@@ -144,7 +153,7 @@ namespace Confiteria.Controllers
                 PrecioCosto = Convert.ToDecimal(productos.PrecioCosto.Replace(",", ".")),
                 Precio = Convert.ToDecimal(productos.Precio.Replace(",",".")),
                 PrecioDolar = Convert.ToDecimal(productos.PrecioDolar.Replace(",", ".")),
-                Stock = Convert.ToInt32(productos.Stock.ToString()),
+                //Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
                 Fecha=DateTime.Now,
@@ -152,20 +161,29 @@ namespace Confiteria.Controllers
             };
             if (ModelState.IsValid)
             {
-                try
+                using (var tr = _context.Database.BeginTransaction())
                 {
-                    _context.Update(p);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductosExists(productos.ProductoId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(p);
+                        _context.Inventario.Update(new Inventario
+                        {
+                            ProductosId = p.Id,
+                            Stock = Convert.ToInt32(productos.Stock.ToString()),
+                            SucursalId = productos.SucursalId
+                        });
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ProductosExists(productos.ProductoId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
                 return RedirectToAction(nameof(Index));

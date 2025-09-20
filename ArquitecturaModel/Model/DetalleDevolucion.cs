@@ -23,5 +23,6 @@ namespace ArquitecturaModel.Model
         public Guid UserId { get; set; }
         public ApplicationUser User { get; set; }
         public DateTime FechaRegistro { get; set; }
+        public int SucursalId { get; set; }
     }
 }

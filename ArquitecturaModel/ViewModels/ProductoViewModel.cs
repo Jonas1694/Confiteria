@@ -41,6 +41,7 @@ namespace ArquitecturaModel.ViewModels
 
         public string Codigo { get; set; }
         public int MarcasId { get; set; }
+        public int SucursalId { get; set; }
 
     }
 }

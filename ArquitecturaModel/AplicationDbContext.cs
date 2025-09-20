@@ -22,6 +22,7 @@ namespace ArquitecturaModel
         public DbSet<Devolucion> Devolucions { get; set; }
         public DbSet<DetalleDevolucion> DetalleDevoluciones { get; set; }
         public DbSet<Sucursales> Sucursales { get; set; }
+        public DbSet<Inventario> Inventario { get; set; }
         public AplicationDbContext(DbContextOptions<AplicationDbContext> options)
           : base(options)
         {

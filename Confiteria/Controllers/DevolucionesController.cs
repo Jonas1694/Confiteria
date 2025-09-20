@@ -101,8 +101,8 @@ namespace Confiteria.Controllers
         {
 			var tazaId = _context.TasaDolar.Max(m => m.Id);
 			var t = _context.TasaDolar.Find(tazaId) ?? null;
-
-			ViewData["ClienteId"] = new SelectList(await _context.Clientes.ToListAsync(), "id", "GetRif");
+            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+            ViewData["ClienteId"] = new SelectList(await _context.Clientes.ToListAsync(), "id", "GetRif");
             ViewData["ProductosId"] = new SelectList(await _context.Productos.ToListAsync(), "Id", "GetDescripcion");
             //ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "GetRif", model.ClienteId);
             //ViewData["ProductoId"] = new SelectList(_context.Productos.Include(i => i.Marcas), "Id", "GetDescripcion");
@@ -143,7 +143,7 @@ namespace Confiteria.Controllers
                         ModelState.AddModelError(nameof(model.DescripcionDevolucion), "De introducir la descripción de la devolución!");
                         return View(model);
                     }
-                    var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+                    
                     using (var trans = _context.Database.BeginTransaction())
                     {
                         try
@@ -185,9 +185,9 @@ namespace Confiteria.Controllers
                                 _context.Add(detalle);
                                 await _context.SaveChangesAsync();
 
-                                var producto = _context.Productos.FirstOrDefault(p => p.Id == item.ProductoId);
+                                var producto = _context.Inventario.AsNoTracking().FirstOrDefault(p => p.Id == item.ProductoId && p.SucursalId == UsuarioId.SucursalId);
                                 producto.Stock += item.Cantidad;
-                                _context.Update(producto);
+                                _context.Inventario.Update(producto);
                                 await _context.SaveChangesAsync();
                                 if (model.FacturaId > 0)
                                 {
@@ -216,8 +216,10 @@ namespace Confiteria.Controllers
         }
         public async Task<IActionResult> GetPrecio(int id)
         {
+            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             var p = await _context.Productos.Include(i => i.Marcas).SingleOrDefaultAsync(t => t.Id == id);
-            var data = new ProductoViewModel { Descripcion = p.GetDescripcion, Precio = p.Precio.ToString(), Stock = p.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
+            var inventario = await _context.Inventario.AsNoTracking().FirstOrDefaultAsync(f => f.ProductosId == id && f.SucursalId == UsuarioId!.SucursalId);
+            var data = new ProductoViewModel { Descripcion = p.GetDescripcion, Precio = p.Precio.ToString(), Stock = inventario!.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
             var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
             return Json(new { data = data }, settings);
         }

@@ -1,5 +1,6 @@
 ﻿using ArquitecturaModel;
 using ArquitecturaModel.Model;
+using ArquitecturaModel.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
@@ -20,7 +21,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 	.AddEntityFrameworkStores<AplicationDbContext>();
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-
+builder.Services.AddScoped<UserService>();
 var app = builder.Build();
 var defaultDateCulture = "en-US";
 var ci = new CultureInfo(defaultDateCulture);

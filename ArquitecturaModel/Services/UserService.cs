@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ArquitecturaModel.Services
 {
-    internal class UserService
+    public class UserService
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;

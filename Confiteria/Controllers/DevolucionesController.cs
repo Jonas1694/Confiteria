@@ -67,7 +67,7 @@ namespace Confiteria.Controllers
                         SubTotal = item.SubTotal,
                         Total = item.Total,
                         Tasa=item.Facturacion.Tasa,
-                        TotalIva = item.TotalIva
+                        TotalIva = item.TotalIva,
                     });
                 }
                 var dev = new DevolucionViewModel()
@@ -80,7 +80,8 @@ namespace Confiteria.Controllers
                     Total = doc.Total,
                     Tasa= doc.Tasa,
                     TotalIva = doc.TotalIva,
-                    DetalleDocumentoViews = List
+                    DetalleDocumentoViews = List,
+                    SucursalesId = doc.SucursalesId
                 };
                 ViewData["ClienteId"] = new SelectList(await _context.Clientes.ToListAsync(), "id", "GetRif");
                 ViewData["ProductosId"] = new SelectList(await _context.Productos.ToListAsync(), "Id", "GetDescripcion");
@@ -161,7 +162,8 @@ namespace Confiteria.Controllers
                                 TotalIva = model.TotalIva,
                                 UserId = UsuarioId.Id,
                                 Tasa= model.Tasa,
-                                DescripcionDevolucion = model.DescripcionDevolucion
+                                DescripcionDevolucion = model.DescripcionDevolucion,
+                                SucursalesId = model.SucursalesId,
                             };
                             _context.Add(devolucion);
                             await _context.SaveChangesAsync();
@@ -181,11 +183,12 @@ namespace Confiteria.Controllers
                                     IvaUnitario = item.IvaUnitario,
                                     TotalIva = item.TotalIva,
                                     Total = item.Total,
+                                    SucursalesId = model.SucursalesId,
                                 };
                                 _context.Add(detalle);
                                 await _context.SaveChangesAsync();
 
-                                var producto = _context.Inventario.AsNoTracking().FirstOrDefault(p => p.Id == item.ProductoId && p.SucursalesId == UsuarioId.SucursalesId);
+                                var producto = _context.Inventario.AsNoTracking().FirstOrDefault(p => p.ProductosId == item.ProductoId && p.SucursalesId == model.SucursalesId);
                                 producto.Stock += item.Cantidad;
                                 _context.Inventario.Update(producto);
                                 await _context.SaveChangesAsync();

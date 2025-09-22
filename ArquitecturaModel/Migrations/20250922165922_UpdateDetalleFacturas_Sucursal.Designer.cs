@@ -4,6 +4,7 @@ using ArquitecturaModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArquitecturaModel.Migrations
 {
     [DbContext(typeof(AplicationDbContext))]
-    partial class AplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250922165922_UpdateDetalleFacturas_Sucursal")]
+    partial class UpdateDetalleFacturas_Sucursal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,7 +236,7 @@ namespace ArquitecturaModel.Migrations
                     b.Property<decimal>("SubTotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("SucursalesId")
+                    b.Property<int>("SucursalId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Total")
@@ -250,8 +253,6 @@ namespace ArquitecturaModel.Migrations
                     b.HasIndex("DocumentoId");
 
                     b.HasIndex("ProductoId");
-
-                    b.HasIndex("SucursalesId");
 
                     b.HasIndex("UserId");
 
@@ -818,12 +819,6 @@ namespace ArquitecturaModel.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ArquitecturaModel.Model.Sucursales", "Sucursales")
-                        .WithMany()
-                        .HasForeignKey("SucursalesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ArquitecturaModel.Model.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -833,8 +828,6 @@ namespace ArquitecturaModel.Migrations
                     b.Navigation("Devolucion");
 
                     b.Navigation("Producto");
-
-                    b.Navigation("Sucursales");
 
                     b.Navigation("User");
                 });

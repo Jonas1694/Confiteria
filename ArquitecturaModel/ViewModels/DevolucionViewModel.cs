@@ -35,6 +35,7 @@ namespace ArquitecturaModel.ViewModels
         [Required(ErrorMessage = "De introducir la descripción de la devolución!")]
         [Display(Name = "Descripción")]
         public string DescripcionDevolucion { get; set; }
+        public int SucursalesId { get; set; }
         public List<DetalleDevolucionViewModel> DetalleDocumentoViews { get; set; }
         #region
         public DevolucionViewModel ReturnViewModel(Devolucion compras, List<DetalleDevolucion> detalle)

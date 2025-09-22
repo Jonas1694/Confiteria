@@ -30,8 +30,8 @@ namespace Confiteria.Controllers
                  Descripcion = s.Descripcion,
                  Fecha = s.Fecha,
                  Precio = s.Precio,
-                 Stock = s.Inventario.FirstOrDefault(f=> f.ProductosId == s.Id && f.SucursalesId == UsuarioId!.SucursalesId)!.Stock,
-                Marcas = s.Marcas});
+                 Stock = s.Inventario.Any(f => f.ProductosId == s.Id && f.SucursalesId == UsuarioId!.SucursalesId) ? s.Inventario.FirstOrDefault(f=> f.ProductosId == s.Id && f.SucursalesId == UsuarioId!.SucursalesId)!.Stock : 0,
+                Marcas = s.Marcas}).ToList();
 
             return productos != null ? View(productos) : Problem("Entity set 'AplicationDbContext.Productos'  is null.");
         }
@@ -45,7 +45,13 @@ namespace Confiteria.Controllers
             }
 
             var productos = await _context.Productos.Include(i => i.Marcas)
+                .Include(i => i.Inventario)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            var sucursal = _context.Sucursales.ToList();
+            foreach (var item in productos.Inventario)
+            {
+                item.Sucursales = sucursal.FirstOrDefault(f => f.SucursalId == item.SucursalesId);
+            }
             if (productos == null)
             {
                 return NotFound();
@@ -57,7 +63,12 @@ namespace Confiteria.Controllers
         [HttpGet]
         public IActionResult GetTaza()
         {
-            var tazaId = _context.TasaDolar.Max(m => m.Id);
+            var taza = _context.TasaDolar.ToList();
+            if (taza.Count == 0)
+            {
+                return Json(new { Id = 0, Valor = 0 });
+            }
+            var tazaId = taza.Max(m => m.Id);  
             return Json(_context.TasaDolar.Find(tazaId));
         }
 
@@ -103,14 +114,27 @@ namespace Confiteria.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Add(p);
-                await _context.SaveChangesAsync();
-                await _context.Inventario.AddAsync(new Inventario
+                using (var tr = _context.Database.BeginTransaction())
                 {
-                    ProductosId = p.Id,
-                    Stock = Convert.ToInt32(productos.Stock.ToString()),
-                    SucursalesId = UsuarioId!.SucursalesId!.Value
-                });
+                    try
+                    {
+                        _context.Productos.Add(p);
+                        await _context.SaveChangesAsync();
+                        var inventario = new Inventario
+                        {
+                            ProductosId = p.Id,
+                            Stock = Convert.ToInt32(productos.Stock.ToString()),
+                            SucursalesId = UsuarioId!.SucursalesId!.Value
+                        };
+                        _context.Inventario.Add(inventario);
+                        await _context.SaveChangesAsync();
+                        tr.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        tr.Rollback();
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(productos);
@@ -135,7 +159,7 @@ namespace Confiteria.Controllers
                 ProductoId = productos.Id,
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
-                Stock = Convert.ToInt32(_context.Inventario!.FirstOrDefault(f => f.SucursalesId == UsuarioId.SucursalesId && f.ProductosId == productos.Id)!.Stock),
+                Stock = _context.Inventario!.Any(f => f.SucursalesId == UsuarioId.SucursalesId && f.ProductosId == productos.Id) ? _context.Inventario!.FirstOrDefault(f => f.SucursalesId == UsuarioId.SucursalesId && f.ProductosId == productos.Id)!.Stock : 0,
                 PrecioCosto = productos.PrecioCosto.ToString(),
                 Precio = productos.Precio.ToString(),
                 PrecioDolar = productos.PrecioDolar.ToString(),
@@ -176,29 +200,30 @@ namespace Confiteria.Controllers
                 {
                     try
                     {
-                        _context.Update(p);
-                        if (_context.Inventario.Any(a => a.SucursalesId == productos.SucursalId && a.ProductosId != productos.ProductoId))
+                        _context.Productos.Update(p);
+                        await _context.SaveChangesAsync();
+                        if (_context.Inventario.Any(a => a.SucursalesId == productos.SucursalId && a.ProductosId == p.Id))
                         {
-                            _context.Inventario.Update(new Inventario
-                            {
-                                ProductosId = p.Id,
-                                Stock = Convert.ToInt32(productos.Stock.ToString()),
-                                SucursalesId = productos.SucursalId
-                            });
+                            var invetario = _context.Inventario.FirstOrDefault(a => a.SucursalesId == productos.SucursalId && a.ProductosId == p.Id);
+                            invetario.Stock = Convert.ToInt32(productos.Stock.ToString());
+                            _context.Inventario.Update(invetario);
                         }
                         else
                         {
-                            await _context.Inventario.AddAsync(new Inventario
+                            var inventario = new Inventario
                             {
                                 ProductosId = p.Id,
                                 Stock = Convert.ToInt32(productos.Stock.ToString()),
                                 SucursalesId = productos.SucursalId
-                            });
+                            };
+                            await _context.Inventario.AddAsync(inventario);
                         }
                         await _context.SaveChangesAsync();
+                        tr.Commit();
                     }
                     catch (DbUpdateConcurrencyException)
                     {
+                        tr.Rollback();
                         if (!ProductosExists(productos.ProductoId))
                         {
                             return NotFound();
@@ -223,7 +248,13 @@ namespace Confiteria.Controllers
             }
 
             var productos = await _context.Productos.Include(i => i.Marcas)
-                .FirstOrDefaultAsync(m => m.Id == id);
+               .Include(i => i.Inventario)
+               .FirstOrDefaultAsync(m => m.Id == id);
+            var sucursal = _context.Sucursales.ToList();
+            foreach (var item in productos.Inventario)
+            {
+                item.Sucursales = sucursal.FirstOrDefault(f => f.SucursalId == item.SucursalesId);
+            }
             if (productos == null)
             {
                 return NotFound();

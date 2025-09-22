@@ -30,12 +30,28 @@
                 <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.Marcas.Descripcion)
                 </dd>
-             @*    <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Stock)
+                <dt class="col-sm-2">
+                    Stock
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Stock)
-                </dd> *@
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Sucursal</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Inventario)
+                            {
+                                <tr>
+                                    <td>@item.Sucursales.SucursalName</td>
+                                    <td>@item.Stock</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </dd>
                 @* <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Imagen)
                 </dt>

@@ -160,12 +160,13 @@ namespace Confiteria.Controllers
 								//SubTotal = model.SubTotal,
 								Total = model.Total,
 								//TotalIva = model.TotalIva,
-								UsuarioId = UsuarioId.Id.ToString(),
+								UsuarioId = UsuarioId!.Id.ToString(),
 								User = UsuarioId,
 								Tasa= model.Tasa,
 								FormaPagoId = model.FormaPagoId,
 								MontoCancelar = Convert.ToDecimal(model.MontoCancelar),
 								TasaDolarId = model.TasaDolarId == null? t!.Id: model.TasaDolarId,
+								SucursalesId = UsuarioId.SucursalesId!.Value
 							};
 							_context.Add(facturacion);
 							await _context.SaveChangesAsync();
@@ -187,11 +188,12 @@ namespace Confiteria.Controllers
                                     //TotalIva = item.TotalIva,
                                     Total = item.Total,
 									Facturacion = facturacion,
-								};
+                                    SucursalesId = UsuarioId.SucursalesId!.Value
+                                };
 								_context.Add(detalle);
 								await _context.SaveChangesAsync();
 
-								var producto = _context.Inventario.FirstOrDefault(p => p.ProductosId == item.ProductoId && p.SucursalesId == item.SucursalId);
+								var producto = _context.Inventario.FirstOrDefault(p => p.ProductosId == item.ProductoId && p.SucursalesId == UsuarioId.SucursalesId!.Value);
 								producto.Stock -= item.Cantidad;
 								_context.Update(producto);
 								await _context.SaveChangesAsync();

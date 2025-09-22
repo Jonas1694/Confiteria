@@ -43,6 +43,8 @@ namespace ArquitecturaModel.Model
         [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden")]
         public string ConfirmPassword { get; set; }
 
+        public string Role { get; set; }
+
         public int SucursalId { get; set; }
     }
 }

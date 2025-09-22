@@ -384,13 +384,16 @@ namespace Confiteria.Controllers
 			DateTime f = DateTime.Now;
 			var d = new DateTime(f.Year,f.Month,f.Day,23,59,59);
 			var h = new DateTime(f.Year, f.Month, f.Day, 0, 0, 0);
-			var consulta = _context.Facturacion.Include(d=> d.DetalleFacturas)
+            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+            var consulta = _context.Facturacion.Include(d=> d.DetalleFacturas)
 				.Include("DetalleFacturas.Productos")
 				.Include(i=> i.FormaPago)
 				.Include(i=> i.StatusDocumento).Where(s=> s.StatusDocumentoId ==2)
-				.Include(i=> i.Clientes).Where(f => f.FechaRegistro >= h && f.FechaRegistro <= d).ToList();
-			
-			return new ViewAsPdf(nameof(CierreDiario), consulta)
+				.Include(i=> i.Clientes)
+				.Where(f => (f.FechaRegistro >= h && f.FechaRegistro <= d) && f.SucursalesId == UsuarioId!.SucursalesId)
+				.ToList();
+           
+            return new ViewAsPdf(nameof(CierreDiario), consulta)
 			{
 				PageMargins = new Rotativa.AspNetCore.Options.Margins(10, 5, 10, 5)
 			};

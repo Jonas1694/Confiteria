@@ -27,5 +27,6 @@ namespace ArquitecturaModel.Model
         public string FullName { get => $"{Nombre} {Apellido}"; }
 		public int? SucursalesId { get; set; }
 		public Sucursales? Sucursales { get; set; }
-	}
+        public bool IsDelete { get; set; } = false;
+    }
 }

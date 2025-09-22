@@ -45,12 +45,13 @@ namespace Confiteria.Controllers
         {
             var desde = new DateTime(viewModel.Desde.Year, viewModel.Desde.Month, viewModel.Desde.Day, 0, 0, 0);
             var hasta = new DateTime(viewModel.Hasta.Year, viewModel.Hasta.Month, viewModel.Hasta.Day, 23, 59, 59);
+            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             List<RptGananciaViewModel> rpt = new List<RptGananciaViewModel>();
             var detalle = _context.DetalleFacturas
                 .Include(i => i.Productos)
                 .Include(i => i.Facturacion)
                 .AsNoTracking()
-                .Where(f => f.FechaRegistro >= desde && f.FechaRegistro <= hasta)
+                .Where(f => (f.FechaRegistro >= desde && f.FechaRegistro <= hasta) && f.SucursalesId == UsuarioId!.SucursalesId)
                 .ToList();
             var productIds = detalle.Select(i => new { Id = i.Productos.Id }).Distinct().ToList();
             foreach (var id in productIds)
@@ -79,10 +80,12 @@ namespace Confiteria.Controllers
         public IActionResult InventarioTotal()
         {
             var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-            var totalInventario = _context.Productos
-                .Sum(p => p.Precio * _context.Inventario.FirstOrDefault(f=> f.ProductosId == p.Id && f.SucursalesId == UsuarioId!.SucursalesId)!.Stock);
+            //var totalInventario = _context.Productos.Include(i=> i.Inventario)
+            //    .Sum(p => p.Precio * (p.Inventario.Any(f => f.ProductosId == p.Id && f.SucursalesId == UsuarioId!.SucursalesId)? p.Inventario.FirstOrDefault(f=> f.ProductosId == p.Id && f.SucursalesId == UsuarioId!.SucursalesId)!.Stock : 0));
 
-            return View(totalInventario);
+            var inventario = _context.Inventario.Include(i => i.Productos).Where(i => i.SucursalesId == UsuarioId!.SucursalesId).ToList();
+            var totalCosto = inventario.Sum(p => p.Productos.Precio * p.Stock);
+            return View(totalCosto);
         }
         public IActionResult RptReporteGanancia()
         {
@@ -99,10 +102,11 @@ namespace Confiteria.Controllers
 			var d = new DateTime(viewModel.Desde.Year, viewModel.Desde.Month, viewModel.Desde.Day, 0, 0, 0);
 			var h = new DateTime(viewModel.Hasta.Year, viewModel.Hasta.Month, viewModel.Hasta.Day, 23, 59, 59);
 			List<ArquitecturaModel.Model.Facturacion> facturacions = new List<ArquitecturaModel.Model.Facturacion>();
-			var consulta = _context.Facturacion.Include(d => d.DetalleFacturas)
+            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+            var consulta = _context.Facturacion.Include(d => d.DetalleFacturas)
 				//.Include("DetalleFacturas.Productos")
 				.Include(i => i.FormaPago)
-				.Include(i => i.Clientes).Where(f => f.FechaRegistro >= d && f.FechaRegistro <= h).OrderBy(o => o.FormaPagoId).ToList();
+				.Include(i => i.Clientes).Where(f => (f.FechaRegistro >= d && f.FechaRegistro <= h) &&  f.SucursalesId == UsuarioId!.SucursalesId).OrderBy(o => o.FormaPagoId).ToList();
 			if (consulta.Count != 0)
 				facturacions = consulta;
            // Agrupar por Forma de Pago y calcular el total

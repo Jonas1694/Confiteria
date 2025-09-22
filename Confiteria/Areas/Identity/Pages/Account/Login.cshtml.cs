@@ -79,6 +79,12 @@ namespace Confiteria.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                var lockedUser = await _userManager.FindByEmailAsync(Input.Email);
+                if (lockedUser.IsDelete)
+                {
+                    ModelState.AddModelError(string.Empty, "Usuario Inactivo, Contacte al Administrador del Sistema");
+                    return Page();
+                }
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
@@ -114,11 +120,11 @@ namespace Confiteria.Areas.Identity.Pages.Account
             user.PhoneNumber = "";
             user.Direccion = "N/A";
             user.Telefono = "N/A";
-            user.ModifyByUserId ="N/A";
+            user.ModifyByUserId = "N/A";
             user.RegistrationDate = DateTime.Now;
             user.ModifyDate = DateTime.Now;
             user.ModifyDescription = "N/A";
-            if(_userManager.Users.Any(u => u.Email == user.Email))
+            if (_userManager.Users.Any(u => u.Email == user.Email))
             {
                 return;
             }
@@ -128,7 +134,7 @@ namespace Confiteria.Areas.Identity.Pages.Account
                 var newUserRole = await _userManager.AddToRoleAsync(user, "sa");
                 if (!newUserRole.Succeeded)
                 {
-                   var resultDelete = await _userManager.DeleteAsync(user);
+                    var resultDelete = await _userManager.DeleteAsync(user);
                 }
             }
         }

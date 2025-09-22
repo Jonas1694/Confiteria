@@ -1,59 +1,96 @@
 ﻿@page
 @model LoginModel
 
-@*@{
+@{
     ViewData["Title"] = "Login";
-}*@
-<br />
-<br />
-<br />
+    Layout = "";
+}
 
-<h1 class="text-center" style="color:Background">@ViewData["Title"]</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Yireh</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Confiteria.styles.css" asp-append-version="true" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
+</head>
+<body>
 
-<form id="account" method="post">
-    <div class="col-md-5 offset-1" style="max-width: 1000px;">
-        <div class="row g-0">
-            <div class="col-md-2">
-                <img src="~/imagen/img-20250408-wa0033.jpg" />
-                @* <img src="~/imagen/1730746215860 (1).jpg" class="rounded" /> *@
-				@* <img src="~/imagen/depositphotos_106207830-stock-photo-housewives-women-with-shopping-cart.jpg" class="rounded" /> *@
+@*     <div style="height: 100vh; min-height: 700px;">
+        <div class="row" style="height:100%;">
+            <div class="col-md-6">
+                <img src="~/imagen/img-20250408-wa0033.jpg" style="margin:0px;" />
             </div>
-            
+            <div class="col-md-6">
+              
+            </div>
+        </div>
+    </div> *@
+
+    <div class="d-lg-flex half">
+        <div class="bg order-1 order-md-2">
+            @*  <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
+            <RadzenImage Path="images/LogoCVL.png" Style="max-width:700px; min-width:80px;"/>
+        </RadzenStack> *@
+            <div class="container">
+                <div class="row align-items-center justify-content-center" style="background-color:#FC2022">
+                    <img src="~/imagen/img-20250408-wa0033.jpg" class="imgLogo" />
+                </div>
+            </div>
+        </div>
+        <div class="contents order-2 order-md-1">
+            <div class="container">
+                <div class="row align-items-center justify-content-center ">
+                    <div class="col-md-7">
+                        <h3 class="text-center topcvl">
+                            Iniciar Sesión
+                            @* <strong>Cargo Vibes Logistics</strong> *@
+                        </h3>
+                        <p class="text-center mb-4">Bienvenido de nuevo, por favor inicia sesión para continuar.</p>
+                        <section>
+                            <form id="account" method="post">
+                                <div class="col-md-12">
+                                    <div class="card-body">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                                        <div class="form-floating mb-3">
+                                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                                            <label asp-for="Input.Email" class="form-label">Email</label>
+                                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input asp-for="Input.Password" class="form-control" placeholder="Contraseña" />
+                                            <label asp-for="Input.Password" class="form-label">Contraseña</label>
+                                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                        </div>
+                                        <div class="checkbox mb-3">
+                                            <label asp-for="Input.RememberMe" class="form-label">
+                                                <input class="form-check-input" asp-for="Input.RememberMe" />
+                                                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <button id="login-submit" type="submit" class="w-100 btn btn-lg btn- btn-outline-primary">Iniciar Sesion</button>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </form>
+                        </section>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col-md-5 offset-4">
-        <div class="card-body">
-            <h4 class="text-center" style="color:midnightblue">Iniciar Sesion</h4>
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email" class="form-label">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" placeholder="Contraseña" />
-                <label asp-for="Input.Password" class="form-label">Contraseña</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="checkbox mb-3">
-                <label asp-for="Input.RememberMe" class="form-label">
-                    <input class="form-check-input" asp-for="Input.RememberMe" />
-                    @Html.DisplayNameFor(m => m.Input.RememberMe)
-                </label>
-            </div>
-            <div>
-                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-outline-primary">Iniciar Sesion</button>
-            </div>
-            <br />
-            @*<p>
-            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrar un Nuevo Usuario</a>
-            </p>*@
-            @*   <p >
-            <a id="forgot-password" asp-page="./ForgotPassword" class="btn btn-link">"Has olvidado tu Contraseña?</a>
-            </p> *@
-        </div>
-    </div>
-</form>
+
+</body>
+</html>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

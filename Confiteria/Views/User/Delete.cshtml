@@ -1,0 +1,94 @@
+﻿@model ArquitecturaModel.Model.UserDto
+
+<form method="post">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title">Usuarios</h3>
+		</div>
+		<div class="card-body">
+			<h4>Eliminar Usuario</h4>
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="Id" />
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label asp-for="Nombre"></label>
+						<input asp-for="Nombre" class="form-control txt" id="txtNombre" disabled/>
+						<span asp-validation-for="Nombre" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label asp-for="Apellido"></label>
+						<input asp-for="Apellido" class="form-control" disabled />
+						<span asp-validation-for="Apellido" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label asp-for="Direccion"></label>
+						<input asp-for="Direccion" class="form-control" disabled />
+						<span asp-validation-for="Direccion" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label asp-for="Telefono" class="control-label"></label>
+						<input asp-for="Telefono" class="form-control txtn" disabled />
+						<span asp-validation-for="Telefono" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label asp-for="Email"></label>
+						<input asp-for="Email" class="form-control" disabled />
+						<span asp-validation-for="Email" class="text-danger"></span>
+					</div>
+				</div>
+				@* 	<div class="col-md-6">
+					<div class="form-group ">
+						<label asp-for="Password"></label>
+						<input asp-for="Password" class="form-control" />
+						<span asp-validation-for="Password" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label asp-for="ConfirmPassword"></label>
+						<input asp-for="ConfirmPassword" class="form-control" />
+						<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+					</div>
+				</div> *@
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div>
+						<label asp-for="Role" class="control-label"></label>
+						<select asp-for="Role" class="form-control" asp-items="ViewBag.Roles" disabled>
+							<option value="">-- Seleccione un rol --</option>
+						</select>
+						<span asp-validation-for="Role" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div>
+						<label asp-for="SucursalId" class="control-label"></label>
+						<select asp-for="SucursalId" class="form-control" asp-items="ViewBag.Sucursales" disabled>
+							<option value="">-- Seleccione un rol --</option>
+						</select>
+						<span asp-validation-for="SucursalId" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+
+			<br />
+
+			<div class="card-footer">
+				<button type="submit" class="btn btn-primary">Registrar</button>
+				<a asp-action="Index" class="btn btn-outline-success">Regresar</a>
+			</div>
+		</div>
+	</div>
+</form>
+@{
+}

@@ -1,6 +1,7 @@
 ﻿using ArquitecturaModel;
 using ArquitecturaModel.Model;
 using ArquitecturaModel.ViewModels;
+using Humanizer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -91,7 +92,38 @@ namespace Confiteria.Controllers
                 return View();
             }
         }
+        public async Task<ActionResult> ChangePassword(Guid id)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(f => f.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+           var dto = new ChangePasswordViewModel
+            {
+                Email = user.Email!,
+            };
 
+            return View(dto);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel changePassword)
+        {
+            var user = await _userManager.FindByEmailAsync(changePassword.Email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var myToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, myToken, changePassword.NewPassword);
+            if (!result.Succeeded)
+            {
+                return View();
+            }
+            return RedirectToAction(nameof(Index));
+        }
         // GET: UserController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
         {
@@ -124,6 +156,7 @@ namespace Confiteria.Controllers
             try
             {
                 var userDto = _userManager.Users.FirstOrDefault(f => f.Id == user.Id);
+                var role = await _userManager.GetRolesAsync(userDto!);
                 if (userDto == null)
                 {
                     return NotFound();
@@ -139,6 +172,19 @@ namespace Confiteria.Controllers
                 if (!result.Succeeded)
                 {
                     return View();
+                }
+                if (role.FirstOrDefault() != user.Role)
+                {
+                    var removeRole = await _userManager.RemoveFromRoleAsync(userDto, role.First());
+                    if (!removeRole.Succeeded)
+                    {
+                        return View();
+                    }
+                    var addRole = await _userManager.AddToRoleAsync(userDto, user.Role);
+                    if (!addRole.Succeeded)
+                    {
+                        return View();
+                    }
                 }
                 return RedirectToAction(nameof(Index));
             }

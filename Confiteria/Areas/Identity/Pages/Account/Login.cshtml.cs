@@ -21,18 +21,18 @@ namespace Confiteria.Areas.Identity.Pages.Account
         public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager, RoleManager<AplicationRole> roleManager)
         {
             _signInManager = signInManager;
-			_userManager = userManager;	
-			_roleManager = roleManager;
-			_logger = logger;
-		}
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _logger = logger;
+        }
 
         [BindProperty]
         public InputModel Input { get; set; }
-		
-		public IList<AuthenticationScheme> ExternalLogins { get; set; }
+
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public string ReturnUrl { get; set; }
-        
+
         [TempData]
         public string ErrorMessage { get; set; }
         public class InputModel
@@ -57,15 +57,16 @@ namespace Confiteria.Areas.Identity.Pages.Account
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
-			returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-			
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
-			await CreateRoles();
+            await CreateRoles();
+            await CreateUser();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -103,104 +104,131 @@ namespace Confiteria.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+        private async Task CreateUser()
+        {
+            var user = new ApplicationUser();
+            user.Email = "sa@thewatsonenterprise.com";
+            user.UserName = "sa@thewatsonenterprise.com";
+            user.Nombre = "Administrador";
+            user.Apellido = "del Sistema";
+            user.PhoneNumber = "";
+            user.Direccion = "N/A";
+            user.Telefono = "N/A";
+            user.ModifyByUserId ="N/A";
+            user.RegistrationDate = DateTime.Now;
+            user.ModifyDate = DateTime.Now;
+            user.ModifyDescription = "N/A";
+            if(_userManager.Users.Any(u => u.Email == user.Email))
+            {
+                return;
+            }
+            var newUser = await _userManager.CreateAsync(user, "Admin2023.");
+            if (newUser.Succeeded)
+            {
+                var newUserRole = await _userManager.AddToRoleAsync(user, "sa");
+                if (!newUserRole.Succeeded)
+                {
+                   var resultDelete = await _userManager.DeleteAsync(user);
+                }
+            }
+        }
+        private async Task CreateRoles()
+        {
+            IdentityResult roleResult;
+            //string email = "veroviera1302@gmail.com";
 
-		private async Task CreateRoles()
-		{
-			IdentityResult roleResult;
-			//string email = "veroviera1302@gmail.com";
+            //Check that there is an Administrator role and create if not
+            //Task<bool> hasAdminRole = RoleManager.RoleExistsAsync("Admin");
+            //IdentityResult roleResult;
+            string[] roleNames = { "Admin", "Facturador", "sa", "Cajero", "Encargado" };
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = await _roleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    //create the roles and seed them to the database: Question 1
+                    roleResult = await _roleManager.CreateAsync(new AplicationRole() { Name = roleName, DescripcionRole = roleName, RegistrationDate = DateTime.Now });
+                }
+            }
+            //Check if the admin user exists and create it if not
+            //Add to the Administrator role
 
-			//Check that there is an Administrator role and create if not
-			//Task<bool> hasAdminRole = RoleManager.RoleExistsAsync("Admin");
-			//IdentityResult roleResult;
-			string[] roleNames = { "Admin", "Facturador","sa" };
-			foreach (var roleName in roleNames)
-			{
-				var roleExist = await _roleManager.RoleExistsAsync(roleName);
-				if (!roleExist)
-				{
-					//create the roles and seed them to the database: Question 1
-					roleResult = await _roleManager.CreateAsync(new AplicationRole() { Name = roleName, DescripcionRole = roleName, RegistrationDate = DateTime.Now });
-				}
-			}
-			//Check if the admin user exists and create it if not
-			//Add to the Administrator role
+            //var testUser = await _userManager.FindByEmailAsync(email);
+            //if (testUser == null)
+            //{
+            //	ApplicationUser administrator = new ApplicationUser();
+            //	administrator.Email = email;
+            //	administrator.UserName = email;
+            //	administrator.Nombre = "Administrador";
+            //	administrator.Apellido = "del Sistema";
+            //	administrator.PhoneNumber = "000000000";
+            //	administrator.Direccion = "N/A";
+            //	administrator.Telefono = "N/A";
+            //	var newUser = await _userManager.CreateAsync(administrator, "Admin2023.");
 
-			//var testUser = await _userManager.FindByEmailAsync(email);
-			//if (testUser == null)
-			//{
-			//	ApplicationUser administrator = new ApplicationUser();
-			//	administrator.Email = email;
-			//	administrator.UserName = email;
-			//	administrator.Nombre = "Administrador";
-			//	administrator.Apellido = "del Sistema";
-			//	administrator.PhoneNumber = "000000000";
-			//	administrator.Direccion = "N/A";
-			//	administrator.Telefono = "N/A";
-			//	var newUser = await _userManager.CreateAsync(administrator, "Admin2023.");
+            //	if (newUser.Succeeded)
+            //	{
+            //		var newUserRole = await _userManager.AddToRoleAsync(administrator, "Admin");
 
-			//	if (newUser.Succeeded)
-			//	{
-			//		var newUserRole = await _userManager.AddToRoleAsync(administrator, "Admin");
+            //		if (newUserRole.Succeeded)
+            //		{
+            //			var code = await _userManager.GenerateEmailConfirmationTokenAsync(administrator);
+            //			code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            //			var callbackUrl = Url.Page(
+            //				"/Account/ConfirmEmail",
+            //				pageHandler: null,
+            //				values: new { area = "Identity", userId = administrator.Id.ToString(), code = code },
+            //				protocol: Request.Scheme);
 
-			//		if (newUserRole.Succeeded)
-			//		{
-			//			var code = await _userManager.GenerateEmailConfirmationTokenAsync(administrator);
-			//			code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-			//			var callbackUrl = Url.Page(
-			//				"/Account/ConfirmEmail",
-			//				pageHandler: null,
-			//				values: new { area = "Identity", userId = administrator.Id.ToString(), code = code },
-			//				protocol: Request.Scheme);
+            //			//mailHelper.SendMail(administrator.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            //		}
+            //	}
+            //}
+            //email = "tzskill01@gmail.com";
+            //testUser = await _userManager.FindByEmailAsync(email);
+            //if (testUser == null)
+            //{
+            //	ApplicationUser administrator = new ApplicationUser();
+            //	administrator.Email = email;
+            //	administrator.UserName = email;
+            //	administrator.Nombre = "Facturador";
+            //	administrator.Apellido = "del Sistema";
+            //	administrator.PhoneNumber = "000000000";
+            //	administrator.Direccion = "N/A";
+            //	administrator.Telefono = "N/A";
+            //	Task<IdentityResult> newUser = _userManager.CreateAsync(administrator, "Facturador2023.");
+            //	newUser.Wait();
 
-			//			//mailHelper.SendMail(administrator.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-			//		}
-			//	}
-			//}
-			//email = "tzskill01@gmail.com";
-			//testUser = await _userManager.FindByEmailAsync(email);
-			//if (testUser == null)
-			//{
-			//	ApplicationUser administrator = new ApplicationUser();
-			//	administrator.Email = email;
-			//	administrator.UserName = email;
-			//	administrator.Nombre = "Facturador";
-			//	administrator.Apellido = "del Sistema";
-			//	administrator.PhoneNumber = "000000000";
-			//	administrator.Direccion = "N/A";
-			//	administrator.Telefono = "N/A";
-			//	Task<IdentityResult> newUser = _userManager.CreateAsync(administrator, "Facturador2023.");
-			//	newUser.Wait();
+            //	if (newUser.Result.Succeeded)
+            //	{
+            //		Task<IdentityResult> newUserRole = _userManager.AddToRoleAsync(administrator, "Facturador");
+            //		newUserRole.Wait();
+            //		var code = await _userManager.GenerateEmailConfirmationTokenAsync(administrator);
+            //		code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            //		var callbackUrl = Url.Page(
+            //			"/Account/ConfirmEmail",
+            //			pageHandler: null,
+            //			values: new { area = "Identity", userId = administrator.Id.ToString(), code = code },
+            //			protocol: Request.Scheme);
 
-			//	if (newUser.Result.Succeeded)
-			//	{
-			//		Task<IdentityResult> newUserRole = _userManager.AddToRoleAsync(administrator, "Facturador");
-			//		newUserRole.Wait();
-			//		var code = await _userManager.GenerateEmailConfirmationTokenAsync(administrator);
-			//		code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-			//		var callbackUrl = Url.Page(
-			//			"/Account/ConfirmEmail",
-			//			pageHandler: null,
-			//			values: new { area = "Identity", userId = administrator.Id.ToString(), code = code },
-			//			protocol: Request.Scheme);
+            //		//mailHelper.SendMail(administrator.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            //	}
+            //}
 
-			//		//mailHelper.SendMail(administrator.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-			//	}
-			//}
-
-			//email = "veroviera1302@gmail.com";
+            //email = "veroviera1302@gmail.com";
 
 
-			//string[] TipoDocumento = { "V", "E", "J", "G" };
-			//foreach (var item in TipoDocumento)
-			//{
-			//	if (!Context.TipoDocumento.Any(a => a.Documento == item))
-			//	{
-			//		var tipoDocumento = new TipoDocumento { TipoDocumentoId = Guid.NewGuid().ToString(), Documento = item };
-			//		Context.TipoDocumento.Add(tipoDocumento);
-			//		await Context.SaveChangesAsync();
-			//	}
-			//}
+            //string[] TipoDocumento = { "V", "E", "J", "G" };
+            //foreach (var item in TipoDocumento)
+            //{
+            //	if (!Context.TipoDocumento.Any(a => a.Documento == item))
+            //	{
+            //		var tipoDocumento = new TipoDocumento { TipoDocumentoId = Guid.NewGuid().ToString(), Documento = item };
+            //		Context.TipoDocumento.Add(tipoDocumento);
+            //		await Context.SaveChangesAsync();
+            //	}
+            //}
 
-		}
-	}
+        }
+    }
 }

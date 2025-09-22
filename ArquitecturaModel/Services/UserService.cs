@@ -32,7 +32,7 @@ namespace ArquitecturaModel.Services
                 Direccion = user.Direccion,
                 Telefono = user.Telefono,
                 Email = user.Email,
-                SucursalId = user.SucursalId
+                SucursalId = user.SucursalesId!.Value
             }).ToListAsync();
             return users;
         }
@@ -49,7 +49,7 @@ namespace ArquitecturaModel.Services
                 Telefono = Input.Telefono,
                 ModifyByUserId = Input.Email,
                 ModifyDescription = Input.Email,
-                SucursalId = Input.SucursalId
+                SucursalesId = Input.SucursalId
             };
             await _userStore.SetUserNameAsync(user, user.UserName, CancellationToken.None);
             var result = await _userManager.CreateAsync(user, Input.Password);
@@ -78,7 +78,7 @@ namespace ArquitecturaModel.Services
             user.Telefono = Input.Telefono;
             user.Email = Input.Email;
             user.UserName = Input.Email;
-            user.SucursalId = Input.SucursalId;
+            user.SucursalesId = Input.SucursalId;
             var result = await _userManager.UpdateAsync(user);
             return result.Succeeded;
         }
@@ -95,7 +95,7 @@ namespace ArquitecturaModel.Services
                     Direccion = user.Direccion,
                     Telefono = user.Telefono,
                     Email = user.Email,
-                    SucursalId = user.SucursalId
+                    SucursalId = user.SucursalesId!.Value
                 }).FirstOrDefaultAsync();
             return user;
         }

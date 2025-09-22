@@ -21,9 +21,19 @@ namespace Confiteria.Controllers
         // GET: Clientes
         public async Task<IActionResult> Index()
         {
-            return _context.Productos != null ?
-                        View(await _context.Productos.Include(i=> i.Marcas).ToListAsync()) :
-                        Problem("Entity set 'AplicationDbContext.Productos'  is null.");
+            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+            var productos = _context.Productos
+                .Include(i => i.Marcas)
+                .Include(i=> i.Inventario)
+                .Select(s=> new GridProductoVewModel() { Id = s.Id,
+                 Codigo = s.Codigo,
+                 Descripcion = s.Descripcion,
+                 Fecha = s.Fecha,
+                 Precio = s.Precio,
+                 Stock = s.Inventario.FirstOrDefault(f=> f.ProductosId == s.Id && f.SucursalesId == UsuarioId!.SucursalesId)!.Stock,
+                Marcas = s.Marcas});
+
+            return productos != null ? View(productos) : Problem("Entity set 'AplicationDbContext.Productos'  is null.");
         }
 
         // GET: Clientes/Details/5
@@ -54,7 +64,7 @@ namespace Confiteria.Controllers
         [HttpGet]
         public IActionResult GetAllProducto()
         {
-            return Ok( _context.Productos.Include(i => i.Marcas).ToList());
+            return Ok(_context.Productos.Include(i => i.Marcas).ToList());
         }
         // GET: Clientes/Create
         public IActionResult Create()
@@ -74,9 +84,10 @@ namespace Confiteria.Controllers
             //productos.Imagen = "Watson Watson";
             ViewData["marcasId"] = new SelectList(_context.Marcas, "Id", "Descripcion", productos.MarcasId);
             var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-            var p = new Productos() {
-                PrecioCosto= Convert.ToDecimal(productos.PrecioCosto.Replace(",", ".")),
-                Precio = Convert.ToDecimal(productos.Precio.Replace(",",".")),
+            var p = new Productos()
+            {
+                PrecioCosto = Convert.ToDecimal(productos.PrecioCosto.Replace(",", ".")),
+                Precio = Convert.ToDecimal(productos.Precio.Replace(",", ".")),
                 PrecioDolar = Convert.ToDecimal(productos.PrecioDolar.Replace(",", ".")),
                 //Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,
@@ -84,13 +95,13 @@ namespace Confiteria.Controllers
                 Fecha = DateTime.Now,
                 MarcasId = productos.MarcasId
             };
-			if (_context.Productos.Any(a => a.Codigo == productos.Codigo))
-			{
-				ModelState.AddModelError(nameof(productos.Codigo), $"El Codigo {productos.Codigo} ya existe.!");
-				return View(productos);
-			}
+            if (_context.Productos.Any(a => a.Codigo == productos.Codigo))
+            {
+                ModelState.AddModelError(nameof(productos.Codigo), $"El Codigo {productos.Codigo} ya existe.!");
+                return View(productos);
+            }
 
-			if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _context.Add(p);
                 await _context.SaveChangesAsync();
@@ -98,15 +109,15 @@ namespace Confiteria.Controllers
                 {
                     ProductosId = p.Id,
                     Stock = Convert.ToInt32(productos.Stock.ToString()),
-                    SucursalId = UsuarioId!.SucursalId
+                    SucursalesId = UsuarioId!.SucursalesId!.Value
                 });
                 return RedirectToAction(nameof(Index));
             }
             return View(productos);
         }
-		
-		// GET: Clientes/Edit/5
-		public async Task<IActionResult> Edit(int? id)
+
+        // GET: Clientes/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Productos == null)
             {
@@ -121,15 +132,15 @@ namespace Confiteria.Controllers
             var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             var V = new ProductoViewModel()
             {
-                ProductoId= productos.Id,
+                ProductoId = productos.Id,
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
-                Stock =  Convert.ToInt32(_context.Inventario!.FirstOrDefault(f=> f.SucursalId == UsuarioId.SucursalId && f.ProductosId == productos.Id)!.Stock),
-                PrecioCosto= productos.PrecioCosto.ToString(),
+                Stock = Convert.ToInt32(_context.Inventario!.FirstOrDefault(f => f.SucursalesId == UsuarioId.SucursalesId && f.ProductosId == productos.Id)!.Stock),
+                PrecioCosto = productos.PrecioCosto.ToString(),
                 Precio = productos.Precio.ToString(),
                 PrecioDolar = productos.PrecioDolar.ToString(),
                 MarcasId = productos.MarcasId,
-                SucursalId = UsuarioId!.SucursalId
+                SucursalId = UsuarioId!.SucursalesId!.Value
             };
             ViewData["marcasId"] = new SelectList(_context.Marcas, "Id", "Descripcion", productos.MarcasId);
             return View(V);
@@ -151,12 +162,12 @@ namespace Confiteria.Controllers
             {
                 Id = productos.ProductoId,
                 PrecioCosto = Convert.ToDecimal(productos.PrecioCosto.Replace(",", ".")),
-                Precio = Convert.ToDecimal(productos.Precio.Replace(",",".")),
+                Precio = Convert.ToDecimal(productos.Precio.Replace(",", ".")),
                 PrecioDolar = Convert.ToDecimal(productos.PrecioDolar.Replace(",", ".")),
                 //Stock = Convert.ToInt32(productos.Stock.ToString()),
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
-                Fecha=DateTime.Now,
+                Fecha = DateTime.Now,
                 MarcasId = productos.MarcasId
             };
             if (ModelState.IsValid)
@@ -166,12 +177,24 @@ namespace Confiteria.Controllers
                     try
                     {
                         _context.Update(p);
-                        _context.Inventario.Update(new Inventario
+                        if (_context.Inventario.Any(a => a.SucursalesId == productos.SucursalId && a.ProductosId != productos.ProductoId))
                         {
-                            ProductosId = p.Id,
-                            Stock = Convert.ToInt32(productos.Stock.ToString()),
-                            SucursalId = productos.SucursalId
-                        });
+                            _context.Inventario.Update(new Inventario
+                            {
+                                ProductosId = p.Id,
+                                Stock = Convert.ToInt32(productos.Stock.ToString()),
+                                SucursalesId = productos.SucursalId
+                            });
+                        }
+                        else
+                        {
+                            await _context.Inventario.AddAsync(new Inventario
+                            {
+                                ProductosId = p.Id,
+                                Stock = Convert.ToInt32(productos.Stock.ToString()),
+                                SucursalesId = productos.SucursalId
+                            });
+                        }
                         await _context.SaveChangesAsync();
                     }
                     catch (DbUpdateConcurrencyException)

@@ -20,7 +20,5 @@ namespace ArquitecturaModel.Model
 		[Display(Name = "Direccion Fiscal ")]
 		public string DireccionFiscal { get; set; }
 		public DateTime Fecha { get; set; }
-
-
 	}
 }

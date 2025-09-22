@@ -78,8 +78,9 @@ namespace Confiteria.Controllers
         }
         public IActionResult InventarioTotal()
         {
+            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             var totalInventario = _context.Productos
-                .Sum(p => p.Precio * p.Stock);
+                .Sum(p => p.Precio * _context.Inventario.FirstOrDefault(f=> f.ProductosId == p.Id && f.SucursalesId == UsuarioId!.SucursalesId)!.Stock);
 
             return View(totalInventario);
         }

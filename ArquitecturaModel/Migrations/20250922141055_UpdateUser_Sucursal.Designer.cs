@@ -4,6 +4,7 @@ using ArquitecturaModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArquitecturaModel.Migrations
 {
     [DbContext(typeof(AplicationDbContext))]
-    partial class AplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250922141055_UpdateUser_Sucursal")]
+    partial class UpdateUser_Sucursal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,7 +132,10 @@ namespace ArquitecturaModel.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SucursalesId")
+                    b.Property<int?>("SucursalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SucursalesSucursalId")
                         .HasColumnType("int");
 
                     b.Property<string>("Telefono")
@@ -153,7 +159,7 @@ namespace ArquitecturaModel.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("SucursalesId");
+                    b.HasIndex("SucursalesSucursalId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -353,9 +359,6 @@ namespace ArquitecturaModel.Migrations
                     b.Property<decimal>("SubTotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("SucursalesId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Tasa")
                         .HasColumnType("decimal(18,2)");
 
@@ -375,8 +378,6 @@ namespace ArquitecturaModel.Migrations
                     b.HasIndex("FacturacionId");
 
                     b.HasIndex("StatusDocumentoId");
-
-                    b.HasIndex("SucursalesId");
 
                     b.HasIndex("UserId");
 
@@ -415,7 +416,10 @@ namespace ArquitecturaModel.Migrations
                     b.Property<decimal>("SubTotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("SucursalesId")
+                    b.Property<int>("SucursalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SucursalesSucursalId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Tasa")
@@ -445,7 +449,7 @@ namespace ArquitecturaModel.Migrations
 
                     b.HasIndex("StatusDocumentoId");
 
-                    b.HasIndex("SucursalesId");
+                    b.HasIndex("SucursalesSucursalId");
 
                     b.HasIndex("TasaDolarId");
 
@@ -485,14 +489,17 @@ namespace ArquitecturaModel.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
-                    b.Property<int>("SucursalesId")
+                    b.Property<int>("SucursalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SucursalesSucursalId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductosId");
 
-                    b.HasIndex("SucursalesId");
+                    b.HasIndex("SucursalesSucursalId");
 
                     b.ToTable("Inventario");
                 });
@@ -800,7 +807,9 @@ namespace ArquitecturaModel.Migrations
                 {
                     b.HasOne("ArquitecturaModel.Model.Sucursales", "Sucursales")
                         .WithMany()
-                        .HasForeignKey("SucursalesId");
+                        .HasForeignKey("SucursalesSucursalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Sucursales");
                 });
@@ -885,12 +894,6 @@ namespace ArquitecturaModel.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ArquitecturaModel.Model.Sucursales", "Sucursales")
-                        .WithMany()
-                        .HasForeignKey("SucursalesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ArquitecturaModel.Model.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -902,8 +905,6 @@ namespace ArquitecturaModel.Migrations
                     b.Navigation("Facturacion");
 
                     b.Navigation("StatusDocumento");
-
-                    b.Navigation("Sucursales");
 
                     b.Navigation("User");
                 });
@@ -928,7 +929,7 @@ namespace ArquitecturaModel.Migrations
 
                     b.HasOne("ArquitecturaModel.Model.Sucursales", "Sucursales")
                         .WithMany()
-                        .HasForeignKey("SucursalesId")
+                        .HasForeignKey("SucursalesSucursalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -965,7 +966,7 @@ namespace ArquitecturaModel.Migrations
 
                     b.HasOne("ArquitecturaModel.Model.Sucursales", "Sucursales")
                         .WithMany()
-                        .HasForeignKey("SucursalesId")
+                        .HasForeignKey("SucursalesSucursalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -29,5 +29,7 @@ namespace ArquitecturaModel.Model
         public Facturacion Facturacion { get; set; }
         [Display(Name = "Fecha")]
         public DateTime FechaRegistro { get; set; }
+        public int SucursalesId { get; set; }
+        public Sucursales Sucursales { get; set; }
     }
 }

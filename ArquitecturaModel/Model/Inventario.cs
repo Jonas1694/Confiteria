@@ -12,7 +12,7 @@ namespace ArquitecturaModel.Model
         public int Id { get; set; }
         public int Stock { get; set; }
         public int ProductosId { get; set; }
-        public int SucursalId { get; set; }
+        public int SucursalesId { get; set; }
         public Productos Productos { get; set; }
         public Sucursales Sucursales { get; set; }
     }

@@ -185,7 +185,7 @@ namespace Confiteria.Controllers
                                 _context.Add(detalle);
                                 await _context.SaveChangesAsync();
 
-                                var producto = _context.Inventario.AsNoTracking().FirstOrDefault(p => p.Id == item.ProductoId && p.SucursalId == UsuarioId.SucursalId);
+                                var producto = _context.Inventario.AsNoTracking().FirstOrDefault(p => p.Id == item.ProductoId && p.SucursalesId == UsuarioId.SucursalesId);
                                 producto.Stock += item.Cantidad;
                                 _context.Inventario.Update(producto);
                                 await _context.SaveChangesAsync();
@@ -218,7 +218,7 @@ namespace Confiteria.Controllers
         {
             var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             var p = await _context.Productos.Include(i => i.Marcas).SingleOrDefaultAsync(t => t.Id == id);
-            var inventario = await _context.Inventario.AsNoTracking().FirstOrDefaultAsync(f => f.ProductosId == id && f.SucursalId == UsuarioId!.SucursalId);
+            var inventario = await _context.Inventario.AsNoTracking().FirstOrDefaultAsync(f => f.ProductosId == id && f.SucursalesId == UsuarioId!.SucursalesId);
             var data = new ProductoViewModel { Descripcion = p.GetDescripcion, Precio = p.Precio.ToString(), Stock = inventario!.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
             var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
             return Json(new { data = data }, settings);

@@ -1,12 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ArquitecturaModel.Model
 {
@@ -31,7 +25,7 @@ namespace ArquitecturaModel.Model
         public DateTime ModifyDate { get; set; }
         public string ModifyDescription { get; set; }
         public string FullName { get => $"{Nombre} {Apellido}"; }
-		public int SucursalId { get; set; }
-		public Sucursales Sucursales { get; set; }
+		public int? SucursalesId { get; set; }
+		public Sucursales? Sucursales { get; set; }
 	}
 }

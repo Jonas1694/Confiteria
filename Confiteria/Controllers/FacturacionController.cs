@@ -93,7 +93,7 @@ namespace Confiteria.Controllers
 						return View(model);
 					}
 					var p = _context.Productos.Include(i=> i.Inventario).Where(w=> w.Id == model.ProductosId).FirstOrDefault();
-                    var stock = p.Inventario.Where(w => w.SucursalId == UsuarioId.SucursalId).FirstOrDefault();
+                    var stock = p.Inventario.Where(w => w.SucursalesId == UsuarioId.SucursalesId).FirstOrDefault();
                     if (model.Cantidad > stock.Stock)
 					{
                         ModelState.AddModelError("", $"No hay suficiente esto, la cantidad disponible es {stock.Stock}.");
@@ -191,7 +191,7 @@ namespace Confiteria.Controllers
 								_context.Add(detalle);
 								await _context.SaveChangesAsync();
 
-								var producto = _context.Inventario.FirstOrDefault(p => p.ProductosId == item.ProductoId && p.SucursalId == item.SucursalId);
+								var producto = _context.Inventario.FirstOrDefault(p => p.ProductosId == item.ProductoId && p.SucursalesId == item.SucursalId);
 								producto.Stock -= item.Cantidad;
 								_context.Update(producto);
 								await _context.SaveChangesAsync();
@@ -224,7 +224,7 @@ namespace Confiteria.Controllers
 		{
             var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             var p = await _context.Productos.Include(i=> i.Inventario).SingleOrDefaultAsync(t => t.Id == id);
-			var data = new ProductoViewModel { Codigo = p.Codigo, Descripcion = p.GetDescripcion, Precio = Convert.ToString(p.Precio), Stock = p.Inventario.FirstOrDefault(w=> w.SucursalId == UsuarioId!.SucursalId)!.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
+			var data = new ProductoViewModel { Codigo = p.Codigo, Descripcion = p.GetDescripcion, Precio = Convert.ToString(p.Precio), Stock = p.Inventario.FirstOrDefault(w=> w.SucursalesId == UsuarioId!.SucursalesId)!.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
 			var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
 			return Json(data);
 		}

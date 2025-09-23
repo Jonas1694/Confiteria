@@ -1,6 +1,7 @@
 ﻿using ArquitecturaModel.Model;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Reflection.Emit;
 
 namespace ArquitecturaModel
@@ -36,6 +37,10 @@ namespace ArquitecturaModel
             builder.Entity<Sucursales>().HasIndex(s => s.SucursalName).IsUnique();
 			builder.Entity<Sucursales>().HasKey(s => s.SucursalId);
 			base.OnModelCreating(builder);
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.ConfigureWarnings(w => w.Ignore(CoreEventId.InvalidIncludePathError));
         }
     }
 }

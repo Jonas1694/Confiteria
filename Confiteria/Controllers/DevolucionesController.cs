@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Stimulsoft.Base.Localization;
 
 namespace Confiteria.Controllers
 {
@@ -20,8 +21,23 @@ namespace Confiteria.Controllers
         // GET: Devoluciones
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Devolucions.Include(d => d.Clientes).Include(d => d.StatusDocumento);
-            return View(await applicationDbContext.ToListAsync());
+            List<Devolucion> devolucions = new List<Devolucion>();
+            if (User.IsInRole("Admin") || User.IsInRole("sa"))
+            {
+                devolucions = await _context.Devolucions
+                    .Include(d => d.Clientes)
+                    .Include(d => d.StatusDocumento)
+                    .Include(d=> d.Sucursales)
+                    .ToListAsync();
+                return View(devolucions);
+            }
+            devolucions = await _context.Devolucions
+                .Include(d => d.Clientes)
+                .Include(d => d.Sucursales)
+                .Include(d => d.StatusDocumento)
+                .Where(w=> w.SucursalesId == _context.Users.FirstOrDefault(u=> u.Email == User.Identity!.Name)!.SucursalesId)
+                .ToListAsync();
+            return View(devolucions);
         }
         // GET: Devoluciones/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -46,13 +62,10 @@ namespace Confiteria.Controllers
         // GET: Devoluciones/Create
         public async Task<IActionResult> Create(int? id)
         {
-
             if (id != null)
             {
                 var doc = _context.Facturacion.Include(i => i.Clientes).Where(c => c.FacturacionId == id.Value).FirstOrDefault();
-                var detalle = _context.DetalleFacturas.Include(i => i.Productos).Include(i => i.Productos).Include(i => i.Productos.Marcas).Where(d => d.FacturacionId == doc.FacturacionId);
-
-
+                var detalle = _context.DetalleFacturas.Include(i => i.Productos).Include(i => i.Productos).Include(i => i.Productos.Marcas).Where(d => d.FacturacionId == doc!.FacturacionId);
                 List<DetalleDevolucionViewModel> List = new List<DetalleDevolucionViewModel>();
                 foreach (var item in detalle)
                 {
@@ -75,7 +88,7 @@ namespace Confiteria.Controllers
                     ClienteId = doc.ClienteId,
                     FacturaId = doc.FacturacionId,
                     Iva = doc.Iva,
-                    NDocumento = _context.Devolucions.Count() + 1,
+                    NDocumento = _context.Devolucions.Where(w=> w.SucursalesId == doc.SucursalesId).Count() + 1,
                     SubTotal = doc.SubTotal,
                     Total = doc.Total,
                     Tasa= doc.Tasa,
@@ -132,7 +145,7 @@ namespace Confiteria.Controllers
                     double ncorrelativo = 0;
                     if (data.Count() != 0)
                     {
-                        ncorrelativo = data.Max(m => m.NDocumento) + 1;
+                        ncorrelativo = data.Where(w => w.SucursalesId == UsuarioId!.SucursalesId).Max(m => m.NDocumento) + 1;
                     }
                     else
                     {

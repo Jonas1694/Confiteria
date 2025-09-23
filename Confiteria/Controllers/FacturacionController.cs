@@ -47,7 +47,7 @@ namespace Confiteria.Controllers
             facturacions = await _context.Facturacion
                 .Include(f => f.Clientes)
                 .Include(f => f.StatusDocumento)
-                .Include(i=> i.Sucursales)
+                .Include(i => i.Sucursales)
                 .Where(w => w.SucursalesId == UsuarioId!.SucursalesId)
                 .OrderByDescending(n => n.NFactura)
                 .ToListAsync();
@@ -401,15 +401,32 @@ namespace Confiteria.Controllers
             var d = new DateTime(f.Year, f.Month, f.Day, 23, 59, 59);
             var h = new DateTime(f.Year, f.Month, f.Day, 0, 0, 0);
             var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-            var consulta = _context.Facturacion.Include(d => d.DetalleFacturas)
+            List<Facturacion> facturacions = new List<Facturacion>();
+            if (User.IsInRole("Admin") || User.IsInRole("sa"))
+            {
+                facturacions = _context.Facturacion.Include(d => d.DetalleFacturas)
                 .Include("DetalleFacturas.Productos")
                 .Include(i => i.FormaPago)
                 .Include(i => i.StatusDocumento).Where(s => s.StatusDocumentoId == 2)
                 .Include(i => i.Clientes)
+                .Include(i => i.Sucursales)
+                .Where(f => (f.FechaRegistro >= h && f.FechaRegistro <= d))
+                .ToList();
+            }
+            else
+            {
+                facturacions = _context.Facturacion.Include(d => d.DetalleFacturas)
+                .Include("DetalleFacturas.Productos")
+                .Include(i => i.FormaPago)
+                .Include(i => i.StatusDocumento).Where(s => s.StatusDocumentoId == 2)
+                .Include(i => i.Clientes)
+                .Include(i => i.Sucursales)
                 .Where(f => (f.FechaRegistro >= h && f.FechaRegistro <= d) && f.SucursalesId == UsuarioId!.SucursalesId)
                 .ToList();
-
-            return new ViewAsPdf(nameof(CierreDiario), consulta)
+               
+            }
+            var sucursal = facturacions.DistinctBy(d => d.Sucursales).ToList();
+            return new ViewAsPdf(nameof(CierreDiario), facturacions)
             {
                 PageMargins = new Rotativa.AspNetCore.Options.Margins(10, 5, 10, 5)
             };

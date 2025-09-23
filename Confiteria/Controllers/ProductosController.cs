@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Confiteria.Controllers
 {
@@ -96,9 +97,29 @@ namespace Confiteria.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllProducto()
+        public async Task<IActionResult> GetAllProducto()
         {
-            return Ok(_context.Productos.Include(i => i.Marcas).ToList());
+            List<Inventario> inventarios = new List<Inventario>();
+            inventarios = await _context.Inventario
+                   //.Include(i => i.Marcas)
+                   .Include(i => i.Productos)
+                   .Include(i => i.Sucursales)
+                   .Include(i => i.Productos.Marcas)
+                   .Include("Inventario.Sucursales")
+                   .ToListAsync();
+            var productos = inventarios
+               .Select(s => new GridProductoVewModel()
+               {
+                   Id = s.Productos.Id,
+                   Codigo = s.Productos.Codigo,
+                   Descripcion = s.Productos.Descripcion,
+                   Fecha = s.Productos.Fecha,
+                   Precio = s.Productos.Precio,
+                   Stock = s.Stock,
+                   Marcas = s.Productos.Marcas,
+                   SucursalName = s.Sucursales.SucursalName
+               }).ToList();
+            return Ok(productos);
         }
         // GET: Clientes/Create
         public IActionResult Create()

@@ -382,6 +382,7 @@ namespace Confiteria.Controllers
             var data = _context.Facturacion
                 .Include(i => i.DetalleFacturas)
                 .Include(i => i.Clientes)
+                .Include(i => i.Sucursales)
                 .FirstOrDefault(f => f.FacturacionId == id);
             foreach (var i in data.DetalleFacturas)
             {

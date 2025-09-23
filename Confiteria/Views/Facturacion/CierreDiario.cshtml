@@ -1,116 +1,115 @@
 ﻿@model IEnumerable<ArquitecturaModel.Model.Facturacion>
 
 @{
-	Layout = null;
-	// var sucursal = Model.DistinctBy(d => d.Sucursales).ToList();
+    Layout = null;
+    // var sucursal = Model.DistinctBy(d => d.Sucursales).ToList();
 }
 <!DOCTYPE html>
 <head>
-	<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
-	<link href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" rel="stylesheet" />
-	<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
-@* 	@foreach (var s in Model.DistinctBy(d => d.Sucursales).ToList())
-	{
-		<div class="row">
-			<div class="col-12 text-center">
-				<h3>@s.Sucursales.NombreSucursal</h3>
-			</div>
-			<div class="col-12 text-center">
-				<h5>@s.Sucursales.DireccionSucursal</h5>
-			</div>
-			<div class="col-12 text-center">
-				<h5>Telefono: @s.Sucursales.TelefonoSucursal</h5>
-			</div>
-		</div>
-    } *@
 
-	@if(Model.Count() > 0)
-	{
 
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-12 text-center">
-					MOTOS REPUESTOS SANTA RITA 2024 , C.A
-				</div>
-				<div class="col-12 text-center">
-					J-504928429
-					AV PRINCIPAL FRANCISCO DE MIRANDA, EDO ARAGUA
-				</div>
-				<div class="col-12 text-center">
-					Fecha de Cierrre Diario: @Model.FirstOrDefault().FechaRegistro.ToShortDateString()
-				</div>
-			</div>
-
-			<br />
-			<div class="row">
-				<div class="col-12">
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>N Factura</th>
-								<th>Cliente</th>
-								<th>Fecha</th>
-								<th>Tipo Pago</th>
-								<th>Total</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach (var i in Model)
-							{
-								<tr>
-									<td class="text-center">@i.NFactura</td>
-									<td class="text-center">@i.Clientes.RazonSocial</td>
-									<td class="text-center">@i.FechaRegistro</td>
-									<td class="text-center">@i.FormaPago.Name</td>
-									<td class="text-end">@i.Total.ToString("N2")</td>
-								</tr>
-								<tr>
-									<td colspan="4">
-										<table class="table">
-											<thead>
-												<tr>
-													<th>Descripcion Producto</th>
-													<th>Cantidad Producto</th>
-												</tr>
-											</thead>
-											<tbody>
-												@foreach (var p in i.DetalleFacturas)
-												{
-													<tr>
-														<td class="text-center">@p.Productos.Descripcion</td>
-														<td class="text-center">@p.Cantidad</td>
-													</tr>
-												}
-											</tbody>
-										</table>
-									</td>
-								</tr>
-							}
-						</tbody>
-						<tfoot>
-							<tr>
-								<td colspan="4" class="text-end">
-									<label>Monto Total Diario: </label>
-									@Model.Sum(s => s.Total).ToString("N2")
-								</td>
-							</tr>
-							<tr>
-								<td colspan="4" class="text-end">
-									<label>Monto Total Divisa: </label>
-									@Model.Sum(s => s.Tasa).ToString("N2")
-								</td>
-							</tr>
-						</tfoot>
-					</table>
-				</div>
-			</div>
-		</div>
-	}
-	else
-	{
-		<h3>No hay informacion.</h3>
-	}
+    @if (Model.Count() > 0)
+    {
+        foreach (var s in Model.DistinctBy(d => d.Sucursales).ToList())
+        {
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h3>@s.Sucursales.SucursalName</h3>
+                </div>
+                <div class="col-12 text-center">
+                    <h5>@s.Sucursales.TipoDocumento-@s.Sucursales.Rif</h5>
+                    <h5>@s.Sucursales.DireccionFiscal</h5>
+                </div>
+                <div class="col-12 text-center">
+                    Fecha de Cierrre Diario: @Model.FirstOrDefault()!.FechaRegistro.ToShortDateString()
+                </div>
+            </div>
+            <div class="container-fluid">
+                <br />
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>N Factura</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha</th>
+                                    <th>Tipo Pago</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var i in Model.Where(w=> w.SucursalesId == s.SucursalesId).OrderByDescending(o=> o.NFactura))
+                                {
+                                    <tr>
+                                        <td class="text-center">@i.NFactura</td>
+                                        <td class="text-center">@i.Clientes.RazonSocial</td>
+                                        <td class="text-center">@i.FechaRegistro</td>
+                                        <td class="text-center">@i.FormaPago.Name</td>
+                                        <td class="text-end">@i.Total.ToString("N2")</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Descripcion Producto</th>
+                                                        <th>Cantidad Producto</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var p in i.DetalleFacturas)
+                                                    {
+                                                        <tr>
+                                                            <td class="text-center">@p.Productos.Descripcion</td>
+                                                            <td class="text-center">@p.Cantidad</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" class="text-end">
+                                        <label>Monto Total Diario: </label>
+                                        @Model.Where(w => w.SucursalesId == s.SucursalesId).Sum(s => s.Total).ToString("N2")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" class="text-end">
+                                        <label>Monto Total Divisa: </label>
+                                        @Model.Where(w => w.SucursalesId == s.SucursalesId).Sum(s => s.Tasa).ToString("N2")
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        if (Model.DistinctBy(d => d.Sucursales).ToList().Count > 1)
+        {
+            <div class="row">
+                <div class="col-12 text-end">
+                    Monto Total: @Model.Sum(s => s.Total).ToString("N2")
+                </div>
+                <div class="col-12 text-end">
+                    Monto Total Divisa: @Model.Sum(s => s.Tasa).ToString("N2")
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <h3>No hay informacion.</h3>
+    }
 </body>

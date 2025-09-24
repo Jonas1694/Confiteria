@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Confiteria.Controllers
 {
@@ -21,18 +22,41 @@ namespace Confiteria.Controllers
         // GET: Clientes
         public async Task<IActionResult> Index()
         {
-            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-            var productos = _context.Productos
-                .Include(i => i.Marcas)
-                .Include(i=> i.Inventario)
-                .Select(s=> new GridProductoVewModel() { Id = s.Id,
-                 Codigo = s.Codigo,
-                 Descripcion = s.Descripcion,
-                 Fecha = s.Fecha,
-                 Precio = s.Precio,
-                 Stock = s.Inventario.Any(f => f.ProductosId == s.Id && f.SucursalesId == UsuarioId!.SucursalesId) ? s.Inventario.FirstOrDefault(f=> f.ProductosId == s.Id && f.SucursalesId == UsuarioId!.SucursalesId)!.Stock : 0,
-                Marcas = s.Marcas}).ToList();
-
+            List<Inventario> inventarios = new List<Inventario>();
+            if(User.IsInRole("Admin") || User.IsInRole("sa"))
+            {
+                inventarios = await _context.Inventario
+                    //.Include(i => i.Marcas)
+                    .Include(i => i.Productos)
+                    .Include(i=> i.Sucursales)
+                    .Include(i=> i.Productos.Marcas)
+                    .Include("Inventario.Sucursales")
+                    .ToListAsync();
+            }
+            else
+            {
+                var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+                inventarios = await _context.Inventario
+                       //.Include(i => i.Marcas)
+                       .Include(i => i.Productos)
+                       .Include(i => i.Sucursales)
+                       .Include(i => i.Productos.Marcas)
+                       .Include("Inventario.Sucursales")
+                       .Where(w => w.SucursalesId == UsuarioId!.SucursalesId)
+                       .ToListAsync();
+            }
+            var productos = inventarios
+                .Select(s => new GridProductoVewModel()
+            {
+                Id = s.Productos.Id,
+                Codigo = s.Productos.Codigo,
+                Descripcion = s.Productos.Descripcion,
+                Fecha = s.Productos.Fecha,
+                Precio = s.Productos.Precio,
+                Stock = s.Stock,
+                Marcas = s.Productos.Marcas,
+                SucursalName = s.Sucursales.SucursalName
+            }).ToList();
             return productos != null ? View(productos) : Problem("Entity set 'AplicationDbContext.Productos'  is null.");
         }
 
@@ -73,9 +97,29 @@ namespace Confiteria.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllProducto()
+        public async Task<IActionResult> GetAllProducto()
         {
-            return Ok(_context.Productos.Include(i => i.Marcas).ToList());
+            List<Inventario> inventarios = new List<Inventario>();
+            inventarios = await _context.Inventario
+                   //.Include(i => i.Marcas)
+                   .Include(i => i.Productos)
+                   .Include(i => i.Sucursales)
+                   .Include(i => i.Productos.Marcas)
+                   .Include("Inventario.Sucursales")
+                   .ToListAsync();
+            var productos = inventarios
+               .Select(s => new GridProductoVewModel()
+               {
+                   Id = s.Productos.Id,
+                   Codigo = s.Productos.Codigo,
+                   Descripcion = s.Productos.Descripcion,
+                   Fecha = s.Productos.Fecha,
+                   Precio = s.Productos.Precio,
+                   Stock = s.Stock,
+                   Marcas = s.Productos.Marcas,
+                   SucursalName = s.Sucursales.SucursalName
+               }).ToList();
+            return Ok(productos);
         }
         // GET: Clientes/Create
         public IActionResult Create()

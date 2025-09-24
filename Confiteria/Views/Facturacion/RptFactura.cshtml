@@ -13,11 +13,12 @@
 	<div class="row">
 		<br />
 		<div class="col-12 text-center">
-			MOTO REPUESTOS Y ACCESORIOS EL PANA JUAN , C.A
-			J-507351424
+			@Model.Sucursales.SucursalName.ToUpper() <br/>
+			@Model.Sucursales.TipoDocumento-
+			@Model.Sucursales.Rif
 		</div>
 		<div class="col-12 text-center" >
-			AV ALFARAGUA LOCAL N 28 SECTOR LINARES ALCANTARA 
+			@Model.Sucursales.DireccionFiscal.ToUpper()
 		</div>
 	</div>
 	<br />
@@ -33,22 +34,19 @@
 			@Model.NFactura
 		</div>
 	</div>
-	<br />
 	<div class="row">
 		<div class="col-12">
 			<label>Cliente: </label>
 			@Model.Clientes.GetRif
 		</div>
 	</div>
-	<br />
 	<div class="row">
 		<div class="col-6">
 			<label>Direccion: </label>
 			@Model.Clientes.DireccionFiscal
 		</div>
 	</div>
-	<br />
-
+	<hr />
 	<div class="row">
 		<div class="col-12">
 			<table style="width:100%;">
@@ -57,8 +55,6 @@
 						<th>Cantidad</th>
 						<th class="text-center">Producto</th>
 						<th class="text-center">Precio Und</th>
-
-					
 					</tr>
 				</thead>
 				<tbody>
@@ -71,8 +67,28 @@
 							
 						</tr>
 					}
-					
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="3"><hr /></td>
+					</tr>
+					<tr>
+						<td colspan="3" class="text-end">
+							<div style="margin-right:10px;">
+								<label>Total Bs: </label>
+								@Model.Total
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3" class="text-end">
+							<div style="margin-right:10px;">
+								<label>Total $: </label>
+								@Model.Tasa.ToString("N2")
+							</div>
+						</td>
+					</tr>
+				</tfoot>
 			</table>
 		</div>
 	</div>
@@ -92,19 +108,7 @@
 			@Model.TotalIva
 		</div>
 	</div> *@
-	
-	<div class="row">
-		<div class="offset-6 col-6">
-			<label>Total Bs: </label>
-			@Model.Total
-		</div>
-	</div>
-	<div class="row">
-		<div class="offset-6 col-6 ">
-			<label>Total $: </label>
-			@Model.Tasa.ToString("N2")
-		</div>
-	</div>
+
 	<br />
 
 	<div class="col-12 text-center">

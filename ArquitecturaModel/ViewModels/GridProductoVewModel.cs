@@ -11,5 +11,6 @@ namespace ArquitecturaModel.ViewModels
         public double Stock { get; set; }
         public Marcas Marcas { get; set; } = new Marcas();
         public DateTime Fecha { get; set; }
+        public string SucursalName { get; set; }
     }
 }

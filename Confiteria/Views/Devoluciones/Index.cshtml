@@ -39,9 +39,11 @@
 					<th>
 						@Html.DisplayNameFor(model => model.Total)
 					</th>
-                   
 					<th>
 						@Html.DisplayNameFor(model => model.FechaRegistro)
+					</th>
+					<th>
+						Sucursal
 					</th>
 					<th></th>
 				</tr>
@@ -64,6 +66,9 @@
 						</td>
 						<td>
 							@item.FechaRegistro.ToShortDateString()
+						</td>
+						<td>
+							@item.Sucursales.SucursalName
 						</td>
 						<td>
 							@* <a asp-action="Edit" asp-route-id="@item.DevolucionId" class="btn btn-outline-warning">Edit</a> *@

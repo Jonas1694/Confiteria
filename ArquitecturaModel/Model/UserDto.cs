@@ -45,6 +45,6 @@ namespace ArquitecturaModel.Model
 
         public string Role { get; set; }
 
-        public int SucursalId { get; set; }
+        public int? SucursalId { get; set; }
     }
 }

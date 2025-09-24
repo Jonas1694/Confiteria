@@ -41,6 +41,9 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Fecha)
                             </th>
+                            <th>
+                                Sucursal
+                            </th>
                             <th></th>
                         </tr>
                       
@@ -69,6 +72,9 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Fecha)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SucursalName)
                                 </td>
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Editar</a>

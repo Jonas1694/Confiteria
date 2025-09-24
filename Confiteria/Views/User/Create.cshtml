@@ -76,13 +76,10 @@
 						<select asp-for="SucursalId" class="form-control" asp-items="ViewBag.Sucursales">
 							<option value="">-- Seleccione un rol --</option>
 						</select>
-						<span asp-validation-for="SucursalId" class="text-danger"></span>
+						@* <span asp-validation-for="SucursalId" class="text-danger"></span> *@
 					</div>
 				</div>
 			</div>
-
-
-            
 			<div class="card-footer">
 				<button type="submit" class="btn btn-primary">Registrar</button>
 			</div>

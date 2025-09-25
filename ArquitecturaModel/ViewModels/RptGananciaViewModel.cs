@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArquitecturaModel.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,6 @@ namespace ArquitecturaModel.ViewModels
         public int Cantidad { get; set; }
         public decimal Total { get; set; }
         public decimal Ganancia { get; set; }
+        public Sucursales Sucursales { get; set; }
     }
 }

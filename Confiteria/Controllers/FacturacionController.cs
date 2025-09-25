@@ -80,7 +80,7 @@ namespace Confiteria.Controllers
         {
             ViewData["ClienteId"] = new SelectList(await _context.Clientes.ToListAsync(), "id", "GetRif");
             //var products = await _context.Productos.Select(s=> new { Id = s.Id, GetDescripcion = $"{s.Codigo} {s.Descripcion}"}).ToListAsync();
-            ViewData["ProductosId"] = new SelectList(await _context.Productos.ToListAsync(), "Id", "GetDescripcion");
+            ViewData["ProductosId"] = new SelectList(await GetProductos(), "Id", "GetDescripcion");
             ViewData["SelectFormaPago"] = new SelectList(_context.FormaPago, "Id", "Name");
             return View(new FacturacionViewModel());
         }
@@ -95,7 +95,7 @@ namespace Confiteria.Controllers
             var tazaId = _context.TasaDolar.Max(m => m.Id);
             var t = _context.TasaDolar.Find(tazaId) ?? null;
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "id", "GetRif", model.ClienteId);
-            ViewData["ProductosId"] = new SelectList(_context.Productos, "Id", "GetDescripcion", model.ProductosId);
+            ViewData["ProductosId"] = new SelectList(await GetProductos(), "Id", "GetDescripcion", model.ProductosId);
             ViewData["SelectFormaPago"] = new SelectList(_context.FormaPago, "Id", "Name", model.FormaPagoId);
             var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
 
@@ -242,7 +242,15 @@ namespace Confiteria.Controllers
         {
             var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             var p = await _context.Productos.Include(i => i.Inventario).SingleOrDefaultAsync(t => t.Id == id);
-            var data = new ProductoViewModel { Codigo = p.Codigo, Descripcion = p.GetDescripcion, Precio = Convert.ToString(p.Precio), Stock = p.Inventario.Any(w => w.SucursalesId == UsuarioId!.SucursalesId) ? p.Inventario.FirstOrDefault(w => w.SucursalesId == UsuarioId!.SucursalesId)!.Stock : 0, StockMin = p.StockMin, StockMax = p.StockMax };
+            var data = new ProductoViewModel 
+            { 
+                Codigo = p.Codigo, 
+                Descripcion = p.GetDescripcion, 
+                Precio = Convert.ToString(p.Precio), 
+                Stock = p.Inventario.Any(w => w.SucursalesId == UsuarioId!.SucursalesId) ? p.Inventario.FirstOrDefault(w => w.SucursalesId == UsuarioId!.SucursalesId)!.Stock : 0, 
+                StockMin = p.StockMin, 
+                StockMax = p.StockMax 
+            };
             var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
             return Json(data);
         }
@@ -330,7 +338,15 @@ namespace Confiteria.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
+        public async Task<List<Productos>> GetProductos()
+        {
+            var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity!.Name);
+            var inventorio = await _context.Inventario
+                .Include(i=> i.Productos)
+                .Where(w => w.SucursalesId == UsuarioId!.SucursalesId)
+                .ToListAsync();
+            return inventorio.Select(s=> new Productos() { Id = s.ProductosId, Codigo = s.Productos.Codigo, Descripcion = s.Productos.Descripcion, Precio = s.Productos.Precio }).ToList();
+        }
         //async Task<FacturacionViewModel> GetPedidoViewAsync(int id)
         //{
         //    var pedido = await _context.Pedidos

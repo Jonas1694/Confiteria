@@ -146,7 +146,7 @@ namespace Confiteria.Areas.Identity.Pages.Account
             //Check that there is an Administrator role and create if not
             //Task<bool> hasAdminRole = RoleManager.RoleExistsAsync("Admin");
             //IdentityResult roleResult;
-            string[] roleNames = { "Admin", "Facturador", "sa", "Cajero", "Encargado" };
+            string[] roleNames = { "Admin", "Facturador", "sa", "Encargado" };
             foreach (var roleName in roleNames)
             {
                 var roleExist = await _roleManager.RoleExistsAsync(roleName);

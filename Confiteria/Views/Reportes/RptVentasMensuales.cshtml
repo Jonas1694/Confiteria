@@ -95,48 +95,6 @@
 										</td>
 									</tr>
 								}
-								@* <tr>
-								<td colspan="6" class="text-end">
-									<label>Monto Total Efectivo BS : </label>
-									@Model.Where(s => s.FormaPago.Name == "Efectivo BS").Sum(s => s.Total).ToString("N2")
-								</td>
-							</tr>
-							<tr>
-								<td colspan="6" class="text-end">
-									<label>Monto Total Divisas: </label>
-									@Model.Where(s => s.FormaPago.Name == "Divisa").Sum(s => s.Tasa).ToString("N2")
-								</td>
-							</tr>
-							<tr>
-								<td colspan="6" class="text-end">
-									<label>Monto Total Punto: </label>
-									@Model.Where(s => s.FormaPago.Name == "Punto").Sum(s => s.Total).ToString("N2")
-								</td>
-							</tr>
-							<tr>
-								<td colspan="6" class="text-end">
-									<label>Monto Total Pago Movil:</label>
-									@Model.Where(s => s.FormaPago.Name == "Pago Movil").Sum(s => s.Total).ToString("N2")
-								</td>
-							</tr>
-							<tr>
-								<td colspan="6" class="text-end">
-									<label>Monto Total BioPago: </label>
-									@Model.Where(s => s.FormaPago.Name == "Biopago").Sum(s => s.Total).ToString("N2")
-								</td>
-							</tr>
-							<tr>
-								<td colspan="6" class="text-end">
-									<label>Monto Total Mixto: </label>
-									@Model.Where(s => s.FormaPago.Name == "Mixto").Sum(s => s.Total).ToString("N2")
-								</td>
-							</tr>
-							<tr>
-								<td colspan="6" class="text-end">
-									<label>Monto Total en Bolivares : </label>
-									@Model.Sum(s => s.Total).ToString("N2")
-								</td>
-							</tr> *@
 							</tfoot>
 						</table>
 					</div>

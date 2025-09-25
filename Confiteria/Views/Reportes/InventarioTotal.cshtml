@@ -1,7 +1,22 @@
-﻿
+﻿@using ArquitecturaModel.ViewModels
+@model IEnumerable<InventarioTotalViewModel>
 @{
     ViewData["Title"] = "InventarioTotal";
 }
+<table style="width:70%;">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <h2>Tu Inventario @item.SucursalName Total en Divisas</h2>
+                </td>
+                <td>
+                    <h1>@item.MontoTotal.ToString("N2")</h1>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-@model decimal
-<h1>Tu Inventario Total en Divisas es de : @Model.ToString("N2")</h1>
+

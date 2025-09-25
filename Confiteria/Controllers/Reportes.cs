@@ -110,7 +110,7 @@ namespace Confiteria.Controllers
             }
             else
                 inventarios = _context.Inventario.Include(i => i.Productos).Where(i => i.SucursalesId == UsuarioId!.SucursalesId).ToList();
-            var totalCosto = inventarios.Sum(p => p.Productos.Precio * p.Stock);
+            var totalCosto = inventarios.Sum(p => p.Productos.PrecioCosto * p.Stock);
             return View(totalCosto);
         }
         public IActionResult RptReporteGanancia()

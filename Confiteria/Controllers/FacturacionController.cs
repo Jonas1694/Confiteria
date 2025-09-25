@@ -242,7 +242,7 @@ namespace Confiteria.Controllers
         {
             var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             var p = await _context.Productos.Include(i => i.Inventario).SingleOrDefaultAsync(t => t.Id == id);
-            var data = new ProductoViewModel { Codigo = p.Codigo, Descripcion = p.GetDescripcion, Precio = Convert.ToString(p.Precio), Stock = p.Inventario.FirstOrDefault(w => w.SucursalesId == UsuarioId!.SucursalesId)!.Stock, StockMin = p.StockMin, StockMax = p.StockMax };
+            var data = new ProductoViewModel { Codigo = p.Codigo, Descripcion = p.GetDescripcion, Precio = Convert.ToString(p.Precio), Stock = p.Inventario.Any(w => w.SucursalesId == UsuarioId!.SucursalesId) ? p.Inventario.FirstOrDefault(w => w.SucursalesId == UsuarioId!.SucursalesId)!.Stock : 0, StockMin = p.StockMin, StockMax = p.StockMax };
             var settings = new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() };
             return Json(data);
         }

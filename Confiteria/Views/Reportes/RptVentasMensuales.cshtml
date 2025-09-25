@@ -23,42 +23,44 @@
 		var fechaDesde = fechaRegistro != null ? fechaRegistro.Value.ToString("d") : "Fecha no disponible";
 
 		<div class="container-fluid">
-			<div class="row">
-				<div class="col-12 text-center">
-					MOTOS REPUESTOS SANTA RITA 2024 , C.A
+			@foreach (var item in Model.DistinctBy(d=> d.SucursalesId))
+			{
+				<div class="row">
+					<div class="col-12 text-center">
+						@Model.FirstOrDefault()!.Sucursales.SucursalName
+					</div>
+					<div class="col-12 text-center">
+						@Model.FirstOrDefault()!.Sucursales.TipoDocumento
+						@Model.FirstOrDefault()!.Sucursales.Rif
+					</div>
+					<div class="col-12 text-center">
+						<p style="display: inline;">Fecha Desde: @fechaDesde</p>
+						<p style="display: inline; margin-left: 20px;">Fecha Hasta: @fechaCierre</p>
+					</div>
 				</div>
-				<div class="col-12 text-center">
-					J-504928429
-					AV PRINCIPAL FRANCISCO DE MIRANDA, EDO ARAGUA
-				</div>
-				<div class="col-12 text-center">
-					<p style="display: inline;">Fecha Desde: @fechaDesde</p>
-					<p style="display: inline; margin-left: 20px;">Fecha Hasta: @fechaCierre</p>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-12">
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>N Factura</th>
-								<th>Cliente</th>
-								<th>Fecha</th>
-								<th>Tipo Pago</th>
-								<th>Total</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach (var i in Model)
-							{
+				<div class="row">
+					<div class="col-12">
+						<table class="table table-bordered">
+							<thead>
 								<tr>
-									<td class="text-center">@i.NFactura</td>
-									<td class="text-center">@i.Clientes.RazonSocial</td>
-									<td class="text-center">@i.FechaRegistro</td>
-									<td class="text-center">@i.FormaPago.Name</td>
-									<td class="text-end">@i.MontoCancelar.Value.ToString("N2")</td>
+									<th>N Factura</th>
+									<th>Cliente</th>
+									<th>Fecha</th>
+									<th>Tipo Pago</th>
+									<th>Total</th>
 								</tr>
-							@* 	<tr>
+							</thead>
+							<tbody>
+								@foreach (var i in Model)
+								{
+									<tr>
+										<td class="text-center">@i.NFactura</td>
+										<td class="text-center">@i.Clientes.RazonSocial</td>
+										<td class="text-center">@i.FechaRegistro</td>
+										<td class="text-center">@i.FormaPago.Name</td>
+										<td class="text-end">@i.MontoCancelar.Value.ToString("N2")</td>
+									</tr>
+									@* 	<tr>
 									<td colspan="4">
 										<table class="table">
 											<thead>
@@ -79,20 +81,20 @@
 										</table>
 									</td> 
 								</tr> *@
-							}
-						</tbody>
-						<br />
-						<tfoot>
-							@foreach (var item in Model.Select(s => new { Name = s.FormaPago.Name, Id = s.FormaPagoId }).Distinct())
-							{
-								<tr>
-									<td colspan="6" class="text-end">
-										<label>Monto Total @item.Name: </label>
-										@Model.Where(w => w.FormaPagoId == item.Id ).Sum(s => s.MontoCancelar)?.ToString("N2")
-									</td>
-								</tr>
-							}
-							@* <tr>
+								}
+							</tbody>
+							<br />
+							<tfoot>
+								@foreach (var item in Model.Select(s => new { Name = s.FormaPago.Name, Id = s.FormaPagoId }).Distinct())
+								{
+									<tr>
+										<td colspan="6" class="text-end">
+											<label>Monto Total @item.Name: </label>
+											@Model.Where(w => w.FormaPagoId == item.Id).Sum(s => s.MontoCancelar)?.ToString("N2")
+										</td>
+									</tr>
+								}
+								@* <tr>
 								<td colspan="6" class="text-end">
 									<label>Monto Total Efectivo BS : </label>
 									@Model.Where(s => s.FormaPago.Name == "Efectivo BS").Sum(s => s.Total).ToString("N2")
@@ -134,10 +136,12 @@
 									@Model.Sum(s => s.Total).ToString("N2")
 								</td>
 							</tr> *@
-						</tfoot>
-					</table>
+							</tfoot>
+						</table>
+					</div>
 				</div>
-			</div>
+			}
+			
 		</div>
 	}
 	else

@@ -12,47 +12,55 @@
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="row">
-        <div class="col-12 text-center">
-            MOTOS REPUESTOS SANTA RITA 2024 , C.A
+    @foreach (var s in Model.DistinctBy(d => d.Sucursales).ToList())
+    {
+        <div class="row">
+            <div class="col-12 text-center">
+                @s.Sucursales.SucursalName
+            </div>
+            <div class="col-12 text-center">
+                @s.Sucursales.TipoDocumento
+                @s.Sucursales.Rif
+            </div>
+            <br />
         </div>
-        <div class="col-12 text-center">
-            J-504928429
-            AV PRINCIPAL FRANCISCO DE MIRANDA, EDO ARAGUA
-        </div>
-        <br />
-        @* <div class="col-12 text-center">
-            Fecha de Cierrre: @Model.FirstOrDefault()!.FechaRegistro!.ToShortDateString()
-        </div> *@
-    </div>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Total Venta</th>
-                <th>Ganancia</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td>@item.NombreProducto.ToUpper()</td>
-                    <td class="text-center">@item.Cantidad</td>
-                    <td class="text-end">@item.Total.ToString("n2")</td>
-                    <td class="text-end">@item.Ganancia.ToString("n2")</td>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Total Venta</th>
+                    <th>Ganancia</th>
                 </tr>
-            }
-        </tbody>
-		<tfoot>
-			<tr>
-				<td colspan="6" class="text-end">
-					<label>Monto Total de Ganancias : </label>
-					@Model.Sum(s => s.Ganancia).ToString("N2")
-				</td>
-			</tr>
-		</tfoot>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Where(w=> w.Sucursales.SucursalId == s.Sucursales.SucursalId))
+                {
+                    <tr>
+                        <td>@item.NombreProducto.ToUpper()</td>
+                        <td class="text-center">@item.Cantidad</td>
+                        <td class="text-end">@item.Total.ToString("n2")</td>
+                        <td class="text-end">@item.Ganancia.ToString("n2")</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6" class="text-end">
+                        <label>Monto Total de Ganancias : </label>
+                        @Model.Where(w => w.Sucursales.SucursalId == s.Sucursales.SucursalId).Sum(s => s.Ganancia).ToString("N2")
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
 
+    }
+    @if (Model.DistinctBy(d => d.Sucursales).ToList().Count > 1)
+    {
+        <div class="row">
+            <div class="col-12 text-end">
+                Monto Global: @Model.Sum(s => s.Ganancia).ToString("N2")
+            </div>
+        </div>
+    }
 </body>

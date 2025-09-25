@@ -13,25 +13,26 @@
 <body>
 	@if(Model.Count() > 0)
 	{
-		var registro = Model.FirstOrDefault();
-		var fechaRegistro = registro?.FechaRegistro;
-
-		// Calcular la fecha de cierre como el último día del mes de la fecha de registro
-		var fechaCierre = fechaRegistro.HasValue
-		? new DateTime(fechaRegistro.Value.Year, fechaRegistro.Value.Month, DateTime.DaysInMonth(fechaRegistro.Value.Year, fechaRegistro.Value.Month)).ToShortDateString()
-		: "Fecha no disponible";
-		var fechaDesde = fechaRegistro != null ? fechaRegistro.Value.ToString("d") : "Fecha no disponible";
+		
 
 		<div class="container-fluid">
-			@foreach (var item in Model.DistinctBy(d=> d.SucursalesId))
+			@foreach (var sucursal in Model.DistinctBy(d=> d.SucursalesId))
 			{
+				var registro = Model.FirstOrDefault();
+				var fechaRegistro = registro?.FechaRegistro;
+
+				// Calcular la fecha de cierre como el último día del mes de la fecha de registro
+				var fechaCierre = fechaRegistro.HasValue
+				? new DateTime(fechaRegistro.Value.Year, fechaRegistro.Value.Month, DateTime.DaysInMonth(fechaRegistro.Value.Year, fechaRegistro.Value.Month)).ToShortDateString()
+				: "Fecha no disponible";
+				var fechaDesde = fechaRegistro != null ? fechaRegistro.Value.ToString("d") : "Fecha no disponible";
 				<div class="row">
 					<div class="col-12 text-center">
-						@Model.FirstOrDefault()!.Sucursales.SucursalName
+						@sucursal.Sucursales.SucursalName
 					</div>
 					<div class="col-12 text-center">
-						@Model.FirstOrDefault()!.Sucursales.TipoDocumento
-						@Model.FirstOrDefault()!.Sucursales.Rif
+						@sucursal.Sucursales.TipoDocumento
+						@sucursal.Sucursales.Rif
 					</div>
 					<div class="col-12 text-center">
 						<p style="display: inline;">Fecha Desde: @fechaDesde</p>
@@ -51,7 +52,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach (var i in Model)
+								@foreach (var i in Model.Where(w=> w.SucursalesId == sucursal.SucursalesId))
 								{
 									<tr>
 										<td class="text-center">@i.NFactura</td>
@@ -85,12 +86,12 @@
 							</tbody>
 							<br />
 							<tfoot>
-								@foreach (var item in Model.Select(s => new { Name = s.FormaPago.Name, Id = s.FormaPagoId }).Distinct())
+								@foreach (var item in Model.Where(w => w.SucursalesId == sucursal.SucursalesId).Select(s => new { Name = s.FormaPago.Name, Id = s.FormaPagoId }).Distinct())
 								{
 									<tr>
 										<td colspan="6" class="text-end">
 											<label>Monto Total @item.Name: </label>
-											@Model.Where(w => w.FormaPagoId == item.Id).Sum(s => s.MontoCancelar)?.ToString("N2")
+											@Model.Where(w => w.FormaPagoId == item.Id && w.SucursalesId == sucursal.SucursalesId).Sum(s => s.MontoCancelar)?.ToString("N2")
 										</td>
 									</tr>
 								}
@@ -141,7 +142,18 @@
 					</div>
 				</div>
 			}
-			
+			@if (Model.DistinctBy(d => d.Sucursales).ToList().Count > 1)
+			{
+				@foreach (var item in Model.Select(s => new { Name = s.FormaPago.Name, Id = s.FormaPagoId }).Distinct())
+				{
+					<div class="row">
+						<div class="col-12 text-end">
+							<label>Monto Global @item.Name: </label>
+							@Model.Where(w => w.FormaPagoId == item.Id).Sum(s => s.MontoCancelar)?.ToString("N2")
+						</div>
+					</div>
+				}
+			}
 		</div>
 	}
 	else

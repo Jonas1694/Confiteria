@@ -404,6 +404,8 @@
                          pagototal = parseFloat(@Model.Total);
                         switch (select) {
                             case 3:
+                            case 6:
+
                                 GetTaza();
                                 pagototal = parseFloat(dosDecimales(pagototal / taza));
                                 $('#fNoMixto').show();
@@ -416,10 +418,10 @@
                                 $('#fNoMixto').show();
                                 $('#fMixto').hide();
                                 break;
-                            case 6:
-                                $('#fMixto').show();
-                                $('#fNoMixto').hide();
-                                break;
+                            // case 6:
+                            //     $('#fMixto').show();
+                            //     $('#fNoMixto').hide();
+                            //     break;
                         }
                          $('#txtMontoPagar').val(pagototal).formatCurrency({ region: 'en-US', decimalSymbol: '.', digitGroupSymbol: ',', symbol: '' });
                     });

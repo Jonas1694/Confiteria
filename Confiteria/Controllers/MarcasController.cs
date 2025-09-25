@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Confiteria.Controllers
 {
-    [Authorize(Roles = "Admin,sa")]
+    [Authorize(Roles = "Admin,sa,Encargado")]
     public class MarcasController : Controller
     {
         private readonly AplicationDbContext _context;

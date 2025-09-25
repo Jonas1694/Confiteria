@@ -60,8 +60,8 @@ namespace Confiteria.Controllers
                 {
                     Nombre = user.Nombre,
                     Apellido = user.Apellido,
-                    Direccion = user.Direccion,
-                    Telefono = user.Telefono,
+                    Direccion = "Null",
+                    Telefono = "Null",
                     Email = user.Email,
                     UserName = user.Email,
                     SucursalesId = user.SucursalId,

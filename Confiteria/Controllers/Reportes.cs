@@ -103,9 +103,14 @@ namespace Confiteria.Controllers
             var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             //var totalInventario = _context.Productos.Include(i=> i.Inventario)
             //    .Sum(p => p.Precio * (p.Inventario.Any(f => f.ProductosId == p.Id && f.SucursalesId == UsuarioId!.SucursalesId)? p.Inventario.FirstOrDefault(f=> f.ProductosId == p.Id && f.SucursalesId == UsuarioId!.SucursalesId)!.Stock : 0));
-
-            var inventario = _context.Inventario.Include(i => i.Productos).Where(i => i.SucursalesId == UsuarioId!.SucursalesId).ToList();
-            var totalCosto = inventario.Sum(p => p.Productos.Precio * p.Stock);
+            List<Inventario> inventarios = new List<Inventario>();
+            if(User.IsInRole("Admin") || User.IsInRole("sa"))
+            {
+                inventarios = _context.Inventario.Include(i => i.Productos).ToList();
+            }
+            else
+                inventarios = _context.Inventario.Include(i => i.Productos).Where(i => i.SucursalesId == UsuarioId!.SucursalesId).ToList();
+            var totalCosto = inventarios.Sum(p => p.Productos.Precio * p.Stock);
             return View(totalCosto);
         }
         public IActionResult RptReporteGanancia()

@@ -105,7 +105,7 @@ namespace Confiteria.Controllers
             //    .Sum(p => p.Precio * (p.Inventario.Any(f => f.ProductosId == p.Id && f.SucursalesId == UsuarioId!.SucursalesId)? p.Inventario.FirstOrDefault(f=> f.ProductosId == p.Id && f.SucursalesId == UsuarioId!.SucursalesId)!.Stock : 0));
 
             var inventario = _context.Inventario.Include(i => i.Productos).Where(i => i.SucursalesId == UsuarioId!.SucursalesId).ToList();
-            var totalCosto = inventario.Sum(p => p.Productos.Precio * p.Stock);
+            var totalCosto = inventario.Sum(p => p.Productos.PrecioCosto * p.Stock);
             return View(totalCosto);
         }
         public IActionResult RptReporteGanancia()

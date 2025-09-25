@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Confiteria.Controllers
 {
-    [Authorize(Roles = "Admin,sa")]
+    [Authorize(Roles = "Admin,sa,Encargado")]
     public class TasaDolarsController : Controller
     {
         private readonly AplicationDbContext _context;

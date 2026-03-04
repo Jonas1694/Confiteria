@@ -9,7 +9,7 @@ namespace ArquitecturaModel.ViewModels
 {
     public class ProductoViewModel
     {
-        public int ProductoId { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio!")]
         [Display(Name = "Producto")]
@@ -34,14 +34,21 @@ namespace ArquitecturaModel.ViewModels
         [RegularExpression("^[0-9]*$", ErrorMessage = "* Solo se permiten números.")]
         public int StockMax { get; set; }
 
-        [Display(Name ="Precio Bs")]
+        [Display(Name = "Precio Bs")]
         public string Precio { get; set; }
-        public string PrecioDolar { get; set; }
-        public string PrecioCosto { get; set; }
+		[Display(Name = "Precio Dolar 1")]
+		public string PrecioDolar { get; set; }
+		[Display(Name = "Precio Costo")]
+		public string PrecioCosto { get; set; }
+		[Display(Name = "Precio 2 Bs")]
+		public string Precio2 { get; set; }
+		[Display(Name = "Precio Dolar 2")]
+		public string PrecioDolar2 { get; set; }
 
-        public string Codigo { get; set; }
+		public string Codigo { get; set; }
         public int MarcasId { get; set; }
         public int SucursalId { get; set; }
+        public List<PrecioProductoViewModel> Precios { get; set; } = new List<PrecioProductoViewModel>();
 
-    }
+	}
 }

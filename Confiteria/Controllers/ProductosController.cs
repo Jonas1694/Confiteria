@@ -144,8 +144,10 @@ namespace Confiteria.Controllers
                 PrecioCosto = Convert.ToDecimal(productos.PrecioCosto.Replace(",", ".")),
                 Precio = Convert.ToDecimal(productos.Precio.Replace(",", ".")),
                 PrecioDolar = Convert.ToDecimal(productos.PrecioDolar.Replace(",", ".")),
-                //Stock = Convert.ToInt32(productos.Stock.ToString()),
-                Codigo = productos.Codigo,
+				Precio2 = Convert.ToDecimal(productos.Precio2.Replace(",", ".")),
+				PrecioDolar2 = Convert.ToDecimal(productos.PrecioDolar2.Replace(",", ".")),
+				//Stock = Convert.ToInt32(productos.Stock.ToString()),
+				Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
                 Fecha = DateTime.Now,
                 MarcasId = productos.MarcasId
@@ -200,14 +202,16 @@ namespace Confiteria.Controllers
             var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             var V = new ProductoViewModel()
             {
-                ProductoId = productos.Id,
+                Id = productos.Id,
                 Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
                 Stock = _context.Inventario!.Any(f => f.SucursalesId == UsuarioId.SucursalesId && f.ProductosId == productos.Id) ? _context.Inventario!.FirstOrDefault(f => f.SucursalesId == UsuarioId.SucursalesId && f.ProductosId == productos.Id)!.Stock : 0,
                 PrecioCosto = productos.PrecioCosto.ToString(),
                 Precio = productos.Precio.ToString(),
                 PrecioDolar = productos.PrecioDolar.ToString(),
-                MarcasId = productos.MarcasId,
+				Precio2 = productos.Precio2.ToString(),
+				PrecioDolar2 = productos.PrecioDolar2.ToString(),
+				MarcasId = productos.MarcasId,
                 SucursalId = UsuarioId!.SucursalesId!.Value
             };
             ViewData["marcasId"] = new SelectList(_context.Marcas, "Id", "Descripcion", productos.MarcasId);
@@ -221,19 +225,21 @@ namespace Confiteria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ProductoViewModel productos)
         {
-            if (id != productos.ProductoId)
+            if (id != productos.Id)
             {
                 return NotFound();
             }
             ViewData["marcasId"] = new SelectList(_context.Marcas, "Id", "Descripcion", productos.MarcasId);
             var p = new Productos()
             {
-                Id = productos.ProductoId,
+                Id = productos.Id,
                 PrecioCosto = Convert.ToDecimal(productos.PrecioCosto.Replace(",", ".")),
                 Precio = Convert.ToDecimal(productos.Precio.Replace(",", ".")),
                 PrecioDolar = Convert.ToDecimal(productos.PrecioDolar.Replace(",", ".")),
-                //Stock = Convert.ToInt32(productos.Stock.ToString()),
-                Codigo = productos.Codigo,
+				Precio2 = Convert.ToDecimal(productos.Precio2.Replace(",", ".")),
+				PrecioDolar2 = Convert.ToDecimal(productos.PrecioDolar2.Replace(",", ".")),
+				//Stock = Convert.ToInt32(productos.Stock.ToString()),
+				Codigo = productos.Codigo,
                 Descripcion = productos.Descripcion,
                 Fecha = DateTime.Now,
                 MarcasId = productos.MarcasId
@@ -268,7 +274,7 @@ namespace Confiteria.Controllers
                     catch (DbUpdateConcurrencyException)
                     {
                         tr.Rollback();
-                        if (!ProductosExists(productos.ProductoId))
+                        if (!ProductosExists(productos.Id))
                         {
                             return NotFound();
                         }

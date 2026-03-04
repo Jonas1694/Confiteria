@@ -15,7 +15,9 @@ namespace ArquitecturaModel.Model
         //[DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Precio { get; set; }
         public decimal PrecioDolar { get; set; }
-        public decimal PrecioCosto { get; set; }
+		public decimal Precio2 { get; set; }
+		public decimal PrecioDolar2 { get; set; }
+		public decimal PrecioCosto { get; set; }
         public DateTime Fecha { get; set; }
 
         //[Required(ErrorMessage = "El campo {0} es obligatorio!")]

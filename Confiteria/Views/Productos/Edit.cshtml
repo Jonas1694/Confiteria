@@ -14,7 +14,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <input type="hidden" asp-for="ProductoId" />
+                <input type="hidden" asp-for="Id" />
                 <input type="hidden" asp-for="SucursalId" />
                 <div class="col-md-12">
                     <div class="form-group">
@@ -56,23 +56,38 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="PrecioCosto" class="control-label"></label>
-                        <input asp-for="PrecioCosto" class="form-control" />
+                        <input asp-for="PrecioCosto" class="form-control txtn" />
                         <span asp-validation-for="PrecioCosto" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="PrecioDolar" class="control-label"></label>
-                        <input asp-for="PrecioDolar" class="form-control" />
+                        <input asp-for="PrecioDolar" class="form-control txtn" />
                         <span asp-validation-for="PrecioDolar" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="Precio" class="control-label"></label>
                         <input asp-for="Precio" type="hidden" />
                         <label class="form-control" id="lblDolar"></label>
                         <span asp-validation-for="Precio" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PrecioDolar2" class="control-label"></label>
+                        <input asp-for="PrecioDolar2" class="form-control txtn" />
+                        <span asp-validation-for="PrecioDolar2" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Precio2" class="control-label"></label>
+                        <input asp-for="Precio2" type="hidden" />
+                        <label class="form-control" id="lblDolar2"></label>
+                        <span asp-validation-for="Precio2" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -107,6 +122,17 @@
                 var t = value * taza;
                 $('#lblDolar').text(t).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: 'Bs ' });
                 $('#Precio').val(t);
+            });
+             $('#lblDolar2').text($('#Precio2').val()).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: 'Bs ' });
+            $('#PrecioDolar2').mask('#.##0,00', { reverse: true });
+            jQuery('.txtn').keypress(function (tecla) {
+                if (tecla.charCode < 48 || tecla.charCode > 57) return false;
+            });
+            $('#PrecioDolar2').keyup(function (e) {
+                var value = $(this).val().replace('.', '').replace(',', '.');
+                var t = value * taza;
+                $('#lblDolar2').text(t).formatCurrency({ region: 'es-ES', decimalSymbol: ',', digitGroupSymbol: '.', symbol: 'Bs ' });
+                $('#Precio2').val(t);
             });
         });
         jQuery('.txt').keypress(function (tecla) {

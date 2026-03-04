@@ -246,7 +246,8 @@ namespace Confiteria.Controllers
             { 
                 Codigo = p.Codigo, 
                 Descripcion = p.GetDescripcion, 
-                Precio = Convert.ToString(p.Precio), 
+                Precio = Convert.ToString(p.Precio),
+                Precio2= Convert.ToString(p.Precio2),
                 Stock = p.Inventario.Any(w => w.SucursalesId == UsuarioId!.SucursalesId) ? p.Inventario.FirstOrDefault(w => w.SucursalesId == UsuarioId!.SucursalesId)!.Stock : 0, 
                 StockMin = p.StockMin, 
                 StockMax = p.StockMax 
@@ -338,14 +339,19 @@ namespace Confiteria.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        public async Task<List<Productos>> GetProductos()
+        public async Task<List<ProductoViewModel>> GetProductos()
         {
             var UsuarioId = _context.Users.FirstOrDefault(u => u.Email == User.Identity!.Name);
             var inventorio = await _context.Inventario
                 .Include(i=> i.Productos)
                 .Where(w => w.SucursalesId == UsuarioId!.SucursalesId)
                 .ToListAsync();
-            return inventorio.Select(s=> new Productos() { Id = s.ProductosId, Codigo = s.Productos.Codigo, Descripcion = s.Productos.Descripcion, Precio = s.Productos.Precio }).ToList();
+            return inventorio.Select(s=> new ProductoViewModel() { Id = s.ProductosId, Codigo = s.Productos.Codigo, Descripcion = s.Productos.Descripcion, Precios=new List<PrecioProductoViewModel> 
+            {
+               new PrecioProductoViewModel{ Precio =s.Productos.Precio,PrecioId=1},
+			   new PrecioProductoViewModel{ Precio =s.Productos.Precio2,PrecioId=2}
+			} 
+            }).ToList();
         }
         //async Task<FacturacionViewModel> GetPedidoViewAsync(int id)
         //{

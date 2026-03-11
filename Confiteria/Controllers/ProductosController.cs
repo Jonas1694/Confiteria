@@ -322,7 +322,7 @@ namespace Confiteria.Controllers
             {
                 return Problem("Entity set 'AplicationDbContext.Productos'  is null.");
             }
-            var productos = await _context.Productos.FindAsync(id);
+            var productos = await _context.Productos.Where(w=>w.Id == id).Include(i=> i.Inventario).FirstOrDefaultAsync();
             if (productos != null)
             {
                 _context.Productos.Remove(productos);

@@ -32,8 +32,11 @@ namespace Confiteria.Controllers
 		// GET: Facturacion
 		public async Task<IActionResult> Index()
 		{
+			var today = DateTime.Today;
 			var applicationDbContext = _context.Facturacion.Include(f => f.Clientes)
 				.Include(f => f.StatusDocumento)
+				.Where(f => f.FechaRegistro.Date == today) // Filtra las facturas del día de hoy
+				.OrderBy(t => t.FechaRegistro)
 				.OrderByDescending(n => n.NFactura);
 			return View(await applicationDbContext.ToListAsync());
 		}

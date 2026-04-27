@@ -19,7 +19,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12" />
-    <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.4.0" />
     <PackageReference Include="Stimulsoft.Reports.Engine.NetCore" Version="2023.3.1" />
     <PackageReference Include="Stimulsoft.Reports.Web.NetCore" Version="2023.3.1" />
   </ItemGroup>

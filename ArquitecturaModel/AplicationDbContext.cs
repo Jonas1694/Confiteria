@@ -25,8 +25,8 @@ namespace ArquitecturaModel
           : base(options)
         {
 
-        }
-        protected override void OnModelCreating(ModelBuilder builder)
+		}
+		protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Cliente>().HasIndex(o => o.RazonSocial).IsUnique();
             builder.Entity<StatusDocumentos>().HasKey(i => i.StatusDocumentoId);
